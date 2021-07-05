@@ -55,7 +55,7 @@ class Map {
   //   return sql;
   // }
 
-  static getAllMusSQL() {
+  static getAllMapSQL() {
     let sql = `SELECT * FROM museum`;
     return sql;
   }

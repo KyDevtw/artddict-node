@@ -148,7 +148,7 @@ async function userLogin(sql, req, res, instance) {
 router.get("/", (req, res, next) => {
   //console.log(req.query)
 
-  if (!Object.keys(req.query).length) executeSQL(map.getAllmapSQL(), res);
+  if (!Object.keys(req.query).length) executeSQL(map.getAllMapSQL(), res);
   else executeSQL(map.getmapByQuerySQL(req.query), res);
 
   //   if (!Object.keys(req.query).length) executeSQL(User.getAllmapSQL(), res);

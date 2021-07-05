@@ -56,6 +56,9 @@ class Event {
     let perPage = 9;  // 每頁有幾筆
     let page = query.page || 1;  // 查看第幾頁
     let cate = parseInt(query.cate) || 0;  // 分類編號
+
+
+    
     let keyword = query.keyword || "";  // 搜尋功能
 
 
@@ -65,7 +68,7 @@ class Event {
     }
     if (keyword) {
       let k2 = db.escape("%" + keyword + "%");
-      where += ` AND (author LIKE ${k2} OR bookname LIKE ${k2}) `;
+      where += ` AND eventName LIKE ${k2} `;
     }
 
     let orderStr = "";
@@ -74,7 +77,7 @@ class Event {
         orderStr = " ORDER BY `eventDateStart` ASC ";
         break;
       case "oldest":
-        orderStr = " ORDER BY `price` DESC ";
+        orderStr = " ORDER BY `eventDateStart` ASC` DESC ";
         break;
     }
 
