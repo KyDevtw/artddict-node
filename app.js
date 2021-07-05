@@ -12,6 +12,7 @@ var indexRouter = require('./routes/index')
 // 需匯入api
 var users = require('./api/users')
 var event = require('./api/event')
+var map = require("./api/map");
 
 var app = express()
 
