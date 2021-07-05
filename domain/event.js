@@ -12,6 +12,7 @@ class Event {
     eventImg,
     eventCity,
     museumId,
+    cityName,
   ) {
     this.id = 0;
     this.eventClass = eventClass;
@@ -24,6 +25,7 @@ class Event {
     this.eventImg = eventImg;
     this.eventCity = eventCity;
     this.museumId = museumId;
+    this.cityName = cityName;
   }
 
   // addUserSQL() {
@@ -58,7 +60,7 @@ class Event {
     let cate = parseInt(query.cate) || 0;  // 分類編號
 
 
-    
+
     let keyword = query.keyword || "";  // 搜尋功能
 
 
