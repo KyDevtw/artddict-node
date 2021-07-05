@@ -43,6 +43,9 @@ app.use(
   })
 )
 
+// static file with middleware
+app.use(express.static(__dirname + "public"));
+
 // event middleware
 app.use("/event", event);
 
