@@ -53,6 +53,32 @@ class Event {
 
   // static是與實例化無關
   static getEventByQuerySQL(query) {
+    let perPage = 9;  // 每頁有幾筆
+    let page = params.page || 1;  // 查看第幾頁
+    let cate = parseInt(params.cate) || 0;  // 分類編號
+    let keyword = params.keyword || '';  // 搜尋產品名稱或者作者姓名
+
+
+    let orderBy = params.orderBy || '';  // 排序
+    if (cate) {
+      where += " AND category_sid=" + cate;
+    }
+    if (keyword) {
+      let k2 = db.escape("%" + keyword + "%");
+      where += ` AND (author LIKE ${k2} OR bookname LIKE ${k2}) `;
+    }
+
+    let orderStr = "";
+    switch (orderBy) {
+      case "latest":
+        orderStr = " ORDER BY `eventDateStart` ASC ";
+        break;
+      case "oldest":
+        orderStr = " ORDER BY `price` DESC ";
+        break;
+    }
+
+
     const where = [];
 
     if (query.id) where.push(`id = '${query.id}'`);
