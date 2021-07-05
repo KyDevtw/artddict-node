@@ -54,14 +54,14 @@ class Event {
   // static是與實例化無關
   static getEventByQuerySQL(query) {
     let perPage = 9;  // 每頁有幾筆
-    let page = params.page || 1;  // 查看第幾頁
-    let cate = parseInt(params.cate) || 0;  // 分類編號
-    let keyword = params.keyword || '';  // 搜尋產品名稱或者作者姓名
+    let page = query.page || 1;  // 查看第幾頁
+    let cate = parseInt(query.cate) || 0;  // 分類編號
+    let keyword = query.keyword || "";  // 搜尋功能
 
 
-    let orderBy = params.orderBy || '';  // 排序
+    let orderBy = query.orderBy || "";  // 排序
     if (cate) {
-      where += " AND category_sid=" + cate;
+      where += " AND eventClass=" + cate;
     }
     if (keyword) {
       let k2 = db.escape("%" + keyword + "%");
