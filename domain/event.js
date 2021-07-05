@@ -1,64 +1,78 @@
-class User {
-  constructor(name, username, password, email) {
-    this.id = 0
-    this.name = name
-    this.username = username
-    this.password = password
-    this.email = email
-    this.login = 0
+// event SQL 語法 建立 Class
+// SELECT `id`, `eventClass`, `eventId`, `eventName`, `eventDescription`, `eventDateStart`, `eventDateEnd`, `eventPrice`, `eventImg`, `eventCity`, `museumId`, `userId`, `created_at`, `updated_at` FROM `event` 
+class Event {
+  constructor(
+    eventClass,
+    eventId,
+    eventName,
+    eventDescription,
+    eventDateStart,
+    eventDateEnd,
+    eventPrice,
+    eventImg,
+    eventCity,
+    museumId,
+    userId
+  ) {
+    this.id = 0;
+    this.name = name;
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.login = 0;
   }
 
   addUserSQL() {
     let sql = `INSERT INTO USERS(name, username, password, email, login, createdDate) \
-                   VALUES('${this.name}', '${this.username}', '${this.password}', '${this.email}', 0, NOW())`
-    return sql
+                   VALUES('${this.name}', '${this.username}', '${this.password}', '${this.email}', 0, NOW())`;
+    return sql;
   }
 
   updateUserByIdSQL(id) {
     let sql = `UPDATE USERS \
                SET name = '${this.name}', username = '${this.username}', password = '${this.password}', email = '${this.email}', login = ${this.login} \
-               WHERE id =  ${id}`
-    return sql
+               WHERE id =  ${id}`;
+    return sql;
   }
 
   // static是與實例化無關
   static getUserByIdSQL(id) {
-    let sql = `SELECT * FROM USERS WHERE id = ${id}`
-    return sql
+    let sql = `SELECT * FROM USERS WHERE id = ${id}`;
+    return sql;
   }
 
   // login用
   getUserUserByUsernameAndPasswordSQL() {
-    let sql = `SELECT * FROM USERS WHERE username = '${this.username}' AND password = '${this.password}' LIMIT 0,1`
-    return sql
+    let sql = `SELECT * FROM USERS WHERE username = '${this.username}' AND password = '${this.password}' LIMIT 0,1`;
+    return sql;
   }
 
   // static是與實例化無關
   static getUserByQuerySQL(query) {
-    const where = []
+    const where = [];
 
-    if (query.name) where.push(`name = '${query.name}'`)
-    if (query.email) where.push(`email = '${query.email}'`)
-    if (query.username) where.push(`username = '${query.username}'`)
+    if (query.name) where.push(`name = '${query.name}'`);
+    if (query.email) where.push(`email = '${query.email}'`);
+    if (query.username) where.push(`username = '${query.username}'`);
 
-    let sql = ''
+    let sql = "";
 
-    if (where.length) sql = `SELECT * FROM USERS WHERE ` + where.join(' AND ')
-    else sql = `SELECT * FROM USERS`
+    if (where.length) sql = `SELECT * FROM USERS WHERE ` + where.join(" AND ");
+    else sql = `SELECT * FROM USERS`;
 
-    return sql
+    return sql;
   }
 
   static deleteUserByIdSQL(id) {
-    let sql = `DELETE FROM USERS WHERE ID = ${id}`
-    return sql
+    let sql = `DELETE FROM USERS WHERE ID = ${id}`;
+    return sql;
   }
 
   static getAllUserSQL() {
-    let sql = `SELECT * FROM USERS`
-    return sql
+    let sql = `SELECT * FROM USERS`;
+    return sql;
   }
 }
 
-//export default User
-module.exports = User
+//export default Event
+module.exports = Event

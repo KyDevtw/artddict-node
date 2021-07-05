@@ -8,10 +8,10 @@ var cors = require('cors')
 var session = require('express-session')
 
 var indexRouter = require('./routes/index')
-//var usersRouter = require('./routes/users')
 
 // 需匯入api
 var users = require('./api/users')
+var event = require('./api/event')
 
 var app = express()
 
