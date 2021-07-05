@@ -121,111 +121,41 @@ async function userLogin(sql, req, res, instance) {
 
 // 以下為路由
 
-// 處理會員登入
-router.post("/login", function (req, res, next) {
-  let user = new User(
-    req.body.name,
-    req.body.username,
-    req.body.password,
-    req.body.email
-  );
 
-  // 回應都寫在userLogin方法裡(async-await)
-  userLogin(user.getUserUserByUsernameAndPasswordSQL(), req, res, user);
-});
-
-// 處理會員登出
-router.get("/logout", function (req, res, next) {
-  req.session.destroy(function (err) {
-    if (err) {
-      res.status(200).json({ status: 1, message: "登出失敗" });
-      return;
-    }
-
-    // 清除所有的session
-    req.session = null;
-
-    res.clearCookie("skey");
-    res.status(200).json({ status: 0, message: "登出成功" });
-  });
-});
 
 // 檢查是否登入
-router.get("/checklogin", function (req, res, next) {
-  const sess = req.session;
+// router.get("/checklogin", function (req, res, next) {
+//   const sess = req.session;
 
-  const id = sess.loginId;
-  const username = sess.loginUsername;
-  const name = sess.loginName;
-  const email = sess.loginEmail;
-  const createDate = sess.loginCreatedDate;
+//   const id = sess.loginId;
+//   const username = sess.loginUsername;
+//   const name = sess.loginName;
+//   const email = sess.loginEmail;
+//   const createDate = sess.loginCreatedDate;
 
-  const isLogined = !!name;
+//   const isLogined = !!name;
 
-  if (isLogined) {
-    res.status(200).json({ id, name, username, email, createDate });
-  } else {
-    // 登出狀態時回傳`{id:0}`
-    res.status(200).json({ id: 0 });
-  }
-});
+//   if (isLogined) {
+//     res.status(200).json({ id, name, username, email, createDate });
+//   } else {
+//     // 登出狀態時回傳`{id:0}`
+//     res.status(200).json({ id: 0 });
+//   }
+// });
 
 // get 處理獲取全部的資料列表
 // AND查詢加入`?name=eddy&email=XXX&username=XXXX
-router.get("/event", (req, res, next) => {
+router.get("/event-list", (req, res, next) => {
   //console.log(req.query)
 
-  if (!Object.keys(req.query).length) executeSQL(User.getAllUserSQL(), res);
-  else executeSQL(User.getUserByQuerySQL(req.query), res);
+  if (!Object.keys(req.query).length) executeSQL(Event.getAllEventSQL(), res);
+  else executeSQL(Event.getEventByQuerySQL(req.query), res);
+
+  //   if (!Object.keys(req.query).length) executeSQL(User.getAllEventSQL(), res);
+  //   else executeSQL(User.getUserByQuerySQL(req.query), res);
 });
 
-// get 處理獲取單一筆的會員，使用id
-router.get("/:userId", (req, res, next) => {
-  executeSQL(User.getUserByIdSQL(req.params.userId), res, "get", false);
-});
 
-// post 新增一筆會員資料
-router.post("/", (req, res, next) => {
-  // 測試response，會自動解析為物件
-  // console.log(typeof req.body)
-  // console.log(req.body)
-
-  //從request json 資料建立新的物件
-  let user = new User(
-    req.body.name,
-    req.body.username,
-    req.body.password,
-    req.body.email
-  );
-
-  executeSQL(user.addUserSQL(), res, "post", false, user);
-});
-
-//delete 刪除一筆資料
-router.delete("/:userId", (req, res, next) => {
-  executeSQL(User.deleteUserByIdSQL(req.params.userId), res, "delete", false);
-});
-
-// put 更新一筆資料
-router.put("/:userId", (req, res) => {
-  let user = new User(
-    req.body.name,
-    req.body.username,
-    req.body.password,
-    req.body.email
-  );
-
-  // id值為數字
-  user.id = +req.params.userId;
-
-  executeSQL(
-    user.updateUserByIdSQL(req.params.userId),
-    res,
-    "put",
-    false,
-    user
-  );
-});
 
 //export default router
 module.exports = router;

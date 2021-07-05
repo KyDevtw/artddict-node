@@ -42,6 +42,9 @@ app.use(
   })
 )
 
+// event middleware
+app.use("/event", event);
+
 //app.use('/', indexRouter)
 app.use('/users', users)
 //app.use('/realestates', realestates)

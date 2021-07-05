@@ -12,64 +12,68 @@ class Event {
     eventImg,
     eventCity,
     museumId,
-    userId
   ) {
     this.id = 0;
-    this.name = name;
-    this.username = username;
-    this.password = password;
-    this.email = email;
-    this.login = 0;
+    this.eventClass = eventClass;
+    this.eventId = eventId;
+    this.eventName = eventName;
+    this.eventDescription = eventDescription;
+    this.eventDateStart = eventDateStart;
+    this.eventDateEnd = eventDateEnd;
+    this.eventPrice = eventPrice;
+    this.eventImg = eventImg;
+    this.eventCity = eventCity;
+    this.museumId = museumId;
   }
 
-  addUserSQL() {
-    let sql = `INSERT INTO USERS(name, username, password, email, login, createdDate) \
-                   VALUES('${this.name}', '${this.username}', '${this.password}', '${this.email}', 0, NOW())`;
-    return sql;
-  }
+  // addUserSQL() {
+  //   let sql = `INSERT INTO USERS(name, username, password, email, login, createdDate) \
+  //                  VALUES('${this.name}', '${this.username}', '${this.password}', '${this.email}', 0, NOW())`;
+  //   return sql;
+  // }
 
-  updateUserByIdSQL(id) {
-    let sql = `UPDATE USERS \
-               SET name = '${this.name}', username = '${this.username}', password = '${this.password}', email = '${this.email}', login = ${this.login} \
-               WHERE id =  ${id}`;
-    return sql;
-  }
+  // updateUserByIdSQL(id) {
+  //   let sql = `UPDATE USERS \
+  //              SET name = '${this.name}', username = '${this.username}', password = '${this.password}', email = '${this.email}', login = ${this.login} \
+  //              WHERE id =  ${id}`;
+  //   return sql;
+  // }
 
   // static是與實例化無關
-  static getUserByIdSQL(id) {
-    let sql = `SELECT * FROM USERS WHERE id = ${id}`;
-    return sql;
-  }
+  // static getUserByIdSQL(id) {
+  //   let sql = `SELECT * FROM USERS WHERE id = ${id}`;
+  //   return sql;
+  // }
 
   // login用
-  getUserUserByUsernameAndPasswordSQL() {
-    let sql = `SELECT * FROM USERS WHERE username = '${this.username}' AND password = '${this.password}' LIMIT 0,1`;
-    return sql;
-  }
+  // getUserUserByUsernameAndPasswordSQL() {
+  //   let sql = `SELECT * FROM USERS WHERE username = '${this.username}' AND password = '${this.password}' LIMIT 0,1`;
+  //   return sql;
+  // }
 
   // static是與實例化無關
-  static getUserByQuerySQL(query) {
+  static getEventByQuerySQL(query) {
     const where = [];
 
-    if (query.name) where.push(`name = '${query.name}'`);
-    if (query.email) where.push(`email = '${query.email}'`);
-    if (query.username) where.push(`username = '${query.username}'`);
+    if (query.id) where.push(`id = '${query.id}'`);
+    if (query.eventId) where.push(`eventId = '${query.eventId}'`);
+    if (query.eventName) where.push(`eventName = '${query.eventName}'`);
 
     let sql = "";
 
-    if (where.length) sql = `SELECT * FROM USERS WHERE ` + where.join(" AND ");
-    else sql = `SELECT * FROM USERS`;
+    if (where.length) sql = `SELECT * FROM EVENT WHERE ` + where.join(" AND ");
+    else sql = `SELECT * FROM EVENT`;
 
     return sql;
   }
 
-  static deleteUserByIdSQL(id) {
-    let sql = `DELETE FROM USERS WHERE ID = ${id}`;
-    return sql;
-  }
+  // static deleteUserByIdSQL(id) {
+  //   let sql = `DELETE FROM USERS WHERE ID = ${id}`;
+  //   return sql;
+  // }
 
-  static getAllUserSQL() {
-    let sql = `SELECT * FROM USERS`;
+  static getAllEventSQL() {
+    let sql = `SELECT * FROM EVENT`;
     return sql;
   }
 }
