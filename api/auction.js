@@ -23,8 +23,9 @@ async function executeSQL(
   instance = {}
 ) {
   try {
+    //把資料從資料庫撈出來
     const [rows, fields] = await dbMysql2.promisePool.query(sql);
-
+    // console.log(rows)
     switch (method) {
       case "post": {
         // 仿照json-server的回傳
@@ -52,10 +53,12 @@ async function executeSQL(
       case "get":
       default:
         {
+          // console.log(multirows)
           if (multirows) {
             // res.status(200).json({
             //   users: rows,
             // })
+            console.log(rows)
             res.status(200).json(rows);
           } else {
             // 仿照json-server的回傳，有找到會回傳單一值，沒找到會回到空的物件字串
@@ -77,46 +80,46 @@ async function executeSQL(
   }
 }
 
-// instance 物件實體，預設為空物件
-async function userLogin(sql, req, res, instance) {
-  try {
-    const [rows, fields] = await dbMysql2.promisePool.query(sql);
+// // instance 物件實體，預設為空物件
+// async function userLogin(sql, req, res, instance) {
+//   try {
+//     const [rows, fields] = await dbMysql2.promisePool.query(sql);
 
-    // 仿照json-server的回傳，有找到會回傳單一值，沒找到會回到空的物件字串
-    let result = {};
-    if (rows.length) {
-      result = rows[0];
+//     // 仿照json-server的回傳，有找到會回傳單一值，沒找到會回到空的物件字串
+//     let result = {};
+//     if (rows.length) {
+//       result = rows[0];
 
-      req.session.regenerate(function (err) {
-        if (err) {
-          res.status(200).json({ status: 2, message: "登入失敗" });
-        }
+//       req.session.regenerate(function (err) {
+//         if (err) {
+//           res.status(200).json({ status: 2, message: "登入失敗" });
+//         }
 
-        req.session.loginId = result.id;
-        req.session.loginName = result.name;
-        req.session.loginEmail = result.email;
-        req.session.loginUsername = result.username;
-        req.session.loginCreatedDate = result.createDate;
+//         req.session.loginId = result.id;
+//         req.session.loginName = result.name;
+//         req.session.loginEmail = result.email;
+//         req.session.loginUsername = result.username;
+//         req.session.loginCreatedDate = result.createDate;
 
-        // 如果要用全訊息可以用以下的回傳
-        // res.json({ status: 0, message: '登入成功' })
-        res.status(200).json(result);
-      });
-    } else {
-      res.status(200).json({ status: 1, message: "帳號或密碼錯誤" });
+//         // 如果要用全訊息可以用以下的回傳
+//         // res.json({ status: 0, message: '登入成功' })
+//         res.status(200).json(result);
+//       });
+//     } else {
+//       res.status(200).json({ status: 1, message: "帳號或密碼錯誤" });
 
-      //res.status(200).json(result)
-    }
-  } catch (error) {
-    // 錯誤處理
-    console.log(error);
+//       //res.status(200).json(result)
+//     }
+//   } catch (error) {
+//     // 錯誤處理
+//     console.log(error);
 
-    // 顯示錯誤於json字串
-    res.status(200).json({
-      message: error,
-    });
-  }
-}
+//     // 顯示錯誤於json字串
+//     res.status(200).json({
+//       message: error,
+//     });
+//   }
+// }
 
 // 以下為路由
 
@@ -143,18 +146,28 @@ async function userLogin(sql, req, res, instance) {
 // get 處理獲取全部的資料列表
 // AND查詢加入`?name=eddy&email=XXX&username=XXXX
 
-router.get("/event-list/detail/:id?", (req, res, next) => {
-  executeSQL(Event.getEventByIdSQL(req.params.userId), res, "get", false);
-});
+router.get('/', function(req, res, next) {
+  console.log(req.query)
+  console.log('555')
+  res.send('respond with a resource')
+})
 
-router.get("/event-list", (req, res, next) => {
+// router.get("/event-list/detail/:id?", (req, res, next) => {
+//   executeSQL(Event.getEventByIdSQL(req.params.userId), res, "get", false);
+// });
+
+router.get("/auction-list", (req, res, next) => {
   console.log(req.query);
 
-  if (!Object.keys(req.query).length) executeSQL(Event.getAllEventSQL(), res);
-  else executeSQL(Event.getEventByQuerySQL(req.query), res);
+  if (!Object.keys(req.query).length) 
+      executeSQL(Auction.getAllAucSQL(), res);
+  else 
+      executeSQL(Auction.getAucByQuerySQL(req.query), res);
 
-  //   if (!Object.keys(req.query).length) executeSQL(User.getAllEventSQL(), res);
-  //   else executeSQL(User.getUserByQuerySQL(req.query), res);
+  // if (!Object.keys(req.query).length) 
+  //     executeSQL(User.getAllAucSQL(), res);
+  // else 
+  //     executeSQL(User.getUserByQuerySQL(req.query), res);
 });
 
 //export default router
