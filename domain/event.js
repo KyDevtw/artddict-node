@@ -63,27 +63,6 @@ class Event {
     let perPage = 9; // 每頁有幾筆
     let page = query.page || 1; // 查看第幾頁
 
-    // let keyword = query.keyword || "";  // 搜尋功能
-
-    // let orderBy = query.orderBy || "";  // 排序
-    // if (cate) {
-    //   where += " AND eventClass=" + cate;
-    // }
-    // if (keyword) {
-    //   let k2 = db.escape("%" + keyword + "%");
-    //   where += ` AND eventName LIKE ${k2} `;
-    // }
-
-    // let orderStr = "";
-    // switch (orderBy) {
-    //   case "latest":
-    //     orderStr = " ORDER BY `eventDateStart` ASC ";
-    //     break;
-    //   case "oldest":
-    //     orderStr = " ORDER BY `eventDateStart` ASC` DESC ";
-    //     break;
-    // }
-
     const where = [];
 
     if (query.city) where.push(`cityName = '${query.city}'`);
@@ -92,15 +71,26 @@ class Event {
 
     let sql = "";
 
-    if (where.length)
+    if (where.length){
       sql =
         `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE ` +
         where.join(" AND ");
-    else
+        
+      let t_sql =
+        `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE ` + where.join(" AND ");
+
+        
+    }else{
       sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
 
+      let t_sql = `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
+    }
+
+    let total = t_sql[0]["num"];
+
     return sql;
-  }
+    
+}
 
   // static deleteUserByIdSQL(id) {
   //   let sql = `DELETE FROM USERS WHERE ID = ${id}`;
