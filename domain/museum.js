@@ -56,7 +56,7 @@ class Map {
   // }
 
   static getAllMusSQL() {
-    let sql = `SELECT * FROM museum`;
+    let sql = `SELECT * FROM museum LEFT JOIN city ON museum.musCity = city.cityId LEFT JOIN event ON event.museumId = museum.musId`;
     return sql;
   }
 }
