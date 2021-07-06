@@ -57,43 +57,44 @@ class Event {
   static getEventByQuerySQL(query) {
     let perPage = 9;  // 每頁有幾筆
     let page = query.page || 1;  // 查看第幾頁
-    let cate = parseInt(query.cate) || 0;  // 分類編號
 
 
 
-    let keyword = query.keyword || "";  // 搜尋功能
+    // let keyword = query.keyword || "";  // 搜尋功能
 
 
-    let orderBy = query.orderBy || "";  // 排序
-    if (cate) {
-      where += " AND eventClass=" + cate;
-    }
-    if (keyword) {
-      let k2 = db.escape("%" + keyword + "%");
-      where += ` AND eventName LIKE ${k2} `;
-    }
+    // let orderBy = query.orderBy || "";  // 排序
+    // if (cate) {
+    //   where += " AND eventClass=" + cate;
+    // }
+    // if (keyword) {
+    //   let k2 = db.escape("%" + keyword + "%");
+    //   where += ` AND eventName LIKE ${k2} `;
+    // }
 
-    let orderStr = "";
-    switch (orderBy) {
-      case "latest":
-        orderStr = " ORDER BY `eventDateStart` ASC ";
-        break;
-      case "oldest":
-        orderStr = " ORDER BY `eventDateStart` ASC` DESC ";
-        break;
-    }
+    // let orderStr = "";
+    // switch (orderBy) {
+    //   case "latest":
+    //     orderStr = " ORDER BY `eventDateStart` ASC ";
+    //     break;
+    //   case "oldest":
+    //     orderStr = " ORDER BY `eventDateStart` ASC` DESC ";
+    //     break;
+    // }
 
 
     const where = [];
 
-    if (query.id) where.push(`id = '${query.id}'`);
-    if (query.eventId) where.push(`eventId = '${query.eventId}'`);
-    if (query.eventName) where.push(`eventName = '${query.eventName}'`);
+    if (query.city) where.push(`cityName = '${query.city}'`);
+    if (query.museum) where.push(`musName = '${query.date}'`);
+    if (query.date) where.push(`eventDateStart >= '${query.date}'`);
 
     let sql = "";
 
-    if (where.length) sql = `SELECT * FROM EVENT WHERE ` + where.join(" AND ");
-    else sql = `SELECT * FROM EVENT`;
+    if (where.length) sql =
+      `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE ` +
+      where.join(" AND ");
+    else sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
 
     return sql;
   }
@@ -104,7 +105,7 @@ class Event {
   // }
 
   static getAllEventSQL() {
-    let sql = `SELECT * FROM EVENT`;
+    let sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
     return sql;
   }
 }
