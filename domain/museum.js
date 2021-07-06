@@ -1,5 +1,5 @@
 class Map {
-    constructor(musId,musName,musCity,musImg,MusPx,MusPy) {
+    constructor(musId,musName,musCity,musImg,Px,Py) {
         this.id=0,
         this.musId=musId,
         this.musName=musName,
@@ -55,7 +55,7 @@ class Map {
   //   return sql;
   // }
 
-  static getAllMapSQL() {
+  static getAllMusSQL() {
     let sql = `SELECT * FROM museum`;
     return sql;
   }

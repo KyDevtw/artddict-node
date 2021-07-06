@@ -12,7 +12,7 @@ var indexRouter = require('./routes/index')
 // 需匯入api
 var users = require('./api/users')
 var event = require('./api/event')
-var map = require("./api/map");
+var museum = require("./api/museum");
 
 var app = express()
 
@@ -50,7 +50,7 @@ app.use(express.static(__dirname + "public"));
 app.use("/event", event);
 
 // map middleware
-app.use("/map", map);
+app.use("/map", museum);
 
 //app.use('/', indexRouter)
 app.use('/users', users)

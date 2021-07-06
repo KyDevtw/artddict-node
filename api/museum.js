@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 // 引入 map SQL 語法
-const map = require("../domain/map.js");
+const museum = require("../domain/museum.js");
 
 // mysql2 async-await用的
 const dbMysql2 = require("../db/database");
@@ -148,8 +148,8 @@ async function userLogin(sql, req, res, instance) {
 router.get("/", (req, res, next) => {
   //console.log(req.query)
 
-  if (!Object.keys(req.query).length) executeSQL(map.getAllMapSQL(), res);
-  else executeSQL(map.getmapByQuerySQL(req.query), res);
+  if (!Object.keys(req.query).length) executeSQL(museum.getAllMusSQL(), res);
+  else executeSQL(museum.getMusByQuerySQL(req.query), res);
 
   //   if (!Object.keys(req.query).length) executeSQL(User.getAllmapSQL(), res);
   //   else executeSQL(User.getUserByQuerySQL(req.query), res);
