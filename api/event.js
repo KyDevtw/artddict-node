@@ -146,19 +146,16 @@ async function userLogin(sql, req, res, instance) {
 // get 處理獲取全部的資料列表
 // AND查詢加入`?name=eddy&email=XXX&username=XXXX
 
-router.get("/event-list/detail/:id?", (req, res, next) => {
+router.get("/event-list/:id?", (req, res, next) => {
   executeSQL(Event.getEventByIdSQL(req.params.userId), res, "get", false);
 
 });
 
-router.get("/event-list", (req, res, next) => {
-  console.log(req.query)
+router.get("/", (req, res, next) => {
+  console.log(req.query);
 
   if (!Object.keys(req.query).length) executeSQL(Event.getAllEventSQL(), res);
-  else executeSQL (Event.getEventByQuerySQL(req.query), res);
-
-  //   if (!Object.keys(req.query).length) executeSQL(User.getAllEventSQL(), res);
-  //   else executeSQL(User.getUserByQuerySQL(req.query), res);
+  else executeSQL(Event.getEventByQuerySQL(req.query), res);
 });
 
 
