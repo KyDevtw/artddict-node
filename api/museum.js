@@ -155,6 +155,11 @@ router.get("/", (req, res, next) => {
   //   else executeSQL(User.getUserByQuerySQL(req.query), res);
 });
 
+// get 處理獲取單一筆的會員，使用id
+router.get('/:museumId?', (req, res, next) => {
+  executeSQL(museum.getUserByIdSQL(req.params.musId), res, 'get', false)
+})
+
 
 
 //export default router

@@ -1,4 +1,4 @@
-class Map {
+class Museum {
     constructor(musId,musName,musCity,musImg,Px,Py) {
         this.id=0,
         this.musId=musId,
@@ -22,11 +22,11 @@ class Map {
   //   return sql;
   // }
 
-  // static是與實例化無關
-  // static getUserByIdSQL(id) {
-  //   let sql = `SELECT * FROM USERS WHERE id = ${id}`;
-  //   return sql;
-  // }
+  //static是與實例化無關
+  static getMusByIdSQL(id) {
+    let sql = `SELECT * FROM museum LEFT JOIN city ON museum.musCity = city.cityId LEFT JOIN location ON location.city = museum.eventCity WHERE id = ${id}`;
+    return sql;
+  }
 
   // login用
   // getUserUserByUsernameAndPasswordSQL() {
@@ -62,5 +62,5 @@ class Map {
 }
   
   
-  module.exports = Map
+  module.exports = Museum
   
