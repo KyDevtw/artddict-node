@@ -13,6 +13,7 @@ var indexRouter = require('./routes/index')
 var users = require('./api/users')
 var event = require('./api/event')
 var museum = require("./api/museum");
+// var auction = require("./api/auction");
 
 var app = express()
 
@@ -57,7 +58,7 @@ app.use('/users', users)
 //app.use('/realestates', realestates)
 
 //auction middleware
-app.use("/auction",auction);
+// app.use("/auction", auction);
 
 // catch 404 and forward to error handler
 // app.use(function (req, res, next) {
