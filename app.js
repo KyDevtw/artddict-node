@@ -56,6 +56,9 @@ app.use("/map", map);
 app.use('/users', users)
 //app.use('/realestates', realestates)
 
+//auction middleware
+app.use("/auction",auction);
+
 // catch 404 and forward to error handler
 // app.use(function (req, res, next) {
 //   next(createError(404))
