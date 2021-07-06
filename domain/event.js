@@ -76,17 +76,17 @@ class Event {
         `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE ` +
         where.join(" AND ");
         
-      let t_sql =
-        `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE ` + where.join(" AND ");
+        // let t_sql =
+        //   `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE ` + where.join(" AND ");
 
         
     }else{
       sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
 
-      let t_sql = `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
+      // let t_sql = `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
     }
 
-    let total = t_sql[0]["num"];
+    // let total = t_sql[0]["num"];
 
     return sql;
     

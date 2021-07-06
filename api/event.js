@@ -155,9 +155,8 @@ router.get("/", (req, res, next) => {
   else executeSQL(Event.getEventByQuerySQL(req.query), res);
 });
 
-router.get("/:eventId?", (req, res, next) => {
+router.get("/event-list/:eventId?", (req, res, next) => {
   executeSQL(Event.getEventByIdSQL(req.params.eventId), res, "get", false);
-
 });
 
 
