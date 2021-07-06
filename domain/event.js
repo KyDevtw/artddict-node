@@ -12,7 +12,7 @@ class Event {
     eventImg,
     eventCity,
     museumId,
-    cityName,
+    cityName
   ) {
     this.id = 0;
     this.eventClass = eventClass;
@@ -53,15 +53,17 @@ class Event {
   //   return sql;
   // }
 
+  static getEventByIdSQL(id) {
+    let sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE id = ${id}`;
+    return sql;
+  }
+
   // static是與實例化無關
   static getEventByQuerySQL(query) {
-    let perPage = 9;  // 每頁有幾筆
-    let page = query.page || 1;  // 查看第幾頁
-
-
+    let perPage = 9; // 每頁有幾筆
+    let page = query.page || 1; // 查看第幾頁
 
     // let keyword = query.keyword || "";  // 搜尋功能
-
 
     // let orderBy = query.orderBy || "";  // 排序
     // if (cate) {
@@ -82,19 +84,20 @@ class Event {
     //     break;
     // }
 
-
     const where = [];
 
     if (query.city) where.push(`cityName = '${query.city}'`);
     if (query.museum) where.push(`musName = '${query.date}'`);
-    if (query.date) where.push(`eventDateStart >= '${query.date}'`);
+    if (query.order) where.push(`eventDateStart >= '${query.date}'`);
 
     let sql = "";
 
-    if (where.length) sql =
-      `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE ` +
-      where.join(" AND ");
-    else sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
+    if (where.length)
+      sql =
+        `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE ` +
+        where.join(" AND ");
+    else
+      sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
 
     return sql;
   }
@@ -109,6 +112,8 @@ class Event {
     return sql;
   }
 }
+
+
 
 //export default Event
 module.exports = Event
