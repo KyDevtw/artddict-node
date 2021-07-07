@@ -152,10 +152,6 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource')
 })
 
-// router.get("/event-list/detail/:id?", (req, res, next) => {
-//   executeSQL(Event.getEventByIdSQL(req.params.userId), res, "get", false);
-// });
-
 router.get("/auction-list", (req, res, next) => {
   console.log(req.query);
 
@@ -168,6 +164,11 @@ router.get("/auction-list", (req, res, next) => {
   //     executeSQL(User.getAllAucSQL(), res);
   // else 
   //     executeSQL(User.getUserByQuerySQL(req.query), res);
+});
+
+router.get("/:aucId?", (req, res, next) => {
+  console.log(req.params.aucId)
+  executeSQL(Auction.getaucByIdSQL(req.params.aucId), res, "get", false);
 });
 
 //export default router

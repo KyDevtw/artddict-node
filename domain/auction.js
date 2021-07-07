@@ -17,11 +17,16 @@ class Auction {
     return sql;
   }
 
-  addUserSQL() {
-    let sql = `INSERT INTO USERS(name, username, password, email, login, createdDate) \
-                   VALUES('${this.name}', '${this.username}', '${this.password}', '${this.email}', 0, NOW())`;
-    return sql;
+  static getaucByIdSQL(id) {
+    let sql = `SELECT * FROM auctionitems WHERE aucId = ${id}`
+    return sql
   }
+
+  // addUserSQL() {
+  //   let sql = `INSERT INTO USERS(name, username, password, email, login, createdDate) \
+  //                  VALUES('${this.name}', '${this.username}', '${this.password}', '${this.email}', 0, NOW())`;
+  //   return sql;
+  // }
 
   // updateUserByIdSQL(id) {
   //   let sql = `UPDATE USERS \
@@ -43,20 +48,20 @@ class Auction {
   // }
 
   // // static是與實例化無關
-  static getUserByQuerySQL(query) {
-    const where = [];
+  // static getUserByQuerySQL(query) {
+  //   const where = [];
 
-    if (query.name) where.push(`name = '${query.name}'`);
-    if (query.email) where.push(`email = '${query.email}'`);
-    if (query.username) where.push(`username = '${query.username}'`);
+  //   if (query.aucName) where.push(`aucName = '${query.aucName}'`);
+  //   if (query.aucDeadline) where.push(`aucDeadline = '${query.aucDeadline}'`);
+  //   if (query.aucPriceNow) where.push(`aucPriceNow = '${query.aucPriceNow}'`);
 
-    let sql = "";
+  //   let sql = "";
 
-    if (where.length) sql = `SELECT * FROM USERS WHERE ` + where.join(" AND ");
-    else sql = `SELECT * FROM USERS`;
+  //   if (where.length) sql = `SELECT * FROM auctionitems WHERE ` + where.join(" AND ");
+  //   else sql = `SELECT * FROM auctionitems`;
 
-    return sql;
-  }
+  //   return sql;
+  // }
 
   // static deleteUserByIdSQL(id) {
   //   let sql = `DELETE FROM USERS WHERE ID = ${id}`;
