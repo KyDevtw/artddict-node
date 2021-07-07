@@ -1,6 +1,6 @@
 class User {
-  constructor(username, password, name, gender, mobile, birthday, address, userImg, userfav, userCoupon) {
-    this.userId = 0
+  constructor(username, name, password, gender, mobile, birthday, address, userImg, userfav, userCoupon) {
+    this.id = 0
     this.username = username;
     this.name = name;
     this.password = password;
@@ -22,14 +22,14 @@ class User {
 
   updateUserByIdSQL(id) {
     let sql = `UPDATE USERS \
-               SET username = '${this.username}', name = '${this.name}', password = '${this.password}', gender = '${this.gender}', mobile = '${this.mobile}' , address = '${this.address}', userImg = '${this.userImg}', login = ${this.login} \
-               WHERE userId =  ${id}`
+               SET username = '${this.username}', name = '${this.name}', password = '${this.password}', mobile = '${this.mobile}',  gender = '${this.gender}' , address = '${this.address}', login = ${this.login} \
+               WHERE id =  ${id}`
     return sql
   }
 
   // static是與實例化無關
   static getUserByIdSQL(id) {
-    let sql = `SELECT * FROM USERS WHERE userId = ${id}`
+    let sql = `SELECT * FROM USERS WHERE id = ${id}`
     return sql
   }
 
@@ -56,7 +56,7 @@ class User {
   }
 
   static deleteUserByIdSQL(id) {
-    let sql = `DELETE FROM USERS WHERE userId = ${id}`
+    let sql = `DELETE FROM USERS WHERE id = ${id}`
     return sql
   }
 

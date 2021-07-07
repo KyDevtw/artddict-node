@@ -91,7 +91,7 @@ async function userLogin(sql, req, res, instance) {
 
         req.session.loginId = result.id
         req.session.loginName = result.name
-        req.session.loginEmail = result.email
+        // req.session.loginEmail = result.email
         req.session.loginUsername = result.username
         req.session.loginCreatedDate = result.createDate
 
@@ -123,7 +123,7 @@ router.post('/login', function (req, res, next) {
     req.body.name,
     req.body.username,
     req.body.password,
-    req.body.email
+    // req.body.email
   )
 
   // 回應都寫在userLogin方法裡(async-await)
@@ -153,13 +153,12 @@ router.get('/checklogin', function (req, res, next) {
   const id = sess.loginId
   const username = sess.loginUsername
   const name = sess.loginName
-  const email = sess.loginEmail
   const createDate = sess.loginCreatedDate
 
   const isLogined = !!name
 
   if (isLogined) {
-    res.status(200).json({ id, name, username, email, createDate })
+    res.status(200).json({ id, name, username,  createDate })
   } else {
     // 登出狀態時回傳`{id:0}`
     res.status(200).json({ id: 0 })
@@ -188,10 +187,9 @@ router.post('/', (req, res, next) => {
 
   //從request json 資料建立新的物件
   let user = new User(
-    req.body.name,
     req.body.username,
+    req.body.name,
     req.body.password,
-    req.body.email
   )
 
   executeSQL(user.addUserSQL(), res, 'post', false, user)
@@ -205,10 +203,13 @@ router.delete('/:userId', (req, res, next) => {
 // put 更新一筆資料
 router.put('/:userId', (req, res) => {
   let user = new User(
-    req.body.name,
     req.body.username,
+    req.body.name,
+    req.body.mobile,
+    req.body.gender,
+    req.body.birthday,
+    req.body.address,
     req.body.password,
-    req.body.email
   )
 
   // id值為數字
