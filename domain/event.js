@@ -60,8 +60,8 @@ class Event {
 
   // static是與實例化無關
   static getEventByQuerySQL(query) {
-    let perPage = 9; // 每頁有幾筆
-    let page = query.page || 1; // 查看第幾頁
+    //let perPage = 9; // 每頁有幾筆
+    // let page = query.page || 1; // 查看第幾頁
 
     const where = [];
 
