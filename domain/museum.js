@@ -46,12 +46,12 @@ class Museum {
     if (query.musId) where.push(`musId = '${query.musId}'`);
     if (query.musName) where.push(`musName = '${query.musName}'`);
     //必須對應路由過來的key
-    if (query.city) where.push(`cityName = '${query.cityName}'`);
+    if (query.city) where.push(`cityName = '${query.city}'`);
 
     let sql = "";
 
     if (where.length) sql = `SELECT * FROM museum LEFT JOIN city ON city.cityId = museum.musCity WHERE ` +
-    where.join(" AND ");
+    where.join('AND');
 
     return sql;
   }
