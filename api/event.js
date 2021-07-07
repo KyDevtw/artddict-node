@@ -159,6 +159,10 @@ router.get("/event-list/:id?", (req, res, next) => {
   executeSQL(Event.getEventByIdSQL(req.params.id), res, "get", false);
 });
 
+router.get("/share/:id?", (req, res, next) => {
+  executeSQL(Event.getShareSQL(req.params.id), res, "get", false);
+});
+
 
 
 //export default router

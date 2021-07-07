@@ -12,7 +12,9 @@ class Event {
     eventImg,
     eventCity,
     museumId,
-    cityName
+    cityName,
+    shareComment,
+    shareImg
   ) {
     this.id = 0;
     this.eventClass = eventClass;
@@ -26,6 +28,8 @@ class Event {
     this.eventCity = eventCity;
     this.museumId = museumId;
     this.cityName = cityName;
+    this.shareComment = shareComment;
+    this.shareComment = shareComment;
   }
 
   // addUserSQL() {
@@ -54,7 +58,7 @@ class Event {
   // }
 
   static getEventByIdSQL(id) {
-    let sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE id = ${id}`;
+    let sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity LEFT JOIN share ON event.eventId = share.eventId WHERE id = ${id}`;
     return sql;
   }
 
@@ -67,7 +71,7 @@ class Event {
 
     if (query.city) where.push(`cityName = '${query.city}'`);
 
-    let order = '';
+    let order = "";
 
     if (query.order) {
       switch (query.order) {
@@ -96,8 +100,7 @@ class Event {
     // let total = t_sql[0]["num"];
 
     return sql;
-    
-}
+  }
 
   // static deleteUserByIdSQL(id) {
   //   let sql = `DELETE FROM USERS WHERE ID = ${id}`;
@@ -106,6 +109,12 @@ class Event {
 
   static getAllEventSQL() {
     let sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity ORDER BY eventDateStart ASC`;
+    return sql;
+  }
+
+  // 分享區塊
+  static getShareSQL(id) {
+    let sql = `SELECT * FROM event LEFT JOIN share ON event.eventId = share.eventId WHERE id = ${id}`;
     return sql;
   }
 }
