@@ -1,29 +1,35 @@
 class User {
-  constructor(name, username, password, email) {
-    this.id = 0
-    this.name = name
-    this.username = username
-    this.password = password
-    this.email = email
+  constructor(username, password, name, gender, mobile, birthday, address, userImg, userfav, userCoupon) {
+    this.userId = 0
+    this.username = username;
+    this.name = name;
+    this.password = password;
+    this.gender = gender;
+    this.mobile = mobile;
+    this.birthday = birthday;
+    this.address = address;
+    this.userImg = userImg;
+    this.userfav = userfav;
+    this.userCoupon = userCoupon;
     this.login = 0
   }
 
   addUserSQL() {
-    let sql = `INSERT INTO USERS(name, username, password, email, login, createdDate) \
-                   VALUES('${this.name}', '${this.username}', '${this.password}', '${this.email}', 0, NOW())`
+    let sql = `INSERT INTO USERS(username, name, password, login, createdDate) \
+                   VALUES('${this.username}', '${this.name}', '${this.password}',  0, NOW())`
     return sql
   }
 
   updateUserByIdSQL(id) {
     let sql = `UPDATE USERS \
-               SET name = '${this.name}', username = '${this.username}', password = '${this.password}', email = '${this.email}', login = ${this.login} \
-               WHERE id =  ${id}`
+               SET username = '${this.username}', name = '${this.name}', password = '${this.password}', gender = '${this.gender}', mobile = '${this.mobile}' , address = '${this.address}', userImg = '${this.userImg}', login = ${this.login} \
+               WHERE userId =  ${id}`
     return sql
   }
 
   // static是與實例化無關
   static getUserByIdSQL(id) {
-    let sql = `SELECT * FROM USERS WHERE id = ${id}`
+    let sql = `SELECT * FROM USERS WHERE userId = ${id}`
     return sql
   }
 
@@ -38,7 +44,7 @@ class User {
     const where = []
 
     if (query.name) where.push(`name = '${query.name}'`)
-    if (query.email) where.push(`email = '${query.email}'`)
+    // if (query.email) where.push(`email = '${query.email}'`)
     if (query.username) where.push(`username = '${query.username}'`)
 
     let sql = ''
@@ -50,7 +56,7 @@ class User {
   }
 
   static deleteUserByIdSQL(id) {
-    let sql = `DELETE FROM USERS WHERE ID = ${id}`
+    let sql = `DELETE FROM USERS WHERE userId = ${id}`
     return sql
   }
 

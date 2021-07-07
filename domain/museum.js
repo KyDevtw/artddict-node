@@ -1,12 +1,17 @@
-class Map {
-    constructor(musId,musName,musCity,musImg,Px,Py) {
+class Museum {
+    constructor(musId,musName,musCity,musImg,Px,Py,cityId,cityNme,eventId,eventName,eventDate) {
         this.id=0,
         this.musId=musId,
         this.musName=musName,
         this.musCity=musCity,
         this.musImg=musImg,
-        this.MusPx=MusPx,
-        this.MusPy=MusPy
+        this.Px=Px,
+        this.Py=Py,
+        this.cityId=cityId,
+        this.cityNme=cityNme,
+        this.eventId=eventId,
+        this.eventName=eventName,
+        this.eventDate=eventDate
     }
   
     // addUserSQL() {
@@ -22,11 +27,11 @@ class Map {
   //   return sql;
   // }
 
-  // static是與實例化無關
-  // static getUserByIdSQL(id) {
-  //   let sql = `SELECT * FROM USERS WHERE id = ${id}`;
-  //   return sql;
-  // }
+  //static是與實例化無關
+  static getMusByIdSQL(id) {
+    let sql = `SELECT * FROM museum LEFT JOIN city ON museum.musCity = city.cityId LEFT JOIN location ON location.city = museum.musCity WHERE id = ${id}`;
+    return sql;
+  }
 
   // login用
   // getUserUserByUsernameAndPasswordSQL() {
@@ -38,14 +43,15 @@ class Map {
   static getMusByQuerySQL(query) {
     const where = [];
 
-    if (query.id) where.push(`id = '${query.id}'`);
     if (query.musId) where.push(`musId = '${query.musId}'`);
     if (query.musName) where.push(`musName = '${query.musName}'`);
+    //必須對應路由過來的key
+    if (query.city) where.push(`cityName = '${query.city}'`);
 
     let sql = "";
 
-    if (where.length) sql = `SELECT * FROM museum WHERE ` + where.join(" AND ");
-    else sql = `SELECT * FROM museum`;
+    if (where.length) sql = `SELECT * FROM museum LEFT JOIN city ON city.cityId = museum.musCity WHERE ` +
+    where.join('AND');
 
     return sql;
   }
@@ -56,11 +62,11 @@ class Map {
   // }
 
   static getAllMusSQL() {
-    let sql = `SELECT * FROM museum LEFT JOIN city ON museum.musCity = city.cityId LEFT JOIN event ON event.museumId = museum.musId`;
+    let sql = `SELECT * FROM museum LEFT JOIN city ON museum.musCity = city.cityId`;
     return sql;
   }
 }
   
   
-  module.exports = Map
+  module.exports = Museum
   

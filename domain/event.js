@@ -60,28 +60,35 @@ class Event {
 
   // static是與實例化無關
   static getEventByQuerySQL(query) {
-    let perPage = 9; // 每頁有幾筆
-    let page = query.page || 1; // 查看第幾頁
+    //let perPage = 9; // 每頁有幾筆
+    // let page = query.page || 1; // 查看第幾頁
 
     const where = [];
 
     if (query.city) where.push(`cityName = '${query.city}'`);
-    if (query.museum) where.push(`musName = '${query.date}'`);
-    if (query.order) where.push(`eventDateStart >= '${query.date}'`);
+
+    let order = '';
+
+    if (query.order) {
+      switch (query.order) {
+        case "latest":
+          order = " ORDER BY eventDateStart ASC";
+          break;
+        case "oldest":
+          order = " ORDER BY eventDateStart DESC";
+          break;
+      }
+    }
 
     let sql = "";
 
-    if (where.length){
+    if (where.length && order) {
       sql =
         `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE ` +
-        where.join(" AND ");
-        
-        // let t_sql =
-        //   `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE ` + where.join(" AND ");
-
-        
-    }else{
-      sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
+        where +
+        order;
+    } else {
+      sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity ORDER BY eventDateStart ASC`;
 
       // let t_sql = `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
     }
@@ -98,7 +105,7 @@ class Event {
   // }
 
   static getAllEventSQL() {
-    let sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
+    let sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity ORDER BY eventDateStart ASC`;
     return sql;
   }
 }
