@@ -45,11 +45,12 @@ class Museum {
 
     if (query.musId) where.push(`musId = '${query.musId}'`);
     if (query.musName) where.push(`musName = '${query.musName}'`);
+    //必須對應路由過來的key
     if (query.city) where.push(`cityName = '${query.cityName}'`);
 
     let sql = "";
 
-    if (where.length) sql = `SELECT * FROM museum LEFT JOIN city ON city.cityId = museum.musCity LEFT JOIN location ON location.city = museum.musCity WHERE ` +
+    if (where.length) sql = `SELECT * FROM museum LEFT JOIN city ON city.cityId = museum.musCity WHERE ` +
     where.join(" AND ");
 
     return sql;
@@ -61,7 +62,7 @@ class Museum {
   // }
 
   static getAllMusSQL() {
-    let sql = `SELECT * FROM museum LEFT JOIN city ON museum.musCity = city.cityId LEFT JOIN event ON event.museumId = museum.musId`;
+    let sql = `SELECT * FROM museum LEFT JOIN city ON museum.musCity = city.cityId`;
     return sql;
   }
 }
