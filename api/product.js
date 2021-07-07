@@ -4,7 +4,6 @@ const express = require("express");
 const router = express.Router();
 
 // 引入 map SQL 語法
-const museum = require("../domain/product.js");
 
 // mysql2 async-await用的
 const dbMysql2 = require("../db/database");
@@ -154,9 +153,57 @@ router.get("/", (req, res, next) => {
   //   else executeSQL(User.getUserByQuerySQL(req.query), res);
 });
 
-// get 處理獲取單一筆的會員，使用id
-router.get("/product/product-list/:product-detail?", (req, res, next) => {
-  executeSQL(product.getProductByIdSQL(req.params.musId), res, "get", false);
+router.get("/product-list/", (req, res, next) => {
+  if (!Object.keys(req.query).length)
+    executeSQL(product.getAllProductSQL(), res);
+  else executeSQL(product.getAllProductSQL(req.query), res);
+});
+
+router.get("/product-list/new", (req, res, next) => {
+  if (!Object.keys(req.query).length)
+    executeSQL(product.getClassBySQLnew(), res);
+  else executeSQL(product.getClassBySQLnew(req.query), res);
+});
+router.get("/product-list/hot", (req, res, next) => {
+  if (!Object.keys(req.query).length)
+    executeSQL(product.getClassBySQLhot(), res);
+  else executeSQL(product.getClassBySQLhot(req.query), res);
+});
+
+router.get("/product-list/books", (req, res, next) => {
+  if (!Object.keys(req.query).length)
+    executeSQL(product.getClassBySQLbooks(), res);
+  else executeSQL(product.getClassBySQLbooks(req.query), res);
+});
+
+router.get("/product-list/furniture", (req, res, next) => {
+  if (!Object.keys(req.query).length)
+    executeSQL(product.getClassBySQLfurniture(), res);
+  else executeSQL(product.getClassBySQLfurniture(req.query), res);
+});
+
+router.get("/product-list/clothes", (req, res, next) => {
+  if (!Object.keys(req.query).length)
+    executeSQL(product.getClassBySQLclothes(), res);
+  else executeSQL(product.getClassBySQLclothes(req.query), res);
+});
+
+router.get("/product-list/accessories", (req, res, next) => {
+  if (!Object.keys(req.query).length)
+    executeSQL(product.getClassBySQLaccessories(), res);
+  else executeSQL(product.getClassBySQLaccessories(req.query), res);
+});
+
+router.get("/product-list/stationery", (req, res, next) => {
+  if (!Object.keys(req.query).length)
+    executeSQL(product.getClassBySQLstationery(), res);
+  else executeSQL(product.getClassBySQLstationery(req.query), res);
+});
+
+router.get("/product-list/casual", (req, res, next) => {
+  if (!Object.keys(req.query).length)
+    executeSQL(product.getClassBySQLcasual(), res);
+  else executeSQL(product.getClassBySQLcasual(req.query), res);
 });
 
 //export default router
