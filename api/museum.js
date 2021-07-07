@@ -156,8 +156,8 @@ router.get("/", (req, res, next) => {
 });
 
 // get 處理獲取單一筆的會員，使用id
-router.get('/:museumId?', (req, res, next) => {
-  executeSQL(museum.getUserByIdSQL(req.params.musId), res, 'get', false)
+router.get('/:cityId?', (req, res, next) => {
+  executeSQL(museum.getMusByIdSQL(req.params.cityId), res, 'get', false)
 })
 
 
