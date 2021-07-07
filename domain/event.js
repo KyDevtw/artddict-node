@@ -14,7 +14,8 @@ class Event {
     museumId,
     cityName,
     shareComment,
-    shareImg
+    shareImg,
+    userId
   ) {
     this.id = 0;
     this.eventClass = eventClass;
@@ -29,14 +30,14 @@ class Event {
     this.museumId = museumId;
     this.cityName = cityName;
     this.shareComment = shareComment;
-    this.shareComment = shareComment;
+    this.shareImg = shareImg;
+    this.userId = userId;
   }
 
-  // addUserSQL() {
-  //   let sql = `INSERT INTO USERS(name, username, password, email, login, createdDate) \
-  //                  VALUES('${this.name}', '${this.username}', '${this.password}', '${this.email}', 0, NOW())`;
-  //   return sql;
-  // }
+  addShareSQL() {
+    let sql = `INSERT INTO SHARE(shareComment, shareImg, eventId, userId) VALUES('${this.shareComment}', '${this.shareImg}', '${this.eventId}', '${this.userId}')`;
+    return sql;
+  }
 
   // updateUserByIdSQL(id) {
   //   let sql = `UPDATE USERS \
