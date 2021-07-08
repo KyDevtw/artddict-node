@@ -25,9 +25,8 @@ var app = express();
 
 
 // enable files upload
-app.use(fileUpload({
-    createParentPath: true
-}));
+app.use(fileUpload());
+app.use(express.static("files"));
 
 // 加入其它的middleware
 app.use(morgan('dev'));
