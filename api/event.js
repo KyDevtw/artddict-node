@@ -163,6 +163,20 @@ router.get("/share/:id?", (req, res, next) => {
   executeSQL(Event.getShareSQL(req.params.id), res, "get", false);
 });
 
+router.post("/upload", (req, res, next) => {
+  // 測試response，會自動解析為物件
+  // console.log(typeof req.body)
+  // console.log(req.body)
+
+  //從request json 資料建立新的物件
+  let share = new Event(
+    req.body.shareComment,
+    req.body.eventId,
+  );
+
+  executeSQL(share.addShareSQL(), res, "post", false, share);
+});
+
 
 
 //export default router

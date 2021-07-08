@@ -34,8 +34,8 @@ class Event {
     this.userId = userId;
   }
 
-  addShareSQL() {
-    let sql = `INSERT INTO SHARE(shareComment, shareImg, eventId, userId) VALUES('${this.shareComment}', '${this.shareImg}', '${this.eventId}', '${this.userId}')`;
+  addShareSQL(share) {
+    let sql = `INSERT INTO SHARE(shareComment, shareImg, eventNum, userId) VALUES('${this.shareComment}', 'NULL', '${this.eventId}', 'NULL')`;
     return sql;
   }
 
@@ -59,7 +59,7 @@ class Event {
   // }
 
   static getEventByIdSQL(id) {
-    let sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity LEFT JOIN share ON event.eventId = share.eventId WHERE id = ${id}`;
+    let sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity LEFT JOIN share ON event.eventId = share.eventNum WHERE id = ${id}`;
     return sql;
   }
 
@@ -115,7 +115,7 @@ class Event {
 
   // 分享區塊
   static getShareSQL(id) {
-    let sql = `SELECT * FROM event LEFT JOIN share ON event.eventId = share.eventId WHERE id = ${id}`;
+    let sql = `SELECT * FROM event LEFT JOIN share ON event.eventId = share.eventNum WHERE id = ${id}`;
     return sql;
   }
 }
