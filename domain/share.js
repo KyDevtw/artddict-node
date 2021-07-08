@@ -1,5 +1,5 @@
 // event SQL 語法 建立 Class
-// SELECT `id`, `eventClass`, `eventId`, `eventName`, `eventDescription`, `eventDateStart`, `eventDateEnd`, `eventPrice`, `eventImg`, `eventCity`, `museumId`, `userId`, `created_at`, `updated_at` FROM `event` 
+// SELECT `id`, `eventClass`, `eventId`, `eventName`, `eventDescription`, `eventDateStart`, `eventDateEnd`, `eventPrice`, `eventImg`, `eventCity`, `museumId`, `userId`, `created_at`, `updated_at` FROM `event`
 class Event {
   constructor(
     eventClass,
@@ -120,7 +120,5 @@ class Event {
   }
 }
 
-
-
 //export default Event
-module.exports = Event
+module.exports = Event;

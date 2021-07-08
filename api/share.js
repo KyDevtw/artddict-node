@@ -3,7 +3,6 @@
 const express = require("express");
 const router = express.Router();
 
-
 // 引入 Event SQL 語法
 const Event = require("../domain/event.js");
 
@@ -121,8 +120,6 @@ async function userLogin(sql, req, res, instance) {
 
 // 以下為路由
 
-
-
 // 檢查是否登入
 // router.get("/checklogin", function (req, res, next) {
 //   const sess = req.session;
@@ -145,8 +142,6 @@ async function userLogin(sql, req, res, instance) {
 
 // get 處理獲取全部的資料列表
 // AND查詢加入`?name=eddy&email=XXX&username=XXXX
-
-
 
 router.get("/", (req, res, next) => {
   console.log(req.query);
@@ -173,8 +168,6 @@ router.post("/upload", (req, res, next) => {
 
   executeSQL(share.addShareSQL(), res, "post", false, share);
 });
-
-
 
 //export default router
 module.exports = router;

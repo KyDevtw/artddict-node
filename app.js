@@ -15,6 +15,7 @@ var event = require("./api/event");
 var museum = require("./api/museum");
 var auction = require("./api/auction");
 var product = require("./api/product");
+var share = require("./api/share");
 
 var app = express();
 
@@ -50,6 +51,9 @@ app.use(express.static(__dirname + "public"));
 
 // event middleware
 app.use("/event", event);
+
+// share middleware
+app.use("/share", event);
 
 // event middleware
 app.use("/product", product);
