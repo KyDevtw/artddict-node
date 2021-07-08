@@ -15,6 +15,7 @@ class Event {
     cityName,
     shareComment,
     shareImg,
+    eventNum,
     userId
   ) {
     this.id = 0;
@@ -31,11 +32,13 @@ class Event {
     this.cityName = cityName;
     this.shareComment = shareComment;
     this.shareImg = shareImg;
+    this.eventNum = eventNum;
     this.userId = userId;
   }
 
-  addShareSQL(share) {
-    let sql = `INSERT INTO SHARE(shareComment, shareImg, eventNum, userId) VALUES ('${this.shareComment}', 'NULL', '${this.eventId}', 'NULL')`;
+  
+  addShareSQL() {
+    let sql = `INSERT INTO SHARE(shareComment, shareImg, eventNum, userId) VALUES ('${this.shareComment}', 'NULL', '${this.eventNum}', 'NULL')`;
     return sql;
   }
 
@@ -119,6 +122,7 @@ class Event {
     return sql;
   }
 }
+
 
 
 

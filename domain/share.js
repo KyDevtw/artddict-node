@@ -1,124 +1,85 @@
-// event SQL 語法 建立 Class
-// SELECT `id`, `eventClass`, `eventId`, `eventName`, `eventDescription`, `eventDateStart`, `eventDateEnd`, `eventPrice`, `eventImg`, `eventCity`, `museumId`, `userId`, `created_at`, `updated_at` FROM `event`
-class Event {
-  constructor(
-    eventClass,
-    eventId,
-    eventName,
-    eventDescription,
-    eventDateStart,
-    eventDateEnd,
-    eventPrice,
-    eventImg,
-    eventCity,
-    museumId,
-    cityName,
-    shareComment,
-    shareImg,
-    userId
-  ) {
-    this.id = 0;
-    this.eventClass = eventClass;
-    this.eventId = eventId;
-    this.eventName = eventName;
-    this.eventDescription = eventDescription;
-    this.eventDateStart = eventDateStart;
-    this.eventDateEnd = eventDateEnd;
-    this.eventPrice = eventPrice;
-    this.eventImg = eventImg;
-    this.eventCity = eventCity;
-    this.museumId = museumId;
-    this.cityName = cityName;
-    this.shareComment = shareComment;
-    this.shareImg = shareImg;
-    this.userId = userId;
-  }
+const express = require("express");
 
-  addShareSQL(share) {
-    let sql = `INSERT INTO SHARE(shareComment, shareImg, eventNum, userId) VALUES ('${this.shareComment}', 'NULL', '${this.eventId}', 'NULL')`;
-    return sql;
-  }
+const Share = require(__dirname + "/../api/Share");
 
-  // updateUserByIdSQL(id) {
-  //   let sql = `UPDATE USERS \
-  //              SET name = '${this.name}', username = '${this.username}', password = '${this.password}', email = '${this.email}', login = ${this.login} \
-  //              WHERE id =  ${id}`;
-  //   return sql;
-  // }
+const router = express.Router();
 
-  // static是與實例化無關
-  // static getUserByIdSQL(id) {
-  //   let sql = `SELECT * FROM USERS WHERE id = ${id}`;
-  //   return sql;
-  // }
+/*
+列表 + 篩選 (包含關鍵字搜尋）
 
-  // login用
-  // getUserUserByUsernameAndPasswordSQL() {
-  //   let sql = `SELECT * FROM USERS WHERE username = '${this.username}' AND password = '${this.password}' LIMIT 0,1`;
-  //   return sql;
-  // }
+單項商品
 
-  static getEventByIdSQL(id) {
-    let sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity LEFT JOIN share ON event.id = share.eventNum WHERE id = ${id}`;
-    return sql;
-  }
+ */
 
-  // static是與實例化無關
-  static getEventByQuerySQL(query) {
-    //let perPage = 9; // 每頁有幾筆
-    // let page = query.page || 1; // 查看第幾頁
+// 取得所有商品 + 篩選 ?
+// router.get("/", async (req, res) => {
+//   res.json("hi");
+// });
 
-    const where = [];
+// 新增商品測試
+router.get("/add", async (req, res) => {
+  const p1 = new Product({
+    author: "abc",
+    bookname: "XX大全",
+  });
+  const obj1 = await p1.save();
 
-    if (query.city) where.push(`cityName = '${query.city}'`);
+  const p2 = await Product.getItem(23);
+  p2.data.author = "林小新2";
+  const obj2 = await p2.save();
 
-    let order = "";
+  const p3 = await Product.getItem(25);
+  res.json([req.baseUrl, req.url, obj1, obj2, await p3.remove()]);
+});
 
-    if (query.order) {
-      switch (query.order) {
-        case "latest":
-          order = " ORDER BY eventDateStart ASC";
-          break;
-        case "oldest":
-          order = " ORDER BY eventDateStart DESC";
-          break;
-      }
-    }
+// 取得單項商品
+router.get("/all", async (req, res) => {
+  // res.json(await Product.getRows({cate:3}));
+  res.json(await Product.getRows({ keyword: "林", orderBy: "price-desc" }));
+});
 
-    let sql = "";
+// 取得單項商品
+router.get("/:sid", async (req, res) => {
+  let p = await Product.getRow(req.params.sid);
 
-    if (where.length && order) {
-      sql =
-        `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE ` +
-        where +
-        order;
+  res.json([req.baseUrl, req.url, p]);
+});
+
+app.post("/upload-photos", async (req, res) => {
+  try {
+    if (!req.files) {
+      res.send({
+        status: false,
+        message: "No file uploaded",
+      });
     } else {
-      sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity ORDER BY eventDateStart ASC`;
+      let data = [];
 
-      // let t_sql = `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
+      //loop all files
+      _.forEach(_.keysIn(req.files.photos), (key) => {
+        let photo = req.files.photos[key];
+
+        //move photo to uploads directory
+        photo.mv("./uploads/" + photo.name);
+
+        //push file details
+        data.push({
+          name: photo.name,
+          mimetype: photo.mimetype,
+          size: photo.size,
+        });
+      });
+
+      //return response
+      res.send({
+        status: true,
+        message: "Files are uploaded",
+        data: data,
+      });
     }
-
-    // let total = t_sql[0]["num"];
-
-    return sql;
+  } catch (err) {
+    res.status(500).send(err);
   }
+});
 
-  // static deleteUserByIdSQL(id) {
-  //   let sql = `DELETE FROM USERS WHERE ID = ${id}`;
-  //   return sql;
-  // }
-
-  static getAllEventSQL() {
-    let sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity ORDER BY eventDateStart ASC`;
-    return sql;
-  }
-
-  // 分享區塊
-  static getShareSQL(id) {
-    let sql = `SELECT * FROM event LEFT JOIN share ON event.id = share.eventNum WHERE id = ${id}`;
-    return sql;
-  }
-}
-
-//export default Event
-module.exports = Event;
+module.exports = router;

@@ -1,4 +1,7 @@
 var createError = require("http-errors");
+const fileUpload = require("express-fileupload");
+const morgan = require("morgan");
+const _ = require("lodash");
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
@@ -16,8 +19,18 @@ var museum = require("./api/museum");
 var auction = require("./api/auction");
 var product = require("./api/product");
 var share = require("./api/share");
+var orders = require('./api/orders')
 
 var app = express();
+
+
+// enable files upload
+app.use(fileUpload());
+app.use(express.static("files"));
+
+// 加入其它的middleware
+app.use(morgan('dev'));
+
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'))
@@ -49,11 +62,12 @@ app.use(
 // static file with middleware
 app.use(express.static(__dirname + "public"));
 
+
 // event middleware
 app.use("/event", event);
 
 // share middleware
-app.use("/share", event);
+app.use("/share", share);
 
 // event middleware
 app.use("/product", product);
@@ -67,6 +81,9 @@ app.use("/auctoin", auction);
 //app.use('/', indexRouter)
 app.use("/users", users);
 //app.use('/realestates', realestates)
+
+//order middleware
+app.use('/orders', orders)
 
 // catch 404 and forward to error handler
 // app.use(function (req, res, next) {
