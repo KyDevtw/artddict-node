@@ -49,11 +49,12 @@ app.use(
 // static file with middleware
 app.use(express.static(__dirname + "public"));
 
+
 // event middleware
 app.use("/event", event);
 
 // share middleware
-app.use("/share", event);
+app.use("/share", share);
 
 // event middleware
 app.use("/product", product);
