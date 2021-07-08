@@ -8,14 +8,14 @@ class Orders {
     userAddress,
     orderShip
   ) {
-    this.id = 0
-    this.orderId = orderId
-    this.userMail = userMail
-    this.orderPay = orderPay
-    this.userName = userName
-    this.userPhone = userPhone
-    this.userAddress = userAddress
-    this.orderShip = orderShip
+    this.id = 0;
+    this.orderId = orderId;
+    this.userMail = userMail;
+    this.orderPay = orderPay;
+    this.userName = userName;
+    this.userPhone = userPhone;
+    this.userAddress = userAddress;
+    this.orderShip = orderShip;
   }
 
   // addOrderSQL() {
@@ -64,10 +64,10 @@ class Orders {
   //   return sql
   // }
 
-  // static getAllUserSQL() {
-  //   let sql = `SELECT * FROM USERS`
-  //   return sql
-  // }
+  static getAllOrdersSQ() {
+    let sql = `SELECT * FROM ORDERS`;
+    return sql;
+  }
 }
 
 //export default orders

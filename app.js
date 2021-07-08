@@ -1,4 +1,7 @@
 var createError = require("http-errors");
+const fileUpload = require("express-fileupload");
+const morgan = require("morgan");
+const _ = require("lodash");
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
@@ -19,6 +22,16 @@ var share = require("./api/share");
 var orders = require('./api/orders')
 
 var app = express();
+
+
+// enable files upload
+app.use(fileUpload({
+    createParentPath: true
+}));
+
+// 加入其它的middleware
+app.use(morgan('dev'));
+
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'))
