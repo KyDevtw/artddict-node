@@ -1,173 +1,148 @@
-// Event 路由建立
+const db = require(__dirname + "/../db/database");
 
-const express = require("express");
-const router = express.Router();
-
-// 引入 Event SQL 語法
-const Event = require("../domain/event.js");
-
-// mysql2 async-await用的
-const dbMysql2 = require("../db/database");
-
-// 執行sql用的async-await的函式
-// sql 執行用的sql
-// res 回應
-// method restful的方法，預設為get
-// multirow 是否為多資料回傳，預設為是
-// instance 物件實體，預設為空物件
-async function executeSQL(
-  sql,
-  res,
-  method = "get",
-  multirows = true,
-  instance = {}
-) {
-  try {
-    const [rows, fields] = await dbMysql2.promisePool.query(sql);
-
-    switch (method) {
-      case "post": {
-        // 仿照json-server的回傳
-        const insertId = { id: rows.insertId };
-        // 合併id值
-        const result = { ...instance, ...insertId };
-        //回傳
-        res.status(200).json(result);
-        break;
-      }
-      case "put": {
-        // 仿照json-server的回傳，有更新到會回傳單一值，沒找到會回到空的物件字串
-        // console.log(rows.affectedRows)
-        let result = {};
-        if (rows.affectedRows) result = { ...instance };
-        //回傳
-        res.status(200).json(result);
-        break;
-      }
-      case "delete": {
-        // 仿照json-server的回傳
-        res.status(200).json({});
-        break;
-      }
-      case "get":
-      default:
-        {
-          if (multirows) {
-            // res.status(200).json({
-            //   users: rows,
-            // })
-            res.status(200).json(rows);
-          } else {
-            // 仿照json-server的回傳，有找到會回傳單一值，沒找到會回到空的物件字串
-            let result = {};
-            if (rows.length) result = rows[0];
-            res.status(200).json(result);
-          }
-        }
-        break;
-    }
-  } catch (error) {
-    // 錯誤處理
-    console.log(error);
-
-    // 顯示錯誤於json字串
-    res.status(200).json({
-      message: error,
-    });
+// CRUD
+class Share {
+  constructor(data) {
+    // data: Object
+    let defaultData = {
+      eventClass: "",
+      eventId: "",
+      eventName: "",
+      eventDescription: "",
+      eventDateStart: "",
+      eventDateEnd: "",
+      eventPrice: "",
+      eventImg: "",
+      eventCity: "",
+      museumId: "",
+      shareComment: "",
+      shareIm: "[]",
+      id: "",
+      userId: "",
+    };
+    this.data = { ...defaultData, ...data };
   }
-}
 
-// instance 物件實體，預設為空物件
-async function userLogin(sql, req, res, instance) {
-  try {
-    const [rows, fields] = await dbMysql2.promisePool.query(sql);
-
-    // 仿照json-server的回傳，有找到會回傳單一值，沒找到會回到空的物件字串
-    let result = {};
-    if (rows.length) {
-      result = rows[0];
-
-      req.session.regenerate(function (err) {
-        if (err) {
-          res.status(200).json({ status: 2, message: "登入失敗" });
-        }
-
-        req.session.loginId = result.id;
-        req.session.loginName = result.name;
-        req.session.loginEmail = result.email;
-        req.session.loginUsername = result.username;
-        req.session.loginCreatedDate = result.createDate;
-
-        // 如果要用全訊息可以用以下的回傳
-        // res.json({ status: 0, message: '登入成功' })
-        res.status(200).json(result);
-      });
+  // 儲存：新增 或 修改
+  async save() {
+    // 如果 sid 為 null, 表示是新建的物件
+    if (!this.data.sid) {
+      let sql = "INSERT INTO `products` SET ?";
+      let [result] = await db.query(sql, [this.data]);
+      if (result.insertId) {
+        this.data.sid = result.insertId;
+        return this.data;
+      } else {
+        return false; // 新增失敗的情況
+      }
     } else {
-      res.status(200).json({ status: 1, message: "帳號或密碼錯誤" });
+      // 如果 sid 已經有值，就做更新
+      const o = { ...this.data };
+      delete o.sid;
 
-      //res.status(200).json(result)
+      let sql = "UPDATE `products` SET ? WHERE `sid`=?";
+      let [result] = await db.query(sql, [o, this.data.sid]);
+      if (result.changedRows) {
+        return this.data;
+      } else {
+        return false; // 沒有修改
+      }
     }
-  } catch (error) {
-    // 錯誤處理
-    console.log(error);
+  }
 
-    // 顯示錯誤於json字串
-    res.status(200).json({
-      message: error,
-    });
+  static async getRows(params = {}) {
+    let perPage = params.perPage || 5; // 每頁有幾筆
+    let page = params.page || 1; // 查看第幾頁
+    let cate = parseInt(params.cate) || 0; // 分類編號
+    let keyword = params.keyword || ""; // 搜尋產品名稱或者作者姓名
+    let orderBy = params.orderBy || ""; // 排序
+
+    let where = " WHERE 1 ";
+    if (cate) {
+      where += " AND category_sid=" + cate;
+    }
+    if (keyword) {
+      let k2 = db.escape("%" + keyword + "%");
+      where += ` AND (author LIKE ${k2} OR bookname LIKE ${k2}) `;
+    }
+
+    let orderStr = "";
+    switch (orderBy) {
+      case "price":
+      case "price-asc":
+        orderStr = " ORDER BY `price` ASC ";
+        break;
+      case "price-desc":
+        orderStr = " ORDER BY `price` DESC ";
+        break;
+      case "pages":
+      case "pages-asc":
+        orderStr = " ORDER BY `pages` ASC ";
+        break;
+      case "pages-desc":
+        orderStr = " ORDER BY `pages` DESC ";
+        break;
+    }
+
+    let t_sql = `SELECT COUNT(1) num FROM \`products\` ${where}`;
+    let [r1] = await db.query(t_sql);
+    let total = r1[0]["num"];
+
+    let r2,
+      totalPages = 0;
+    if (total) {
+      totalPages = Math.ceil(total / perPage);
+      let r_sql = `SELECT * FROM \`products\` ${where} ${orderStr} LIMIT ${
+        (page - 1) * perPage
+      }, ${perPage}`;
+      [r2] = await db.query(r_sql);
+    }
+    return {
+      total,
+      totalPages,
+      perPage,
+      page,
+      params,
+      data: r2,
+    };
+  }
+
+  static async getItems(params = {}) {
+    let results = await Product.getRows(params);
+    if (results.data && results.data.length) {
+      results.data = results.data.map((el) => new Product(el));
+    }
+    return results;
+  }
+
+  // 讀取單筆
+  static async getRow(sid) {
+    if (!sid) return null;
+    let sql = "SELECT * FROM `products` WHERE `sid`=?";
+    let [r] = await db.query(sql, [sid]);
+    if (!r || !r.length) {
+      return null;
+    }
+    return r[0];
+  }
+
+  static async getItem(sid) {
+    let row = await Product.getRow(sid);
+    return new Product(row);
+  }
+
+  // 刪除
+  async remove() {
+    if (!this.data.sid) return false;
+    let sql = "DELETE FROM `products` WHERE `sid`=?";
+    let [r] = await db.query(sql, [this.data.sid]);
+    if (r.affectedRows) {
+      this.data.sid = null;
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 
-// 以下為路由
-
-// 檢查是否登入
-// router.get("/checklogin", function (req, res, next) {
-//   const sess = req.session;
-
-//   const id = sess.loginId;
-//   const username = sess.loginUsername;
-//   const name = sess.loginName;
-//   const email = sess.loginEmail;
-//   const createDate = sess.loginCreatedDate;
-
-//   const isLogined = !!name;
-
-//   if (isLogined) {
-//     res.status(200).json({ id, name, username, email, createDate });
-//   } else {
-//     // 登出狀態時回傳`{id:0}`
-//     res.status(200).json({ id: 0 });
-//   }
-// });
-
-// get 處理獲取全部的資料列表
-// AND查詢加入`?name=eddy&email=XXX&username=XXXX
-
-router.get("/", (req, res, next) => {
-  console.log(req.query);
-
-  if (!Object.keys(req.query).length) executeSQL(Event.getAllEventSQL(), res);
-  else executeSQL(Event.getEventByQuerySQL(req.query), res);
-});
-
-router.get("/event-list/:id?", (req, res, next) => {
-  executeSQL(Event.getEventByIdSQL(req.params.id), res, "get", false);
-});
-
-router.get("/share/:id?", (req, res, next) => {
-  executeSQL(Event.getShareSQL(req.params.id), res, "get", false);
-});
-
-router.post("/upload", (req, res, next) => {
-  // 測試response，會自動解析為物件
-  // console.log(typeof req.body)
-  // console.log(req.body)
-
-  //從request json 資料建立新的物件
-  let share = new Event(req.body.eventId, req.body.shareComment);
-
-  executeSQL(share.addShareSQL(), res, "post", false, share);
-});
-
-//export default router
-module.exports = router;
+module.exports = Share;

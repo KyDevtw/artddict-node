@@ -167,11 +167,28 @@ router.post("/upload", (req, res, next) => {
   // 測試response，會自動解析為物件
   // console.log(typeof req.body)
   // console.log(req.body)
-
   //從request json 資料建立新的物件
-  let share = new Event(req.body.eventId, req.body.shareComment);
+  let shareImg = JSON.stringify(req.body.shareImg)
+  let event = new Event(
+    "eventClass",
+    "eventId",
+    "eventName",
+    "eventDescription",
+    "eventDateStart",
+    "eventDateEnd",
+    "eventPrice",
+    "eventImg",
+    "eventCity",
+    "useumId",
+    "cityName",
+    req.body.shareComment,
+    shareImg,
+    req.body.id,
+    "userId"
+  );
 
-  executeSQL(share.addShareSQL(), res, "post", false, share);
+  executeSQL(event.addShareSQL(), res, "post", false, event);
+
 });
 
 
