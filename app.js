@@ -16,6 +16,7 @@ var museum = require("./api/museum");
 var auction = require("./api/auction");
 var product = require("./api/product");
 var share = require("./api/share");
+var orders = require('./api/orders')
 
 var app = express();
 
@@ -68,6 +69,9 @@ app.use("/auctoin", auction);
 //app.use('/', indexRouter)
 app.use("/users", users);
 //app.use('/realestates', realestates)
+
+//order middleware
+app.use('/orders', orders)
 
 // catch 404 and forward to error handler
 // app.use(function (req, res, next) {
