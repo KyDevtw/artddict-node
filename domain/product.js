@@ -22,95 +22,172 @@ class product {
       (this.proDes = proDes);
   }
 
-  // addUserSQL() {
-  //   let sql = `INSERT INTO USERS(name, username, password, email, login, createdDate) \
-  //                  VALUES('${this.name}', '${this.username}', '${this.password}', '${this.email}', 0, NOW())`;
-  //   return sql;
-  // }
-
-  // updateUserByIdSQL(id) {
-  //   let sql = `UPDATE USERS \
-  //              SET name = '${this.name}', username = '${this.username}', password = '${this.password}', email = '${this.email}', login = ${this.login} \
-  //              WHERE id =  ${id}`;
-  //   return sql;
-  // }
-
-  // static是與實例化無關;
-  // static getProductByIdSQL(id) {
-  //   let sql = `SELECT * FROM product WHERE id = ${id}`;
-  //   return sql;
-  // }
-
-  // login用
-  // getUserUserByUsernameAndPasswordSQL() {
-  //   let sql = `SELECT * FROM USERS WHERE username = '${this.username}' AND password = '${this.password}' LIMIT 0,1`;
-  //   return sql;
-  // }
-
-  // static是與實例化無關
-  static getProductByQuerySQL(query) {
-    const where = [];
-
-    if (query.id) where.push(`id = '${query.id}'`);
-    if (query.proId) where.push(`proId = '${query.proId}'`);
-    if (query.proName) where.push(`rpoName = '${query.proName}'`);
-
-    let sql = "";
-
-    if (where.length)
-      sql = `SELECT * FROM product WHERE ` + where.join(" AND ");
-    else sql = `SELECT * FROM product`;
-
-    return sql;
-  }
-
-  // static deleteUserByIdSQL(id) {
-  //   let sql = `DELETE FROM product WHERE ID = ${id}`;
-  //   return sql;
-  // }
   static getAllProductSQL(query) {
     let sql = `SELECT * FROM product`;
     return sql;
   }
-  static getClassBySQLnew(proClass) {
-    let sql = `SELECT * FROM product WHERE proHotNew  = "1"`;
-    return sql;
-  }
-  static getClassBySQLhot(proClass) {
-    let sql = `SELECT * FROM product WHERE proHotNew  = "2"`;
+  // static getClassBySQLnew(proClass) {
+  //   let sql = `SELECT * FROM product WHERE proHotNew  = "1"`;
+  //   return sql;
+  // }
+  // static getClassBySQLhot(proClass) {
+  //   let sql = `SELECT * FROM product WHERE proHotNew  = "2"`;
+  //   return sql;
+  // }
+
+  // static getClassBySQLbooks(proClass) {
+  //   let sql = `SELECT * FROM product WHERE proClass = "C01"`;
+  //   return sql;
+  // }
+
+  // static getClassBySQLfurniture(proClass) {
+  //   let sql = `SELECT * FROM product WHERE proClass = "C02"`;
+  //   return sql;
+  // }
+
+  // static getClassBySQLclothes(proClass) {
+  //   let sql = `SELECT * FROM product WHERE proClass = "C03"`;
+  //   return sql;
+  // }
+
+  // static getClassBySQLaccessories(proClass) {
+  //   let sql = `SELECT * FROM product WHERE proClass = "C04"`;
+  //   return sql;
+  // }
+
+  // static getClassBySQLstationery(proClass) {
+  //   let sql = `SELECT * FROM product WHERE proClass = "C05"`;
+  //   return sql;
+  // }
+
+  // static getClassBySQLcasual(proClass) {
+  //   let sql = `SELECT * FROM product WHERE proClass = "C06"`;
+  //   return sql;
+  // }
+
+  static getClassesByQuerySQL(query) {
+    console.log("CLASSES");
+
+    let sql = "";
+
+    // if(query.category){
+    // else if (query.category === "allproduct") sql = `SELECT * FROM product`;
+    // else if (query.category === "newarrival")
+    //   sql = `SELECT * FROM product WHERE proHotNew  = "1"`;
+    // else if (query.category === "hotproduct")
+    //   sql = `SELECT * FROM product WHERE proHotNew  = "2"`;
+    // else if (query.category === "books")
+    //   sql = `SELECT * FROM product WHERE proClass = "C01"`;
+    // else if (query.category === "furniture")
+    //   sql = `SELECT * FROM product WHERE proClass = "C02"`;
+    // else if (query.category === "clothes")
+    //   sql = `SELECT * FROM product WHERE proClass = "C03"`;
+    // else if (query.category === "accessories")
+    //   sql = `SELECT * FROM product WHERE proClass = "C04"`;
+    // else if (query.category === "stationery")
+    //   sql = `SELECT * FROM product WHERE proClass = "C05"`;
+    // else if (query.category === "casual")
+    //   sql = `SELECT * FROM product WHERE proClass = "C06"`;
+
+    switch (query.category) {
+      case "allproduct":
+        sql = `SELECT * FROM product`;
+        break;
+      case "newarrival":
+        sql = `SELECT * FROM product WHERE proHotNew  = "1"`;
+        break;
+      case "hotproduct":
+        sql = `SELECT * FROM product WHERE proHotNew  = "2"`;
+        break;
+      case "books":
+        sql = `SELECT * FROM product WHERE proClass = "C01"`;
+        break;
+      case "furniture":
+        sql = `SELECT * FROM product WHERE proClass = "C02"`;
+        break;
+      case "clothes":
+        sql = `SELECT * FROM product WHERE proClass = "C03"`;
+        break;
+      case "accessories":
+        sql = `SELECT * FROM product WHERE proClass = "C04"`;
+        break;
+      case "stationery":
+        sql = `SELECT * FROM product WHERE proClass = "C05"`;
+        break;
+      case "casual":
+        sql = `SELECT * FROM product WHERE proClass = "C06"`;
+        break;
+      default:
+        sql = "";
+        // sql = `SELECT * FROM product`;
+        break;
+    }
+
+    const where = [];
+
+    if (query.search) where.push(`proName LIKE '%${query.search}%'`);
+
+    if (sql == "SELECT * FROM product") {
+      if (where.length) {
+        sql += ` WHERE ` + where;
+        console.log("All");
+      }
+    }
+
+    if (sql !== "") {
+      if (where.length) {
+        sql += ` AND ` + where;
+        console.log("456");
+      }
+    }
+
+    if (sql === "") {
+      if (where.length) {
+        sql += `SELECT * FROM product WHERE ` + where;
+        console.log("123");
+      }
+    }
+
+    if (sql !== "") {
+      if (query.arrangement === "highToLow") sql += ` ORDER BY proPrice DESC`;
+      if (query.arrangement === "lowToHigh") sql += ` ORDER BY proPrice ASC`;
+      console.log("995");
+    }
+
+    if (sql === "") {
+      if (query.arrangement === "highToLow") {
+        sql = `SELECT * FROM product ORDER BY proPrice DESC`;
+      }
+      if (query.arrangement === "lowToHigh") {
+        sql = `SELECT * FROM product ORDER BY proPrice ASC`;
+      }
+      console.log("789");
+    }
+
+    console.log(sql);
     return sql;
   }
 
-  static getClassBySQLbooks(proClass) {
-    let sql = `SELECT * FROM product WHERE proClass = "C01"`;
+  static getPriceSearchByQuerySQL(query) {
+    console.log("heool");
+    const where = [];
+
+    if (query.search) where.push(`proName LIKE '%${query.search}%'`);
+
+    let sql = "";
+
+    if (where.length) {
+      sql = `SELECT * FROM product WHERE ` + where.join(" AND ");
+    } else {
+      sql = `SELECT * FROM product`;
+    }
+
+    if (query.arrangement === "highToLow") sql += ` ORDER BY proPrice DESC`;
+    if (query.arrangement === "lowToHigh") sql += ` ORDER BY proPrice ASC`;
+
+    console.log(sql);
     return sql;
   }
-
-  static getClassBySQLfurniture(proClass) {
-    let sql = `SELECT * FROM product WHERE proClass = "C02"`;
-    return sql;
-  }
-
-  static getClassBySQLclothes(proClass) {
-    let sql = `SELECT * FROM product WHERE proClass = "C03"`;
-    return sql;
-  }
-
-  static getClassBySQLaccessories(proClass) {
-    let sql = `SELECT * FROM product WHERE proClass = "C04"`;
-    return sql;
-  }
-
-  static getClassBySQLstationery(proClass) {
-    let sql = `SELECT * FROM product WHERE proClass = "C05"`;
-    return sql;
-  }
-
-  static getClassBySQLcasual(proClass) {
-    let sql = `SELECT * FROM product WHERE proClass = "C06"`;
-    return sql;
-  }
-
   // static async getRows(params = {}) {
   //   let perPage = params.perPage || 5; // 每頁有幾筆
   //   let page = params.page || 1; // 查看第幾頁

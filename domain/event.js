@@ -1,5 +1,3 @@
-// event SQL 語法 建立 Class
-// SELECT `id`, `eventClass`, `eventId`, `eventName`, `eventDescription`, `eventDateStart`, `eventDateEnd`, `eventPrice`, `eventImg`, `eventCity`, `museumId`, `userId`, `created_at`, `updated_at` FROM `event` 
 class Event {
   constructor(
     eventClass,
@@ -38,7 +36,7 @@ class Event {
 
   
   addShareSQL() {
-    let sql = `INSERT INTO SHARE(shareComment, shareImg, eventNum, userId) VALUES ('${this.shareComment}', 'NULL', '${this.eventNum}', 'NULL')`;
+    let sql = `INSERT INTO SHARE(shareComment, shareImg, eventNum, userId) VALUES ('${this.shareComment}', '${this.shareImg}', '${this.eventNum}', 'NULL')`;
     return sql;
   }
 
@@ -68,8 +66,6 @@ class Event {
 
   // static是與實例化無關
   static getEventByQuerySQL(query) {
-    //let perPage = 9; // 每頁有幾筆
-    // let page = query.page || 1; // 查看第幾頁
 
     const where = [];
 
@@ -101,7 +97,7 @@ class Event {
       // let t_sql = `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
     }
 
-    // let total = t_sql[0]["num"];
+    
 
     return sql;
   }

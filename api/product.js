@@ -142,6 +142,21 @@ async function userLogin(sql, req, res, instance) {
 
 // get 處理獲取全部的資料列表
 // AND查詢加入`?name=eddy&email=XXX&username=XXXX
+// router.get("/productArr/:search?/:arrangement?", (req, res, next) => {
+//   console.log("HELLO");
+//   console.log(req.query);
+//   if (!Object.keys(req.query).length)
+//     executeSQL(product.getAllProductSQL(), res);
+//   else executeSQL(product.getPriceSearchByQuerySQL(req.query), res);
+// });
+
+router.get("/product-list/", (req, res, next) => {
+  console.log("123");
+  if (!Object.keys(req.query).length)
+    executeSQL(product.getAllProductSQL(), res);
+  else executeSQL(product.getAllProductSQL(req.query), res);
+});
+
 router.get("/", (req, res, next) => {
   //console.log(req.query)
 
@@ -152,59 +167,63 @@ router.get("/", (req, res, next) => {
   //   if (!Object.keys(req.query).length) executeSQL(User.getAllmapSQL(), res);
   //   else executeSQL(User.getUserByQuerySQL(req.query), res);
 });
+router.get(
+  "/productArr/:category?/:search?/:arrangement?",
+  (req, res, next) => {
+    console.log("HELLO");
+    console.log(req.query);
+    if (!Object.keys(req.query).length)
+      executeSQL(product.getAllProductSQL(), res);
+    else executeSQL(product.getClassesByQuerySQL(req.query), res);
+  }
+);
 
-router.get("/product-list/", (req, res, next) => {
-  if (!Object.keys(req.query).length)
-    executeSQL(product.getAllProductSQL(), res);
-  else executeSQL(product.getAllProductSQL(req.query), res);
-});
+// router.get("/product-list/new", (req, res, next) => {
+//   if (!Object.keys(req.query).length)
+//     executeSQL(product.getClassBySQLnew(), res);
+//   else executeSQL(product.getClassBySQLnew(req.query), res);
+// });
+// router.get("/product-list/hot", (req, res, next) => {
+//   if (!Object.keys(req.query).length)
+//     executeSQL(product.getClassBySQLhot(), res);
+//   else executeSQL(product.getClassBySQLhot(req.query), res);
+// });
 
-router.get("/product-list/new", (req, res, next) => {
-  if (!Object.keys(req.query).length)
-    executeSQL(product.getClassBySQLnew(), res);
-  else executeSQL(product.getClassBySQLnew(req.query), res);
-});
-router.get("/product-list/hot", (req, res, next) => {
-  if (!Object.keys(req.query).length)
-    executeSQL(product.getClassBySQLhot(), res);
-  else executeSQL(product.getClassBySQLhot(req.query), res);
-});
+// router.get("/product-list/books", (req, res, next) => {
+//   if (!Object.keys(req.query).length)
+//     executeSQL(product.getClassBySQLbooks(), res);
+//   else executeSQL(product.getClassBySQLbooks(req.query), res);
+// });
 
-router.get("/product-list/books", (req, res, next) => {
-  if (!Object.keys(req.query).length)
-    executeSQL(product.getClassBySQLbooks(), res);
-  else executeSQL(product.getClassBySQLbooks(req.query), res);
-});
+// router.get("/product-list/furniture", (req, res, next) => {
+//   if (!Object.keys(req.query).length)
+//     executeSQL(product.getClassBySQLfurniture(), res);
+//   else executeSQL(product.getClassBySQLfurniture(req.query), res);
+// });
 
-router.get("/product-list/furniture", (req, res, next) => {
-  if (!Object.keys(req.query).length)
-    executeSQL(product.getClassBySQLfurniture(), res);
-  else executeSQL(product.getClassBySQLfurniture(req.query), res);
-});
+// router.get("/product-list/clothes", (req, res, next) => {
+//   if (!Object.keys(req.query).length)
+//     executeSQL(product.getClassBySQLclothes(), res);
+//   else executeSQL(product.getClassBySQLclothes(req.query), res);
+// });
 
-router.get("/product-list/clothes", (req, res, next) => {
-  if (!Object.keys(req.query).length)
-    executeSQL(product.getClassBySQLclothes(), res);
-  else executeSQL(product.getClassBySQLclothes(req.query), res);
-});
+// router.get("/product-list/accessories", (req, res, next) => {
+//   if (!Object.keys(req.query).length)
+//     executeSQL(product.getClassBySQLaccessories(), res);
+//   else executeSQL(product.getClassBySQLaccessories(req.query), res);
+// });
 
-router.get("/product-list/accessories", (req, res, next) => {
-  if (!Object.keys(req.query).length)
-    executeSQL(product.getClassBySQLaccessories(), res);
-  else executeSQL(product.getClassBySQLaccessories(req.query), res);
-});
+// router.get("/product-list/stationery", (req, res, next) => {
+//   if (!Object.keys(req.query).length)
+//     executeSQL(product.getClassBySQLstationery(), res);
+//   else executeSQL(product.getClassBySQLstationery(req.query), res);
+// });
 
-router.get("/product-list/stationery", (req, res, next) => {
-  if (!Object.keys(req.query).length)
-    executeSQL(product.getClassBySQLstationery(), res);
-  else executeSQL(product.getClassBySQLstationery(req.query), res);
-});
-
-router.get("/product-list/casual", (req, res, next) => {
-  if (!Object.keys(req.query).length)
-    executeSQL(product.getClassBySQLcasual(), res);
-  else executeSQL(product.getClassBySQLcasual(req.query), res);
-});
+// router.get("/product-list/casual", (req, res, next) => {
+//   if (!Object.keys(req.query).length)
+//     executeSQL(product.getClassBySQLcasual(), res);
+//   else executeSQL(product.getClassBySQLcasual(req.query), res);
+// });
 
 //export default router
 module.exports = router;

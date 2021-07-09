@@ -6,16 +6,18 @@ class Orders {
     userName,
     userPhone,
     userAddress,
-    orderShip
+    orderShip,
+    created_at
   ) {
-    this.id = 0;
-    this.orderId = orderId;
-    this.userMail = userMail;
-    this.orderPay = orderPay;
-    this.userName = userName;
-    this.userPhone = userPhone;
-    this.userAddress = userAddress;
-    this.orderShip = orderShip;
+    this.id = 0
+    this.orderId = orderId
+    this.userMail = userMail
+    this.orderPay = orderPay
+    this.userName = userName
+    this.userPhone = userPhone
+    this.userAddress = userAddress
+    this.orderShip = orderShip
+    this.created_at = created_at
   }
 
   // addOrderSQL() {
@@ -64,9 +66,9 @@ class Orders {
   //   return sql
   // }
 
-  static getAllOrdersSQ() {
-    let sql = `SELECT * FROM ORDERS`;
-    return sql;
+  static getAllOrdersSQL() {
+    let sql = `SELECT * FROM ORDERS`
+    return sql
   }
 }
 

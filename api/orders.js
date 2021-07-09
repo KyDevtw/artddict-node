@@ -172,8 +172,6 @@ async function userLogin(sql, req, res, instance) {
 // get 處理獲取全部的資料列表
 // AND查詢加入`?name=eddy&email=XXX&username=XXXX
 router.get('/', (req, res, next) => {
-  console.log(req.query)
-
   if (!Object.keys(req.query).length) executeSQL(Orders.getAllOrdersSQL(), res)
   else executeSQL(Orders.getOrdersByQuerySQL(req.query), res)
 })
@@ -190,9 +188,7 @@ router.post('/', (req, res, next) => {
   // console.log(req.body)
 
   //從request json 資料建立新的物件
-  let orders = new Orders(
-    'orderId',
-  )
+  let orders = new Orders('orderId')
 
   executeSQL(orders.addUserSQL(), res, 'post', false, orders)
 })
