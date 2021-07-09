@@ -146,24 +146,25 @@ async function executeSQL(
 // get 處理獲取全部的資料列表
 // AND查詢加入`?name=eddy&email=XXX&username=XXXX
 
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   console.log(req.query)
   console.log('555')
   res.send('respond with a resource')
 })
 
+router.get("/aucSeaArr/:search?/:arrangement?", (req, res, next) => {
+  console.log(req.query)
+  if (!Object.keys(req.query).length)
+    executeSQL(Auction.getAllAucSQL(), res);
+  else
+    executeSQL(Auction.getAucByQuerySQL(req.query), res);
+})
+
 router.get("/auction-list", (req, res, next) => {
   console.log(req.query);
 
-  if (!Object.keys(req.query).length) 
-      executeSQL(Auction.getAllAucSQL(), res);
-  else 
-      executeSQL(Auction.getAucByQuerySQL(req.query), res);
-
-  // if (!Object.keys(req.query).length) 
-  //     executeSQL(User.getAllAucSQL(), res);
-  // else 
-  //     executeSQL(User.getUserByQuerySQL(req.query), res);
+  if (!Object.keys(req.query).length)
+    executeSQL(Auction.getAllAucSQL(), res);
 });
 
 router.get("/:aucId?", (req, res, next) => {
