@@ -48,25 +48,34 @@ class Auction {
   // }
 
   // // static是與實例化無關
-  // static getUserByQuerySQL(query) {
-  //   const where = [];
+  static getAucByQuerySQL(query) {
+    const where = [];
 
-  //   if (query.aucName) where.push(`aucName = '${query.aucName}'`);
-  //   if (query.aucDeadline) where.push(`aucDeadline = '${query.aucDeadline}'`);
-  //   if (query.aucPriceNow) where.push(`aucPriceNow = '${query.aucPriceNow}'`);
+    if (query.search) where.push(`aucName LIKE '%${query.search}%'`);
+    let sql = "";
 
-  //   let sql = "";
+    if (where.length) {
+      sql = `SELECT * FROM auctionitems WHERE ` + where.join(" AND ");
+    }
+    else {
+      sql = `SELECT * FROM auctionitems`;
+    }
+      if (query.arrangement === 't-less') sql += ` ORDER BY aucDeadline ASC`
+      if (query.arrangement === 't-more') sql += ` ORDER BY aucDeadline DESC`
+      if (query.arrangement === 'p-high') sql += ` ORDER BY aucPriceNow DESC`
+      if (query.arrangement === 'p-less') sql += ` ORDER BY aucPriceNow ASC`
+    console.log(sql)
+    return sql;
+  }
 
-  //   if (where.length) sql = `SELECT * FROM auctionitems WHERE ` + where.join(" AND ");
-  //   else sql = `SELECT * FROM auctionitems`;
+  static deleteUserByIdSQL(id) {
+    let sql = `DELETE FROM USERS WHERE ID = ${id}`;
+    return sql;
+  }
 
-  //   return sql;
-  // }
+  static getAucArrByQuerySQL() {
 
-  // static deleteUserByIdSQL(id) {
-  //   let sql = `DELETE FROM USERS WHERE ID = ${id}`;
-  //   return sql;
-  // }
+  }
 
   // static getAllUserSQL() {
   //   let sql = `SELECT * FROM USERS`;
