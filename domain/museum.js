@@ -28,8 +28,8 @@ class Museum {
   // }
 
   //static是與實例化無關
-  static getMusByIdSQL(id) {
-    let sql = `SELECT * FROM museum LEFT JOIN city ON museum.musCity = city.cityId LEFT JOIN location ON location.city = museum.musCity WHERE id = ${id}`;
+  static getMusByIdSQL(query) {
+    let sql = `SELECT * FROM museum LEFT JOIN event ON museum.musId = event.museumId LEFT JOIN city ON cityId = museum.musCity WHERE musId = ${query.idMuseum}`;
     return sql;
   }
 

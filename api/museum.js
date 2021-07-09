@@ -156,9 +156,16 @@ router.get("/", (req, res, next) => {
   //   else executeSQL(User.getUserByQuerySQL(req.query), res);
 });
 
-// get 處理獲取單一筆的會員，使用id
-// router.get('/:cityId?', (req, res, next) => {
-//   executeSQL(museum.getMusByQuerySQL(req.params.cityId), res, 'get', false)
+router.get("/musEvent/:idMuseum?", (req, res, next) => {
+  executeSQL(museum.getMusByIdSQL(req.query), res);
+
+  //   if (!Object.keys(req.query).length) executeSQL(User.getAllmapSQL(), res);
+  //   else executeSQL(User.getUserByQuerySQL(req.query), res);
+});
+
+//get 處理獲取單一筆的會員，使用id
+// router.get('/:idMuseum?', (req, res, next) => {
+//   executeSQL(museum.getMusByIdSQL(req.params.idMuseun), res, 'get', false)
 // })
 
 
