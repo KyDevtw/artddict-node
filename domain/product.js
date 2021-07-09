@@ -69,6 +69,7 @@ class product {
     console.log("CLASSES");
 
     let sql = "";
+
     // if(query.category){
     // else if (query.category === "allproduct") sql = `SELECT * FROM product`;
     // else if (query.category === "newarrival")
@@ -121,9 +122,17 @@ class product {
         // sql = `SELECT * FROM product`;
         break;
     }
+
     const where = [];
 
     if (query.search) where.push(`proName LIKE '%${query.search}%'`);
+
+    if (sql == "SELECT * FROM product") {
+      if (where.length) {
+        sql += ` WHERE ` + where;
+        console.log("All");
+      }
+    }
 
     if (sql !== "") {
       if (where.length) {
@@ -154,9 +163,7 @@ class product {
       }
       console.log("789");
     }
-    if (query.category && query.search && query.arrangement == null) {
-      `SELECT * FROM product`;
-    }
+
     console.log(sql);
     return sql;
   }
