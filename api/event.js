@@ -163,6 +163,19 @@ router.get("/share/:id?", (req, res, next) => {
   executeSQL(Event.getShareSQL(req.params.id), res, "get", false);
 });
 
+router.post("/uploadShare", (req, res) => {
+  const newpath = __dirname + "./../public/eventpic/share";
+  const file = req.files.file;
+  const filename = file.name;
+
+  file.mv(`${newpath}${filename}`, (err) => {
+    if (err) {
+      res.status(500).send({ message: "File upload failed", code: 200 });
+    }
+    res.status(200).send({ message: "File Uploaded", code: 200 });
+  });
+});
+
 router.post("/upload", (req, res, next) => {
   // 測試response，會自動解析為物件
   // console.log(typeof req.body)
