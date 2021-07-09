@@ -121,30 +121,10 @@ async function userLogin(sql, req, res, instance) {
 
 // 以下為路由
 
-
-
-// 檢查是否登入
-// router.get("/checklogin", function (req, res, next) {
-//   const sess = req.session;
-
-//   const id = sess.loginId;
-//   const username = sess.loginUsername;
-//   const name = sess.loginName;
-//   const email = sess.loginEmail;
-//   const createDate = sess.loginCreatedDate;
-
-//   const isLogined = !!name;
-
-//   if (isLogined) {
-//     res.status(200).json({ id, name, username, email, createDate });
-//   } else {
-//     // 登出狀態時回傳`{id:0}`
-//     res.status(200).json({ id: 0 });
-//   }
-// });
-
 // get 處理獲取全部的資料列表
 // AND查詢加入`?name=eddy&email=XXX&username=XXXX
+
+
 
 
 
@@ -163,18 +143,60 @@ router.get("/share/:id?", (req, res, next) => {
   executeSQL(Event.getShareSQL(req.params.id), res, "get", false);
 });
 
-router.post("/uploadShare", (req, res) => {
-  const newpath = __dirname + "./../public/eventpic/share";
-  const file = req.files.file;
-  const filename = file.name;
 
-  file.mv(`${newpath}${filename}`, (err) => {
-    if (err) {
-      res.status(500).send({ message: "File upload failed", code: 200 });
+
+// 單檔上傳測試
+/*--------------------------*/
+router.post("/uploadShare", async (req, res) => {
+  try {
+    if (!req.files) {
+      res.send({
+        status: false,
+        message: "No file uploaded",
+      });
+    } else {
+      //使用輸入框的名稱來獲取上傳檔案 (例如 "avatar")
+      let sharePic = req.files.file;
+
+      // 設定絕對路徑
+      const path = require("path").join(__dirname, "..");
+      const uploadPath = path + "/public/eventpic/share/";
+
+      //使用 mv() 方法來移動上傳檔案到要放置的目錄裡 (例如 "uploads")
+      sharePic.mv(uploadPath + sharePic.name);
+
+      //送出回應
+      res.send({
+        status: true,
+        message: "File is uploaded",
+        data: {
+          name: sharePic.name,
+          mimetype: sharePic.mimetype,
+          size: sharePic.size,
+        },
+      });
     }
-    res.status(200).send({ message: "File Uploaded", code: 200 });
-  });
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
+/*--------------------------*/
+
+
+// router.post("/uploadShare", (req, res) => {
+//   const newpath = __dirname + "../public/eventpic/share";
+//   const file = req.files.file;
+//   const filename = file.name;
+
+//   file.mv(`${newpath}/${filename}`, (err) => {
+//     if (err) {
+//       res.status(500).send({ message: "File upload failed", code: 200 });
+//     }
+//     res.status(200).send({ message: "File Uploaded", code: 200 });
+    
+//   });
+//   return;
+// });
 
 router.post("/upload", (req, res, next) => {
   // 測試response，會自動解析為物件
