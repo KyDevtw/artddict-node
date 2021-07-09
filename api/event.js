@@ -2,7 +2,7 @@
 
 const express = require("express");
 const router = express.Router();
-
+const _ = require("lodash");
 
 // 引入 Event SQL 語法
 const Event = require("../domain/event.js");
@@ -145,7 +145,7 @@ router.get("/share/:id?", (req, res, next) => {
 
 
 
-// 單檔上傳測試
+// ??單檔上傳測試
 /*--------------------------*/
 router.post("/uploadShare", async (req, res) => {
   try {
@@ -183,6 +183,50 @@ router.post("/uploadShare", async (req, res) => {
 /*--------------------------*/
 
 
+// ??多檔上傳測試
+/*--------------------------*/
+router.post('/uploadPic', async (req, res) => {
+  try {
+      if(!req.files) {
+          res.send({
+              status: false,
+              message: 'No file uploaded'
+          });
+      } else {
+          let data = []; 
+  
+          //loop all files
+          _.forEach(_.keysIn(req.files.file), (key) => {
+            let photo = req.files.file[key];
+
+            // 設定絕對路徑
+            const path = require("path").join(__dirname, "..");
+            const uploadPath = path + "/public/eventpic/share/";
+
+            //move photo to uploads directory
+            photo.mv(uploadPath + photo.name);
+
+            //push file details
+            data.push({
+              name: photo.name,
+              mimetype: photo.mimetype,
+              size: photo.size,
+            });
+          });
+  
+          //return response
+          res.send({
+              status: true,
+              message: 'Files are uploaded',
+              data: data
+          });
+      }
+  } catch (err) {
+      res.status(500).send(err);
+  }
+});
+
+
 // router.post("/uploadShare", (req, res) => {
 //   const newpath = __dirname + "../public/eventpic/share";
 //   const file = req.files.file;
@@ -203,7 +247,7 @@ router.post("/upload", (req, res, next) => {
   // console.log(typeof req.body)
   // console.log(req.body)
   //從request json 資料建立新的物件
-  let shareImg = JSON.stringify(req.body.shareImg)
+  let shareImg = JSON.stringify(req.body.sharePhoto);
   let event = new Event(
     "eventClass",
     "eventId",

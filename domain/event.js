@@ -36,7 +36,7 @@ class Event {
 
   
   addShareSQL() {
-    let sql = `INSERT INTO SHARE(shareComment, shareImg, eventNum, userId) VALUES ('${this.shareComment}', 'NULL', '${this.eventNum}', 'NULL')`;
+    let sql = `INSERT INTO SHARE(shareComment, shareImg, eventNum, userId) VALUES ('${this.shareComment}', '${this.shareImg}', '${this.eventNum}', 'NULL')`;
     return sql;
   }
 
