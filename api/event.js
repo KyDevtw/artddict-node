@@ -271,6 +271,40 @@ router.post("/upload", (req, res, next) => {
 });
 
 
+//delete 刪除一筆資料
+router.delete("/delete/:id?", (req, res, next) => {
+  executeSQL(Event.deleteEventByIdSQL(req.params.id), res, "delete", false);
+});
+
+
+// put 更新一筆資料
+router.put("/shareUpdate", (req, res, next) => {
+ 
+  let shareImg = JSON.stringify(req.body.sharePhoto);
+  let event = new Event(
+    "eventClass",
+    "eventId",
+    "eventName",
+    "eventDescription",
+    "eventDateStart",
+    "eventDateEnd",
+    "eventPrice",
+    "eventImg",
+    "eventCity",
+    "useumId",
+    "cityName",
+    req.body.shareComment,
+    shareImg,
+    req.body.id,
+    "userId"
+  );
+
+  executeSQL(event.updateShareSQL(), res, "put", false, event);
+});
+
+
+
+
 
 //export default router
 module.exports = router;
