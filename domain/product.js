@@ -148,6 +148,141 @@ class product {
       }
     }
 
+    if (sql == "SELECT * FROM product") {
+      if (query.priceRange === "[0,0]") {
+        sql += " WHERE `proPrice` BETWEEN 0 AND 0 ";
+      }
+      if (query.priceRange === "[0,2000]") {
+        sql += " WHERE `proPrice` BETWEEN 0 AND 2000 ";
+      }
+      if (query.priceRange === "[0,4000]") {
+        sql += " WHERE `proPrice` BETWEEN 0 AND 4000 ";
+      }
+      if (query.priceRange === "[0,6000]") {
+        sql += " WHERE `proPrice` BETWEEN 0 AND 6000 ";
+      }
+      if (query.priceRange === "[0,8000]") {
+        sql += " WHERE `proPrice` BETWEEN 0 AND 8000 ";
+      }
+      if (query.priceRange === "[2000,2000]") {
+        sql += " WHERE `proPrice` BETWEEN 2000 AND 2000 ";
+      }
+      if (query.priceRange === "[2000,4000]") {
+        sql += " WHERE `proPrice` BETWEEN 2000 AND 4000 ";
+      }
+      if (query.priceRange === "[2000,6000]") {
+        sql += " WHERE `proPrice` BETWEEN 2000 AND 6000 ";
+      }
+      if (query.priceRange === "[2000,8000]") {
+        sql += " WHERE `proPrice` BETWEEN 2000 AND 8000 ";
+      }
+      if (query.priceRange === "[4000,4000]") {
+        sql += " WHERE `proPrice` BETWEEN 4000 AND 4000 ";
+      }
+      if (query.priceRange === "[4000,6000]") {
+        sql += " WHERE `proPrice` BETWEEN 4000 AND 6000 ";
+      }
+      if (query.priceRange === "[4000,8000]") {
+        sql += " WHERE `proPrice` BETWEEN 4000 AND 8000 ";
+      }
+      if (query.priceRange === "[6000,8000]") {
+        sql += " WHERE `proPrice` BETWEEN 6000 AND 8000 ";
+      }
+      if (query.priceRange === "[8000,8000]") {
+        sql += " WHERE `proPrice` BETWEEN 8000 AND 8000 ";
+      }
+    }
+
+    if (sql !== "") {
+      if (query.priceRange === "[0,0]") {
+        sql += " AND `proPrice` BETWEEN 0 AND 0 ";
+      }
+      if (query.priceRange === "[0,2000]") {
+        sql += " AND `proPrice` BETWEEN 0 AND 2000 ";
+      }
+      if (query.priceRange === "[0,4000]") {
+        sql += " AND `proPrice` BETWEEN 0 AND 4000 ";
+      }
+      if (query.priceRange === "[0,6000]") {
+        sql += " AND `proPrice` BETWEEN 0 AND 6000 ";
+      }
+      if (query.priceRange === "[0,8000]") {
+        sql += " AND `proPrice` BETWEEN 0 AND 8000 ";
+      }
+      if (query.priceRange === "[2000,2000]") {
+        sql += " AND `proPrice` BETWEEN 2000 AND 2000 ";
+      }
+      if (query.priceRange === "[2000,4000]") {
+        sql += " AND `proPrice` BETWEEN 2000 AND 4000 ";
+      }
+      if (query.priceRange === "[2000,6000]") {
+        sql += " AND `proPrice` BETWEEN 2000 AND 6000 ";
+      }
+      if (query.priceRange === "[2000,8000]") {
+        sql += " AND `proPrice` BETWEEN 2000 AND 8000 ";
+      }
+      if (query.priceRange === "[4000,4000]") {
+        sql += " AND `proPrice` BETWEEN 4000 AND 4000 ";
+      }
+      if (query.priceRange === "[4000,6000]") {
+        sql += " AND `proPrice` BETWEEN 4000 AND 6000 ";
+      }
+      if (query.priceRange === "[4000,8000]") {
+        sql += " AND `proPrice` BETWEEN 4000 AND 8000 ";
+      }
+      if (query.priceRange === "[6000,8000]") {
+        sql += " AND `proPrice` BETWEEN 6000 AND 8000 ";
+      }
+      if (query.priceRange === "[8000,8000]") {
+        sql += " AND `proPrice` BETWEEN 8000 AND 8000 ";
+      }
+    }
+
+    if (sql === "") {
+      if (query.priceRange === "[0,0]") {
+        sql += "SELECT * FROM product WHERE `proPrice` BETWEEN 0 AND 0 ";
+      }
+      if (query.priceRange === "[0,2000]") {
+        sql += "SELECT * FROM product WHERE `proPrice` BETWEEN 0 AND 2000 ";
+      }
+      if (query.priceRange === "[0,4000]") {
+        sql += "SELECT * FROM product WHERE `proPrice` BETWEEN 0 AND 4000 ";
+      }
+      if (query.priceRange === "[0,6000]") {
+        sql += "SELECT * FROM product WHERE `proPrice` BETWEEN 0 AND 6000 ";
+      }
+      if (query.priceRange === "[0,8000]") {
+        sql += "SELECT * FROM product WHERE `proPrice` BETWEEN 0 AND 8000 ";
+      }
+      if (query.priceRange === "[2000,2000]") {
+        sql += "SELECT * FROM product WHERE `proPrice` BEWEEN 2000 AND 2000 ";
+      }
+      if (query.priceRange === "[2000,4000]") {
+        sql += "SELECT * FROM product WHERE `proPrice` BETWEEN 2000 AND 4000 ";
+      }
+      if (query.priceRange === "[2000,6000]") {
+        sql += "SELECT * FROM product WHERE `proPrice` BETWEEN 2000 AND 6000 ";
+      }
+      if (query.priceRange === "[2000,8000]") {
+        sql += "SELECT * FROM product WHERE `proPrice` BETWEEN 2000 AND 8000 ";
+      }
+      if (query.priceRange === "[4000,4000]") {
+        sql += "SELECT * FROM product WHERE `proPrice` BETWEEN 4000 AND 4000 ";
+      }
+      if (query.priceRange === "[4000,6000]") {
+        sql += "SELECT * FROM product WHERE `proPrice` BETWEEN 4000 AND 6000 ";
+      }
+      if (query.priceRange === "[4000,8000]") {
+        sql += "SELECT * FROM product WHERE `proPrice` BETWEEN 4000 AND 8000 ";
+      }
+      if (query.priceRange === "[6000,8000]") {
+        sql += "SELECT * FROM product WHERE `proPrice` BETWEEN 6000 AND 8000 ";
+      }
+      if (query.priceRange === "[8000,8000]") {
+        sql += "SELECT * FROM product WHERE `proPrice` BETWEEN 8000 AND 8000 ";
+      }
+    }
+
     if (sql !== "") {
       if (query.arrangement === "highToLow") sql += ` ORDER BY proPrice DESC`;
       if (query.arrangement === "lowToHigh") sql += ` ORDER BY proPrice ASC`;

@@ -168,7 +168,7 @@ router.get("/", (req, res, next) => {
   //   else executeSQL(User.getUserByQuerySQL(req.query), res);
 });
 router.get(
-  "/productArr/:category?/:search?/:arrangement?",
+  "/productArr/:category?/:search?/:priceRange?/:arrangement?",
   (req, res, next) => {
     console.log("HELLO");
     console.log(req.query);
