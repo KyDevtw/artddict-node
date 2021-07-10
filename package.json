@@ -32,5 +32,9 @@
   "type": "commonjs",
   "engines": {
     "node": ">=8.10.0"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/KyDevtw/artddict-node.git",
+  "author": "chun2332 <smile84122332@gmail.com>",
+  "license": "MIT"
 }

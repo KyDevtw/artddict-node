@@ -34,24 +34,21 @@ class Event {
     this.userId = userId;
   }
 
-  
   addShareSQL() {
     let sql = `INSERT INTO SHARE(shareComment, shareImg, eventNum, userId) VALUES ('${this.shareComment}', '${this.shareImg}', '${this.eventNum}', 'NULL')`;
     return sql;
   }
 
-  // updateUserByIdSQL(id) {
-  //   let sql = `UPDATE USERS \
-  //              SET name = '${this.name}', username = '${this.username}', password = '${this.password}', email = '${this.email}', login = ${this.login} \
-  //              WHERE id =  ${id}`;
-  //   return sql;
-  // }
+  updateShareSQL() {
+    let sql = `UPDATE SHARE SET shareComment = '${this.shareComment}', 
+              shareImg = '${this.shareImg}' WHERE eventNum = ${this.eventNum}`;
+    return sql;
+  }
 
-  // static是與實例化無關
-  // static getUserByIdSQL(id) {
-  //   let sql = `SELECT * FROM USERS WHERE id = ${id}`;
-  //   return sql;
-  // }
+  static deleteEventByIdSQL(eventNum) {
+    let sql = `DELETE FROM SHARE WHERE eventNum = ${eventNum}`;
+    return sql;
+  }
 
   // login用
   // getUserUserByUsernameAndPasswordSQL() {
@@ -66,7 +63,6 @@ class Event {
 
   // static是與實例化無關
   static getEventByQuerySQL(query) {
-
     const where = [];
 
     if (query.city) where.push(`cityName = '${query.city}'`);
@@ -96,8 +92,6 @@ class Event {
 
       // let t_sql = `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
     }
-
-    
 
     return sql;
   }

@@ -242,6 +242,16 @@ router.post('/uploadPic', async (req, res) => {
 //   return;
 // });
 
+
+
+
+// delete 刪除一筆資料
+router.delete("/delete/:id?", (req, res, next) => {
+  executeSQL(Event.deleteEventByIdSQL(req.params.id), res, "delete", false);
+});
+
+
+// post 新增一筆資料
 router.post("/upload", (req, res, next) => {
   // 測試response，會自動解析為物件
   // console.log(typeof req.body)
@@ -267,8 +277,35 @@ router.post("/upload", (req, res, next) => {
   );
 
   executeSQL(event.addShareSQL(), res, "post", false, event);
-
 });
+
+
+// put 更新一筆資料
+router.put("/shareUpdate", (req, res, next) => {
+ 
+  let shareImg = JSON.stringify(req.body.sharePhoto);
+  let event = new Event(
+    "eventClass",
+    "eventId",
+    "eventName",
+    "eventDescription",
+    "eventDateStart",
+    "eventDateEnd",
+    "eventPrice",
+    "eventImg",
+    "eventCity",
+    "useumId",
+    "cityName",
+    req.body.shareComment,
+    shareImg,
+    req.body.id,
+    "userId"
+  );
+
+  executeSQL(event.updateShareSQL(), res, "put", false, event);
+});
+
+
 
 
 

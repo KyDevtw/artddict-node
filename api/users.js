@@ -65,11 +65,13 @@ async function executeSQL(
     }
   } catch (error) {
     // 錯誤處理
+    const errsql = `error sql = ${sql}`
     console.log(error)
 
     // 顯示錯誤於json字串
     res.status(200).json({
-      message: error,
+      message: errsql,
+      // message: error,
     })
   }
 }
@@ -200,22 +202,50 @@ router.delete('/:userId', (req, res, next) => {
   executeSQL(User.deleteUserByIdSQL(req.params.userId), res, 'delete', false)
 })
 
-// put 更新一筆資料
+// put 更新會員資料
 router.put('/:userId', (req, res) => {
   let user = new User(
     req.body.username,
     req.body.name,
-    req.body.mobile,
+   'password',
     req.body.gender,
+    req.body.mobile,
     req.body.birthday,
     req.body.address,
+  )
+
+  // id值為數字
+  user.id = +req.params.userId
+  const sql_cmd = user.updateUserByIdSQL(req.params.userId);
+  try {
+    executeSQL(sql_cmd, res, 'put', false, user)
+  }
+  catch {
+    console.log(`failed to execute!!`)
+    console.log(`${sql_cmd}`)
+    
+  }
+})
+
+
+
+// put 更新密碼
+router.put('/pwd/:userId', (req, res) => {
+
+  let user = new User(
+    'username',
+    'name',
     req.body.password,
+    'gender',
+    'mobile',
+    'birthday',
+    'address',
   )
 
   // id值為數字
   user.id = +req.params.userId
 
-  executeSQL(user.updateUserByIdSQL(req.params.userId), res, 'put', false, user)
+  executeSQL(user.updatePwdByIdSQL(req.params.userId), res, 'put', false, user)
 })
 
 //export default router
