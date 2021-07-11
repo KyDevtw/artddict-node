@@ -26,68 +26,15 @@ class product {
     let sql = `SELECT * FROM product`;
     return sql;
   }
-  // static getClassBySQLnew(proClass) {
-  //   let sql = `SELECT * FROM product WHERE proHotNew  = "1"`;
-  //   return sql;
-  // }
-  // static getClassBySQLhot(proClass) {
-  //   let sql = `SELECT * FROM product WHERE proHotNew  = "2"`;
-  //   return sql;
-  // }
 
-  // static getClassBySQLbooks(proClass) {
-  //   let sql = `SELECT * FROM product WHERE proClass = "C01"`;
-  //   return sql;
-  // }
-
-  // static getClassBySQLfurniture(proClass) {
-  //   let sql = `SELECT * FROM product WHERE proClass = "C02"`;
-  //   return sql;
-  // }
-
-  // static getClassBySQLclothes(proClass) {
-  //   let sql = `SELECT * FROM product WHERE proClass = "C03"`;
-  //   return sql;
-  // }
-
-  // static getClassBySQLaccessories(proClass) {
-  //   let sql = `SELECT * FROM product WHERE proClass = "C04"`;
-  //   return sql;
-  // }
-
-  // static getClassBySQLstationery(proClass) {
-  //   let sql = `SELECT * FROM product WHERE proClass = "C05"`;
-  //   return sql;
-  // }
-
-  // static getClassBySQLcasual(proClass) {
-  //   let sql = `SELECT * FROM product WHERE proClass = "C06"`;
-  //   return sql;
-  // }
+  static getProductIdbySQL(query) {
+    let sql = `SELECT * FROM product WHERE proId = ${query.proId}`;
+  }
 
   static getClassesByQuerySQL(query) {
     console.log("CLASSES");
 
     let sql = "";
-
-    // if(query.category){
-    // else if (query.category === "allproduct") sql = `SELECT * FROM product`;
-    // else if (query.category === "newarrival")
-    //   sql = `SELECT * FROM product WHERE proHotNew  = "1"`;
-    // else if (query.category === "hotproduct")
-    //   sql = `SELECT * FROM product WHERE proHotNew  = "2"`;
-    // else if (query.category === "books")
-    //   sql = `SELECT * FROM product WHERE proClass = "C01"`;
-    // else if (query.category === "furniture")
-    //   sql = `SELECT * FROM product WHERE proClass = "C02"`;
-    // else if (query.category === "clothes")
-    //   sql = `SELECT * FROM product WHERE proClass = "C03"`;
-    // else if (query.category === "accessories")
-    //   sql = `SELECT * FROM product WHERE proClass = "C04"`;
-    // else if (query.category === "stationery")
-    //   sql = `SELECT * FROM product WHERE proClass = "C05"`;
-    // else if (query.category === "casual")
-    //   sql = `SELECT * FROM product WHERE proClass = "C06"`;
 
     switch (query.category) {
       case "allproduct":
