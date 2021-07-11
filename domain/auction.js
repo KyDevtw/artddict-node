@@ -63,9 +63,10 @@ class Auction {
     if (query.category === 'books') where.push(`aucClass = 'C01'`);
     if (query.category === 'accessories') where.push(`aucClass = 'C04'`);
 
-    
+    let bbb = parseInt(query.priceRange)
+    console.log(bbb)
     const priceRangeArr = query.priceRange.split(',')
-    console.log("新",parseInt(priceRangeArr[0]))
+    console.log("新",priceRangeArr[0],priceRangeArr[1])
     if (query.priceRange){
         where.push(`aucPriceNow BETWEEN ${priceRangeArr[0]} AND ${priceRangeArr[1]}`)
     }
