@@ -98,20 +98,20 @@ async function executeSeaSQL(
     let rowA = JSON.parse(JSON.stringify(rows))
     const perPage = 9;
 
-    let totalrows =rowA.length
-    let totalPages = Math.ceil(rowA.length/perPage)
+    let totalrows = rowA.length
+    let totalPages = Math.ceil(rowA.length / perPage)
 
     pagesInfo.totalRows = totalrows
     pagesInfo.totalPages = totalPages
-    
+
     sql += pagesInfo.l_sql
     console.log(sql)
     const [rowsData, fieldsA] = await dbMysql2.promisePool.query(sql);
     let rowsDataA = JSON.parse(JSON.stringify(rowsData))
 
-    console.log("總列數",totalrows,"總頁數",totalPages)
+    console.log("總列數", totalrows, "總頁數", totalPages)
 
-    console.log("夜面資料",pagesInfo)
+    console.log("夜面資料", pagesInfo)
 
     rowsDataA.unshift(pagesInfo)
 
@@ -126,7 +126,7 @@ async function executeSeaSQL(
       let result = {};
       // console.log("到達",rows)
       if (rows.length) result = rows[0];
-      res.status(200).json(result,'5');
+      res.status(200).json(result, '5');
     }
   }
   catch (error) {
@@ -272,17 +272,14 @@ router.get('/', function (req, res, next) {
 })
 
 
-router.get("/aucSeaArr/:search?/:arrangement?/:category?/:pages?", async (req, res, next) => {
+router.get("/aucSeaArr/:search?/:arrangement?/:priceRange?/:category?/:pages?", async (req, res, next) => {
   console.log(req.query)
 
   let a = (await getListData(req));
-  // console.log("h1", a)
   if (!Object.keys(req.query).length)
     executeSQL(Auction.getAllAucSQL(), res);
   else
-    // console.log(req.query);
-  // executeSQL(await (getListData(req.query)),res);
-  executeSeaSQL(Auction.getAucByQuerySQL(req.query, a), res, "get", true, {}, a)
+    executeSeaSQL(Auction.getAucByQuerySQL(req.query, a), res, "get", true, {}, a)
 })
 
 //測試用

@@ -53,15 +53,23 @@ class Auction {
   // // static是與實例化無關
   static getAucByQuerySQL(query,a) {
     const where = [];
-    console.log("傳進來",a.l_sql)
 
     if (query.search) where.push(`aucName LIKE '%${query.search}%'`);
+
     if (query.category === 'Paintings') where.push(`aucClass = 'H'`);
     if (query.category === 'clothes') where.push(`aucClass = 'C03'`);
     if (query.category === 'furniture') where.push(`aucClass = 'C02'`);
     if (query.category === 'stationery') where.push(`aucClass = 'C05'`);
     if (query.category === 'books') where.push(`aucClass = 'C01'`);
     if (query.category === 'accessories') where.push(`aucClass = 'C04'`);
+
+    
+    const priceRangeArr = query.priceRange.split(',')
+    console.log("新",parseInt(priceRangeArr[0]))
+    if (query.priceRange){
+        where.push(`aucPriceNow BETWEEN ${priceRangeArr[0]} AND ${priceRangeArr[1]}`)
+    }
+
     let sql = "";
 
     if (where.length) {
