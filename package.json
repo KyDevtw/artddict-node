@@ -33,7 +33,7 @@
   "engines": {
     "node": ">=8.10.0"
   },
-  "main": "index.js",
+  "main": "./bin/www",
   "repository": "https://github.com/KyDevtw/artddict-node.git",
   "author": "chun2332 <smile84122332@gmail.com>",
   "license": "MIT"
