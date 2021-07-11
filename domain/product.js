@@ -320,7 +320,6 @@ class product {
     if (query.arrangement === "highToLow") sql += ` ORDER BY proPrice DESC`;
     if (query.arrangement === "lowToHigh") sql += ` ORDER BY proPrice ASC`;
 
-    console.log(sql);
     return sql;
   }
   // static async getRows(params = {}) {

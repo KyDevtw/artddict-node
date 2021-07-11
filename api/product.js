@@ -188,7 +188,7 @@ router.get(
 //     executeSQL(product.getClassBySQLhot(), res);
 //   else executeSQL(product.getClassBySQLhot(req.query), res);
 // });
-
+// 123
 // router.get("/product-list/books", (req, res, next) => {
 //   if (!Object.keys(req.query).length)
 //     executeSQL(product.getClassBySQLbooks(), res);
