@@ -177,6 +177,9 @@ router.get(
     else executeSQL(product.getClassesByQuerySQL(req.query), res);
   }
 );
+router.get("/product-list/:id?", (req, res, next) => {
+  executeSQL(product.getProductIdbySQL(req.params.id), res, "get", false);
+});
 
 // router.get("/product-list/new", (req, res, next) => {
 //   if (!Object.keys(req.query).length)

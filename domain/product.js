@@ -27,8 +27,9 @@ class product {
     return sql;
   }
 
-  static getProductIdbySQL(query) {
-    let sql = `SELECT * FROM product WHERE proId = ${query.proId}`;
+  static getProductIdbySQL(id) {
+    let sql = `SELECT * FROM product WHERE id = ${id}`;
+    return sql;
   }
 
   static getClassesByQuerySQL(query) {
