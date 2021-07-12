@@ -270,62 +270,11 @@ class product {
 
     return sql;
   }
-  // static async getRows(params = {}) {
-  //   let perPage = params.perPage || 5; // 每頁有幾筆
-  //   let page = params.page || 1; // 查看第幾頁
-  //   let cate = parseInt(params.cate) || 0; // 分類編號
-  //   let keyword = params.keyword || ""; // 搜尋產品名稱或者作者姓名
-  //   let orderBy = params.orderBy || ""; // 排序
 
-  //   let where = " WHERE 1 ";
-  //   if (cate) {
-  //     where += " AND category_sid=" + cate;
-  //   }
-  //   if (keyword) {
-  //     let k2 = db.escape("%" + keyword + "%");
-  //     where += ` AND (author LIKE ${k2} OR bookname LIKE ${k2}) `;
-  //   }
-
-  //   let orderStr = "";
-  //   switch (orderBy) {
-  //     case "price":
-  //     case "price-asc":
-  //       orderStr = " ORDER BY `price` ASC ";
-  //       break;
-  //     case "price-desc":
-  //       orderStr = " ORDER BY `price` DESC ";
-  //       break;
-  //     case "pages":
-  //     case "pages-asc":
-  //       orderStr = " ORDER BY `pages` ASC ";
-  //       break;
-  //     case "pages-desc":
-  //       orderStr = " ORDER BY `pages` DESC ";
-  //       break;
-  //   }
-
-  //   let t_sql = `SELECT COUNT(1) num FROM \`product\` ${where}`;
-  //   let [r1] = await db.query(t_sql);
-  //   let total = r1[0]["num"];
-
-  //   let r2,
-  //     totalPages = 0;
-  //   if (total) {
-  //     totalPages = Math.ceil(total / perPage);
-  //     let r_sql = `SELECT * FROM \`product\` ${where} ${orderStr} LIMIT ${
-  //       (page - 1) * perPage
-  //     }, ${perPage}`;
-  //     [r2] = await db.query(r_sql);
-  //   }
-  //   return {
-  //     total,
-  //     totalPages,
-  //     perPage,
-  //     page,
-  //     params,
-  //     data: r2,
-  //   };
-  // }
+  addCommentsSQL() {
+    let sql = `INSERT INTO PROCOMMENTS(proId, userId, comments, starValue, date) VALUES ('${this.proId}', 'NULL', '${this.comments}', '${this.starValue}', ('${this.date}')`;
+    return sql;
+  }
 }
 
 //export default User
