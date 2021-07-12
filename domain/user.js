@@ -73,9 +73,37 @@ class User {
 
   // static是與實例化無關
   static getUserByIdSQL(id) {
-    let sql = `SELECT * FROM USERS WHERE id = ${id}`
+    let sql = `SELECT * FROM users WHERE id = ${id}`
     return sql
   }
+
+  
+  // get 會員訂單
+  static getUserOrderByIdSQL(id) {
+    let sql = `SELECT * FROM orders WHERE userId = ${id} `
+    return sql
+  }
+
+
+  // get 會員訂單細節
+  static getUserOrderDetailByIdSQL(id) {
+    let sql = `SELECT * FROM order_details LEFT JOIN orders ON order_details.orderId = orders.orderId WHERE orders.userId = ${id}`
+    return sql
+  }
+
+  // get 會員收藏
+  static getUserFavByIdSQL(id) {
+    let sql = `SELECT * FROM user_favorite WHERE userId = ${id} `
+    return sql
+  }
+
+
+  // delete 會員收藏
+  static deleteUserFavByIdSQL(id) {
+      let sql = `DELETE FROM user_favorite WHERE eventId = ${id}`
+      return sql
+    }
+  
 
   // login用
   getUserUserByUsernameAndPasswordSQL() {
@@ -99,10 +127,7 @@ class User {
     return sql
   }
 
-  static deleteUserByIdSQL(id) {
-    let sql = `DELETE FROM USERS WHERE id = ${id}`
-    return sql
-  }
+  
 
   static getAllUserSQL() {
     let sql = `SELECT * FROM USERS`

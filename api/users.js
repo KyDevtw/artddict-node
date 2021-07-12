@@ -122,10 +122,9 @@ async function userLogin(sql, req, res, instance) {
 // 處理會員登入
 router.post('/login', function (req, res, next) {
   let user = new User(
-    req.body.name,
     req.body.username,
+    'name',
     req.body.password,
-    // req.body.email
   )
 
   // 回應都寫在userLogin方法裡(async-await)
@@ -181,6 +180,30 @@ router.get('/:userId', (req, res, next) => {
   executeSQL(User.getUserByIdSQL(req.params.userId), res, 'get', false)
 })
 
+
+// get 獲取訂單，使用會員id
+router.get('/getOrder/:userId', (req, res, next) => {
+  executeSQL(User.getUserOrderByIdSQL(req.params.userId), res, 'get', true)
+})
+
+// get 獲取訂單細節，使用會員id
+router.get('/getOrderdetail/:userId', (req, res, next) => {
+  executeSQL(User.getUserOrderDetailByIdSQL(req.params.userId), res, 'get', true)
+})
+
+
+// get 獲取我的收藏，使用會員id
+router.get('/userFav/:userId', (req, res, next) => {
+  executeSQL(User.getUserFavByIdSQL(req.params.userId), res, 'get', true)
+})
+
+//delete 刪除一筆會員收藏
+router.delete('userFav/:userId', (req, res, next) => {
+  executeSQL(User.deleteUserFavByIdSQL(req.params.userId), res, 'delete', false)
+})
+
+
+
 // post 新增一筆會員資料
 router.post('/', (req, res, next) => {
   // 測試response，會自動解析為物件
@@ -198,9 +221,9 @@ router.post('/', (req, res, next) => {
 })
 
 //delete 刪除一筆資料
-router.delete('/:userId', (req, res, next) => {
-  executeSQL(User.deleteUserByIdSQL(req.params.userId), res, 'delete', false)
-})
+// router.delete('/:userId', (req, res, next) => {
+//   executeSQL(User.deleteUserByIdSQL(req.params.userId), res, 'delete', false)
+// })
 
 // put 更新會員資料
 router.put('/:userId', (req, res) => {
