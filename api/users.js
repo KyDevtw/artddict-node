@@ -191,6 +191,11 @@ router.get('/getOrderdetail/:userId', (req, res, next) => {
   executeSQL(User.getUserOrderDetailByIdSQL(req.params.userId), res, 'get', true)
 })
 
+// get 獲取票券，使用會員id
+router.get('/getTicket/:userId', (req, res, next) => {
+  executeSQL(User.getUserTicketByIdSQL(req.params.userId), res, 'get', true)
+})
+
 
 // get 獲取我的收藏，使用會員id
 router.get('/userFav/:userId', (req, res, next) => {

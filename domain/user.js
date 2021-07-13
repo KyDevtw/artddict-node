@@ -91,9 +91,16 @@ class User {
     return sql
   }
 
+  // get 訂單票券
+  static getUserTicketByIdSQL(id) {
+    let sql = `SELECT event.eventImg, event.eventId, event.eventName, order_details.orderQty, event.eventDateStart, event.eventDateEnd FROM event LEFT JOIN order_details ON event.eventId = order_details.proId LEFT JOIN orders ON order_details.orderId = orders.orderId LEFT JOIN users ON orders.userId = users.id
+    WHERE users.id = ${id}`
+    return sql
+  }
+
   // get 會員收藏
   static getUserFavByIdSQL(id) {
-    let sql = `SELECT * FROM user_favorite WHERE userId = ${id} `
+    let sql = `SELECT  event.eventImg, event.eventName, event.eventCity, event.eventDateStart FROM event LEFT JOIN user_favorite ON event.eventId = user_favorite.eventId LEFT JOIN users ON user_favorite.userId = users.id WHERE users.id = ${id}`
     return sql
   }
 
