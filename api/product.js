@@ -177,53 +177,35 @@ router.get(
     else executeSQL(product.getClassesByQuerySQL(req.query), res);
   }
 );
+router.get("/product-list/:id?", (req, res, next) => {
+  executeSQL(product.getProductIdbySQL(req.params.id), res, "get", false);
+});
 
-// router.get("/product-list/new", (req, res, next) => {
-//   if (!Object.keys(req.query).length)
-//     executeSQL(product.getClassBySQLnew(), res);
-//   else executeSQL(product.getClassBySQLnew(req.query), res);
-// });
-// router.get("/product-list/hot", (req, res, next) => {
-//   if (!Object.keys(req.query).length)
-//     executeSQL(product.getClassBySQLhot(), res);
-//   else executeSQL(product.getClassBySQLhot(req.query), res);
-// });
-// 123
-// router.get("/product-list/books", (req, res, next) => {
-//   if (!Object.keys(req.query).length)
-//     executeSQL(product.getClassBySQLbooks(), res);
-//   else executeSQL(product.getClassBySQLbooks(req.query), res);
-// });
+router.post("/upload", (req, res, next) => {
+  // 測試response，會自動解析為物件
+  // console.log(typeof req.body)
+  // console.log(req.body)
+  //從request json 資料建立新的物件
+  let shareImg = JSON.stringify(req.body.sharePhoto);
+  let event = new Event(
+    "eventClass",
+    "eventId",
+    "eventName",
+    "eventDescription",
+    "eventDateStart",
+    "eventDateEnd",
+    "eventPrice",
+    "eventImg",
+    "eventCity",
+    "useumId",
+    "cityName",
+    req.body.shareComment,
+    shareImg,
+    req.body.id,
+    "userId"
+  );
 
-// router.get("/product-list/furniture", (req, res, next) => {
-//   if (!Object.keys(req.query).length)
-//     executeSQL(product.getClassBySQLfurniture(), res);
-//   else executeSQL(product.getClassBySQLfurniture(req.query), res);
-// });
+  executeSQL(event.addShareSQL(), res, "post", false, event);
+});
 
-// router.get("/product-list/clothes", (req, res, next) => {
-//   if (!Object.keys(req.query).length)
-//     executeSQL(product.getClassBySQLclothes(), res);
-//   else executeSQL(product.getClassBySQLclothes(req.query), res);
-// });
-
-// router.get("/product-list/accessories", (req, res, next) => {
-//   if (!Object.keys(req.query).length)
-//     executeSQL(product.getClassBySQLaccessories(), res);
-//   else executeSQL(product.getClassBySQLaccessories(req.query), res);
-// });
-
-// router.get("/product-list/stationery", (req, res, next) => {
-//   if (!Object.keys(req.query).length)
-//     executeSQL(product.getClassBySQLstationery(), res);
-//   else executeSQL(product.getClassBySQLstationery(req.query), res);
-// });
-
-// router.get("/product-list/casual", (req, res, next) => {
-//   if (!Object.keys(req.query).length)
-//     executeSQL(product.getClassBySQLcasual(), res);
-//   else executeSQL(product.getClassBySQLcasual(req.query), res);
-// });
-
-//export default router
 module.exports = router;

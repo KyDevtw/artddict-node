@@ -1,3 +1,6 @@
+// mysql2 async-await用的
+const dbMysql2 = require("../db/database");
+
 class Auction {
   constructor(aucClass, aucName, aucDes, aucId, aucPriceStart, aucPriceNow, aucDeadline, aucImg) {
     this.id = 0;
@@ -48,10 +51,26 @@ class Auction {
   // }
 
   // // static是與實例化無關
-  static getAucByQuerySQL(query) {
+  static getAucByQuerySQL(query,a) {
     const where = [];
 
     if (query.search) where.push(`aucName LIKE '%${query.search}%'`);
+
+    if (query.category === 'Paintings') where.push(`aucClass = 'H'`);
+    if (query.category === 'clothes') where.push(`aucClass = 'C03'`);
+    if (query.category === 'furniture') where.push(`aucClass = 'C02'`);
+    if (query.category === 'stationery') where.push(`aucClass = 'C05'`);
+    if (query.category === 'books') where.push(`aucClass = 'C01'`);
+    if (query.category === 'accessories') where.push(`aucClass = 'C04'`);
+
+    let bbb = parseInt(query.priceRange)
+    console.log(bbb)
+    const priceRangeArr = query.priceRange.split(',')
+    console.log("新",priceRangeArr[0],priceRangeArr[1])
+    if (query.priceRange){
+        where.push(`aucPriceNow BETWEEN ${priceRangeArr[0]} AND ${priceRangeArr[1]}`)
+    }
+
     let sql = "";
 
     if (where.length) {
@@ -60,10 +79,11 @@ class Auction {
     else {
       sql = `SELECT * FROM auctionitems`;
     }
-      if (query.arrangement === 't-less') sql += ` ORDER BY aucDeadline ASC`
-      if (query.arrangement === 't-more') sql += ` ORDER BY aucDeadline DESC`
-      if (query.arrangement === 'p-high') sql += ` ORDER BY aucPriceNow DESC`
-      if (query.arrangement === 'p-less') sql += ` ORDER BY aucPriceNow ASC`
+    if (query.arrangement === 't-less') sql += ` ORDER BY aucDeadline ASC`
+    if (query.arrangement === 't-more') sql += ` ORDER BY aucDeadline DESC`
+    if (query.arrangement === 'p-high') sql += ` ORDER BY aucPriceNow DESC`
+    if (query.arrangement === 'p-less') sql += ` ORDER BY aucPriceNow ASC`
+    // if (String(a.l_sql)) sql+= a.l_sql
     console.log(sql)
     return sql;
   }
@@ -76,6 +96,7 @@ class Auction {
   static getAucArrByQuerySQL() {
 
   }
+
 
   // static getAllUserSQL() {
   //   let sql = `SELECT * FROM USERS`;

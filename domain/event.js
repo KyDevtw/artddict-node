@@ -63,9 +63,53 @@ class Event {
 
   // static是與實例化無關
   static getEventByQuerySQL(query) {
+
     const where = [];
 
     if (query.city) where.push(`cityName = '${query.city}'`);
+    if (query.class) where.push(`eventClass = '${query.class}'`);
+
+    let order = "";
+
+    if (query.order) {
+      switch (query.order) {
+        case "latest":
+          order = " ORDER BY eventDateStart ASC";
+          break;
+        case "oldest":
+          order = " ORDER BY eventDateStart DESC";
+          break;
+      }
+    }
+    
+    //  當前頁數預設 1
+    let pageNow = query.page || 1;
+    let pageSQL = ` LIMIT ${(pageNow - 1) * 9},9`;
+
+    let sql = "";
+
+    if (where.length && order) {
+      sql =
+        `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE ` +
+        where.join(" AND ") +
+        order +
+        pageSQL;
+    } else {
+      sql =
+        `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity ORDER BY eventDateStart ASC` +
+        pageSQL;
+
+      // let t_sql = `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
+    }
+
+    return sql;
+  }
+
+  static getEventCountSQL(query) {
+    const where = [];
+
+    if (query.city) where.push(`cityName = '${query.city}'`);
+    if (query.class) where.push(`eventClass = '${query.class}'`);
 
     let order = "";
 
@@ -80,20 +124,19 @@ class Event {
       }
     }
 
-    let sql = "";
+    let sql2 = "";
 
     if (where.length && order) {
-      sql =
-        `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE ` +
-        where +
+      sql2 =
+        `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity WHERE ` +
+        where.join(" AND ") +
         order;
     } else {
-      sql = `SELECT * FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity ORDER BY eventDateStart ASC`;
+      sql2 = `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity ORDER BY eventDateStart ASC`;
 
-      // let t_sql = `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity`;
     }
 
-    return sql;
+    return sql2;
   }
 
   // static deleteUserByIdSQL(id) {
