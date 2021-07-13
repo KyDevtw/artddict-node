@@ -20,6 +20,8 @@ var auction = require("./api/auction");
 var product = require("./api/product");
 var share = require("./api/share");
 var orders = require('./api/orders')
+var mail = require('./api/mail')
+var news = require('./api/news')
 
 var app = express();
 
@@ -84,6 +86,13 @@ app.use("/users", users);
 
 //order middleware
 app.use('/orders', orders)
+
+//mail middleware
+app.use('/mail', mail)
+
+//mail middleware
+app.use('/news', news)
+
 
 // catch 404 and forward to error handler
 // app.use(function (req, res, next) {
