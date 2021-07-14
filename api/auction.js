@@ -26,7 +26,7 @@ async function executeSQL(
   try {
     //把資料從資料庫撈出來
     const [rows, fields] = await dbMysql2.promisePool.query(sql);
-    console.log("有撈出來嗎", sql)
+    console.log("有撈出來嗎", rows)
     switch (method) {
       case "post": {
         // 仿照json-server的回傳
@@ -59,7 +59,6 @@ async function executeSQL(
             // res.status(200).json({
             //   users: rows,
             // })
-            // console.log(rows)
             res.status(200).json(rows);
           } else {
             // 仿照json-server的回傳，有找到會回傳單一值，沒找到會回到空的物件字串
@@ -140,68 +139,7 @@ async function executeSeaSQL(
   }
 }
 
-// // instance 物件實體，預設為空物件
-// async function userLogin(sql, req, res, instance) {
-//   try {
-//     const [rows, fields] = await dbMysql2.promisePool.query(sql);
-
-//     // 仿照json-server的回傳，有找到會回傳單一值，沒找到會回到空的物件字串
-//     let result = {};
-//     if (rows.length) {
-//       result = rows[0];
-
-//       req.session.regenerate(function (err) {
-//         if (err) {
-//           res.status(200).json({ status: 2, message: "登入失敗" });
-//         }
-
-//         req.session.loginId = result.id;
-//         req.session.loginName = result.name;
-//         req.session.loginEmail = result.email;
-//         req.session.loginUsername = result.username;
-//         req.session.loginCreatedDate = result.createDate;
-
-//         // 如果要用全訊息可以用以下的回傳
-//         // res.json({ status: 0, message: '登入成功' })
-//         res.status(200).json(result);
-//       });
-//     } else {
-//       res.status(200).json({ status: 1, message: "帳號或密碼錯誤" });
-
-//       //res.status(200).json(result)
-//     }
-//   } catch (error) {
-//     // 錯誤處理
-//     console.log(error);
-
-//     // 顯示錯誤於json字串
-//     res.status(200).json({
-//       message: error,
-//     });
-//   }
-// }
-
 // 以下為路由
-
-// 檢查是否登入
-// router.get("/checklogin", function (req, res, next) {
-//   const sess = req.session;
-
-//   const id = sess.loginId;
-//   const username = sess.loginUsername;
-//   const name = sess.loginName;
-//   const email = sess.loginEmail;
-//   const createDate = sess.loginCreatedDate;
-
-//   const isLogined = !!name;
-
-//   if (isLogined) {
-//     res.status(200).json({ id, name, username, email, createDate });
-//   } else {
-//     // 登出狀態時回傳`{id:0}`
-//     res.status(200).json({ id: 0 });
-//   }
-// });
 
 // get 處理獲取全部的資料列表
 // AND查詢加入`?name=eddy&email=XXX&username=XXXX
@@ -265,11 +203,11 @@ const getListData = async (req) => {
 
 };
 
-router.get('/', function (req, res, next) {
-  console.log(req.query)
-  console.log('555')
-  res.send('respond with a resource')
-})
+// router.get('/', function (req, res, next) {
+//   console.log(req.query)
+//   console.log('555')
+//   res.send('respond with a resource')
+// })
 
 
 router.get("/aucSeaArr/:search?/:arrangement?/:priceRange?/:category?/:pages?", async (req, res, next) => {
@@ -285,10 +223,14 @@ router.get("/aucSeaArr/:search?/:arrangement?/:priceRange?/:category?/:pages?", 
 //測試用
 router.get('/api/list/:pages?', async (req, res) => {
   console.log(req.query);
-  let a = String(await getListData(req));
+  // let a = String(await getListData(req));
   // executeSQL(await getListData(req), res);
-  executeSQL(Auction.getAucByQuerySQL(req.query, a), res)
+  // executeSQL(Auction.getAucByQuerySQL(req.query, a), res)
 });
+
+router.get("/trysess",(req,res)=>{
+  console.log(req.query)
+})
 
 
 router.get("/auction-list", (req, res, next) => {
@@ -298,9 +240,36 @@ router.get("/auction-list", (req, res, next) => {
     executeSQL(Auction.getAllAucSQL(), res);
 });
 
-router.get("/:aucId?", (req, res, next) => {
-  console.log(req.params.aucId)
-  executeSQL(Auction.getaucByIdSQL(req.params.aucId), res, "get", false);
+router.get("/:aucId?", async(req, res, next) => {
+  // console.log("傳入的參數",req.query)
+  let sql_d = Auction.getaucByIdSQL(req.query.aucId);
+  let sql_p = Auction.getbidInfoByQuerySQL(req.query.aucId);
+  // console.log(sql_d)
+  // console.log(sql_p)
+
+  const [rows_d, fields_d] = await dbMysql2.promisePool.query(sql_d);
+  const [rows_p, fields_p] = await dbMysql2.promisePool.query(sql_p);
+  // console.log(rows_d,rows_p)
+  // console.log(rows_d,Object.values(JSON.parse(JSON.stringify(rows_p))))
+  let new_p = Object.values(JSON.parse(JSON.stringify(rows_p)))
+  let new_d = Object.values(JSON.parse(JSON.stringify(rows_d)))
+  new_p.unshift(new_d[0])
+  console.log(new_p)
+
+  res.status(200).json(new_p);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router;
