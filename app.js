@@ -20,6 +20,7 @@ var auction = require('./api/auction')
 var product = require('./api/product')
 var share = require('./api/share')
 var orders = require('./api/orders')
+var news = require('./api/news')
 var mail = require('./api/mail')
 var order_details = require('./api/order_details')
 
