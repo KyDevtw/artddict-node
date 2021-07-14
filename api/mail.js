@@ -54,7 +54,7 @@ const transporter = nodeMailer.createTransport({
 router.post('/', (req, res, next) => {
     console.log(req.body.email);
     let mailOptions = {
-        from: process.env.EMAIL,
+        from: 'artddict.now@gmail.com',
         to: req.body.email,
         subject: "非常感謝的你來信",
         text: htmlMail,
@@ -65,7 +65,7 @@ router.post('/', (req, res, next) => {
           console.log("Error " + err);
         } else {
           console.log("Email sent successfully");
-          res.json({ status: "Email sent" });
+          res.json({ status: "Email sent"+`${req.body.email}` });
         }
       });
     
