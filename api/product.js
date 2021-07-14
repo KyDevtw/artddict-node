@@ -181,31 +181,29 @@ router.get("/product-list/:id?", (req, res, next) => {
   executeSQL(product.getProductIdbySQL(req.params.id), res, "get", false);
 });
 
+router.get("/commentsTry/:id?", (req, res, next) => {
+  if (!Object.keys(req.query).length)
+    executeSQL(product.getCommentsdbySQL(), res);
+  else executeSQL(product.getCommentsdbySQL(req.query), res);
+});
+
 router.post("/upload", (req, res, next) => {
-  // 測試response，會自動解析為物件
-  // console.log(typeof req.body)
-  // console.log(req.body)
-  //從request json 資料建立新的物件
-  let shareImg = JSON.stringify(req.body.sharePhoto);
-  let event = new Event(
-    "eventClass",
-    "eventId",
-    "eventName",
-    "eventDescription",
-    "eventDateStart",
-    "eventDateEnd",
-    "eventPrice",
-    "eventImg",
-    "eventCity",
-    "useumId",
-    "cityName",
-    req.body.shareComment,
-    shareImg,
-    req.body.id,
-    "userId"
+  let Product = new product(
+    "proName",
+    "proId",
+    "proPrice",
+    "proClass",
+    "proImg",
+    "proMutImg",
+    "proHotNew",
+    "proDes",
+    req.body.proNum,
+    req.body.userId,
+    req.body.comments,
+    req.body.starValue
   );
 
-  executeSQL(event.addShareSQL(), res, "post", false, event);
+  executeSQL(Product.addCommentsSQL(), res, "post", false, Product);
 });
 
 module.exports = router;

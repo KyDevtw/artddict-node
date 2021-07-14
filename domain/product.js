@@ -9,17 +9,37 @@ class product {
     proImg,
     proMutImg,
     proHotNew,
-    proDes
+    proDes,
+    proNum,
+    userId,
+    comments,
+    starValue,
+    created_at
   ) {
     this.id = 0;
-    (this.proName = proName),
-      (this.proId = proId),
-      (this.proPrice = proPrice),
-      (this.proClass = proClass),
-      (this.proImg = proImg),
-      (this.proMutImg = proMutImg),
-      (this.proHotNew = proHotNew),
-      (this.proDes = proDes);
+    this.proName = proName;
+    this.proId = proId;
+    this.proPrice = proPrice;
+    this.proClass = proClass;
+    this.proImg = proImg;
+    this.proMutImg = proMutImg;
+    this.proHotNew = proHotNew;
+    this.proDes = proDes;
+    this.proNum = proNum;
+    this.userId = userId;
+    this.comments = comments;
+    this.starValue = starValue;
+    this.created_at = created_at;
+  }
+
+  addCommentsSQL() {
+    let sql = `INSERT INTO PROCOMMENTS(proNum, userId, comments, starValue) VALUES ('${this.proNum}', '${this.userId}', '${this.comments}', '${this.starValue}')`;
+    return sql;
+  }
+
+  static getCommentsdbySQL(query) {
+    let sql = `SELECT * FROM proComments INNER JOIN product ON product.id = proComments.proNum WHERE id = ${query.id}`;
+    return sql;
   }
 
   static getAllProductSQL(query) {
@@ -28,12 +48,15 @@ class product {
   }
 
   static getProductIdbySQL(id) {
-    let sql = `SELECT * FROM product WHERE id = ${id}`;
+    let sql = `SELECT * FROM product LEFT JOIN proComments ON product.id = proComments.proNum WHERE id = ${id}`;
+
     return sql;
   }
 
   static getClassesByQuerySQL(query) {
     console.log("CLASSES");
+    console.log("queryyyyyyyy", query);
+    console.log("123456");
 
     let sql = "";
 
@@ -268,11 +291,6 @@ class product {
     if (query.arrangement === "highToLow") sql += ` ORDER BY proPrice DESC`;
     if (query.arrangement === "lowToHigh") sql += ` ORDER BY proPrice ASC`;
 
-    return sql;
-  }
-
-  addCommentsSQL() {
-    let sql = `INSERT INTO PROCOMMENTS(proId, userId, comments, starValue, date) VALUES ('${this.proId}', 'NULL', '${this.comments}', '${this.starValue}', ('${this.date}')`;
     return sql;
   }
 }
