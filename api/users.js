@@ -99,6 +99,15 @@ async function userLogin(sql, req, res, instance) {
 
         // 如果要用全訊息可以用以下的回傳
         // res.json({ status: 0, message: '登入成功' })
+        
+        // ~~cookie test~~
+        // res.cookie('loginId', result.id, { signed: true, maxAge: 600000 });  //set cookie
+        // res.cookie('loginName', result.name, { signed: true, maxAge: 600000 });  //set cookie
+        // res.cookie('loginUsername', result.username, { signed: true, maxAge: 600000 });  //set cookie
+        // res.cookie('loginCreatedDate', result.createDate, { signed: true, maxAge:600000});  //set cookie
+        // ~~cookie test~~
+        console.log("created sid="+req.session.id);
+        // res.status(200).json(result)
         res.status(200).json(result)
       })
     } else {
@@ -150,12 +159,14 @@ router.get('/logout', function (req, res, next) {
 // 檢查是否登入
 router.get('/checklogin', function (req, res, next) {
   const sess = req.session
-
+  console.log(sess)
   const id = sess.loginId
   const username = sess.loginUsername
   const name = sess.loginName
   const createDate = sess.loginCreatedDate
 
+  console.log("request sid=" + sess.loginId);
+  console.log("requset request cookie=" + req.headers.cookie);
   const isLogined = !!name
 
   if (isLogined) {

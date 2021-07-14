@@ -80,7 +80,7 @@ class User {
   
   // get 會員訂單
   static getUserOrderByIdSQL(id) {
-    let sql = `SELECT * FROM orders WHERE userId = ${id} `
+    let sql = `SELECT orders.orderId, orders.created_at, orders.orderPrice, orders.orderStatus FROM orders JOIN users ON orders.userId = users.id WHERE users.id = ${id}`
     return sql
   }
 

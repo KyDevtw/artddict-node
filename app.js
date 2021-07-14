@@ -32,8 +32,6 @@ app.use(express.static("files"));
 
 // 加入其它的middleware
 app.use(morgan('dev'));
-
-
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'))
 // app.set('view engine', 'jade')
@@ -41,10 +39,15 @@ app.use(morgan('dev'));
 app.use(logger("dev"));
 // app.use(express.json())
 // app.use(express.urlencoded({ extended: false }))
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', //(Whatever your frontend url is) 
+  // origin: '*',
+  credentials: true, // <= Accept credentials (cookies) sent by the client
+}));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('artddict-cookie'));
 app.use(express.static(path.join(__dirname, "public")));
 // Use the session middleware
 app.use(
@@ -53,7 +56,9 @@ app.use(
     secret: "eg[isfd-8yF9-7w2315df{}+Ijsli;;to8",
     duration: 30 * 60 * 1000,
     activeDuration: 5 * 60 * 1000,
-    httpOnly: true,
+    // httpOnly: false, //for localhost
+    httpOnly: true, 
+    // secure: false, //for localhost
     secure: true,
     ephemeral: true,
     resave: true,
