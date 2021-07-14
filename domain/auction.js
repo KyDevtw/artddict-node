@@ -97,6 +97,18 @@ class Auction {
 
   }
 
+  static getbidInfoByQuerySQL (id){
+    let sql =`SELECT aucName,aucId,aucPriceStart,aucPriceNow,aucDeadline,Sid,Price,aucCreated_at,name,aucImg
+    FROM auctionitems
+    LEFT JOIN aucbuyerinfo
+    ON auctionitems.aucId = aucbuyerinfo.auction_id
+    LEFT JOIN users
+    ON users.id = aucbuyerinfo.Member_Id
+    WHERE auction_id = ${id}
+    ORDER BY price DESC`
+    return sql
+  }
+
 
   // static getAllUserSQL() {
   //   let sql = `SELECT * FROM USERS`;
