@@ -1,10 +1,9 @@
-// Orders 路由建立
-
+// OrderDetails 路由建立
 const express = require('express')
 const router = express.Router()
 
 // 引入 Orders SQL 語法
-const Orders = require('../domain/orders.js')
+const OrderDetails = require('../domain/order_details.js')
 
 // mysql2 async-await用的
 const dbMysql2 = require('../db/database')
@@ -56,11 +55,14 @@ async function executeSQL(
             // res.status(200).json({
             //   users: rows,
             // })
+            console.log('***')
+            console.log(rows)
             res.status(200).json(rows)
           } else {
             // 仿照json-server的回傳，有找到會回傳單一值，沒找到會回到空的物件字串
             let result = {}
             if (rows.length) result = rows[0]
+            console.log('xxx')
             res.status(200).json(result)
           }
         }
@@ -77,26 +79,26 @@ async function executeSQL(
   }
 }
 
-// post 新增一筆訂單資料
-router.post('/orders', (req, res, next) => {
-  let order = new Orders(
+// post 新增一筆訂單細節資料
+router.post('/order_details', (req, res, next) => {
+  let orderdetails = new OrderDetails(
     req.body.orderid,
-    'userName',
-    req.body.credittype,
-    req.body.username,
-    req.body.mobile,
-    req.body.address,
-    req.body.shipmethod,
-    req.body.totalprice
+    req.body.orderqty,
+    req.body.proid
   )
-  // console.log(order)
-  executeSQL(order.addOrdersSQL(), res, 'post', false)
+  console.log(orderdetails)
+  executeSQL(orderdetails.addOrderDetailsSQL(), res, 'post', false)
 })
 
-// get 處理獲取單一筆的訂單，使用id
+// get 處理獲取單一筆的訂單細節，使用id
 router.get('/:orderId', (req, res, next) => {
   console.log(req.params.orderId)
-  executeSQL(Orders.getOrderById(req.params.orderId), res, 'get', false)
+  executeSQL(
+    OrderDetails.getOrderDetailsById(req.params.orderId),
+    res,
+    'get',
+    true
+  )
 })
 
 //export default router
