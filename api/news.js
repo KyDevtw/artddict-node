@@ -167,7 +167,7 @@ router.post('/', (req, res, next) => {
     let newsComm = new NewsComm(
       'newsComId',
       req.body.userId,
-      req.body.NewsCom, 
+      req.body.NewsCom,   
       'creates_at'
     )
     console.log(123)

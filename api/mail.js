@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const nodeMailer = require('nodemailer');
 const fs = require('fs');
 const { getMaxListeners } = require("process");
@@ -32,28 +31,48 @@ let htmlMail = `<h1>真開心您對我們下個月的藝術活動有興趣</h1>
     何損失或損害，要求本公司負責或承擔任何責任。</p>
 <h4 >我們非常期待在藝術TALK TO TALK見到您！</h4>`
 
+
+
 // create transporter for sending email
 const transporter = nodeMailer.createTransport({
+    host: "smtp.gmail.com",
     service: 'gmail',
+    type: "login",
+    port: 465,
+    secure: false,
     auth: {
         user: 'artddict.now@gmail.com',
-        pass: 'artddictmfee14'
+        pass: 'artddictmfee14',
+    },
+    tls: {
+        rejectUnauthorized: false
     }
 });
 
-const mailOptions = {
-    from: 'artddict.now@gmail.com',
-    to: 'josieeeshie@gmail.com', 
-    subject: `感謝您的來信`,
-    html: htmlMail
-}
 
-// send email
-transporter.sendMail(mailOptions, (err, info) => {
-    if(err) throw err;
-    if(info) console.log(`Done sending!, time: ${timeStr}`, info)
+
+router.post('/', (req, res, next) => {
+    console.log(req.body.email);
+    let mailOptions = {
+        from: process.env.EMAIL,
+        to: req.body.email,
+        subject: "非常感謝的你來信",
+        text: htmlMail,
+      };
+     
+      transporter.sendMail(mailOptions, function (err, data) {
+        if (err) {
+          console.log("Error " + err);
+        } else {
+          console.log("Email sent successfully");
+          res.json({ status: "Email sent" });
+        }
+      });
+    
+    
+    
+
 });
-
 
 
 module.exports = router;
