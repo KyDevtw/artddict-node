@@ -20,6 +20,7 @@ var auction = require('./api/auction')
 var product = require('./api/product')
 var share = require('./api/share')
 var orders = require('./api/orders')
+var mail = require('./api/mail')
 var order_details = require('./api/order_details')
 
 var app = express()
@@ -84,6 +85,12 @@ app.use('/users', users)
 
 //orders middleware
 app.use('/orders', orders)
+
+//orders middleware
+app.use('/mail', mail)
+
+//orders middleware
+app.use('/news', news)
 
 //order_details middleware
 app.use('/order_details', order_details)
