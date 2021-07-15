@@ -187,6 +187,12 @@ router.get("/commentsTry/:id?", (req, res, next) => {
   else executeSQL(product.getCommentsdbySQL(req.query), res);
 });
 
+router.get("/commentsValue/:id?", (req, res, next) => {
+  if (!Object.keys(req.query).length)
+    executeSQL(product.getStarSumbySQL(), res);
+  else executeSQL(product.getStarSumbySQL(req.query), res);
+});
+
 router.post("/upload", (req, res, next) => {
   let Product = new product(
     "proName",

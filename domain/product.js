@@ -42,6 +42,11 @@ class product {
     return sql;
   }
 
+  static getStarSumbySQL(query) {
+    let sql = `SELECT SUM(starValue) AS starTotal FROM proComments INNER JOIN product ON product.id = proComments.proNum WHERE id = ${query.id}`;
+    return sql;
+  }
+
   static getAllProductSQL(query) {
     let sql = `SELECT * FROM product`;
     return sql;
