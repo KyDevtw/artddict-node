@@ -109,7 +109,6 @@ class Auction {
     return sql
   }
 
-
   // static getAllUserSQL() {
   //   let sql = `SELECT * FROM USERS`;
   //   return sql;
