@@ -275,8 +275,14 @@ class product {
       console.log("789");
     }
 
-    console.log(sql);
-    return sql;
+    let pageNow = query.page || 1;
+    let pageSQL = ` LIMIT ${(pageNow - 1) * 9},9`;
+    if (sql) {
+      sql += pageSQL;
+
+      console.log(sql);
+      return sql;
+    }
   }
 
   static getPriceSearchByQuerySQL(query) {
