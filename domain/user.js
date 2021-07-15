@@ -85,9 +85,16 @@ class User {
   }
 
 
-  // get 會員訂單細節
+  // get 會員訂單細節 by userId
   static getUserOrderDetailByIdSQL(id) {
-    let sql = `SELECT * FROM order_details LEFT JOIN orders ON order_details.orderId = orders.orderId WHERE orders.userId = ${id}`
+    let sql = `SELECT orders.orderPay, orders.cardNumber, orders.cardExpdate, orders.orderPrice, orders.username, orders.userPhone, orders.userAddress, orders.orderShip, order_details.proImg, order_details.proName, order_details.proId, order_details.orderSpec, order_details.orderQty, order_details.proPrice FROM order_details
+    LEFT JOIN orders ON order_details.orderId = orders.orderId LEFT JOIN users ON orders.userId = users.id WHERE users.id = ${id}`
+    return sql
+  }
+
+  // get 會員訂單細節 by orderId
+  static getUserOrderDetailByOrderIdSQL(orderid) {
+    let sql = `SELECT orders.orderPay, orders.cardNumber, orders.cardExpdate, orders.orderPrice, orders.username, orders.userPhone, orders.userAddress, orders.orderShip, order_details.proImg, order_details.proName, order_details.proId, order_details.orderSpec, order_details.orderQty, order_details.proPrice FROM order_details LEFT JOIN orders ON order_details.orderId = orders.orderId LEFT JOIN users ON orders.userId = users.id WHERE orders.orderId = ${orderid}`
     return sql
   }
 

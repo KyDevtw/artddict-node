@@ -197,9 +197,9 @@ router.get('/getOrder/:userId', (req, res, next) => {
   executeSQL(User.getUserOrderByIdSQL(req.params.userId), res, 'get', true)
 })
 
-// get 獲取訂單細節，使用會員id
-router.get('/getOrderdetail/:userId', (req, res, next) => {
-  executeSQL(User.getUserOrderDetailByIdSQL(req.params.userId), res, 'get', true)
+// get 獲取訂單細節，使用orderid
+router.get('/getOrderdetail/:id?', (req, res, next) => {
+  executeSQL(User.getUserOrderDetailByOrderIdSQL(req.params.id), res, 'get', true)
 })
 
 // get 獲取票券，使用會員id
