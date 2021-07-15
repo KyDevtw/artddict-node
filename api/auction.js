@@ -8,6 +8,7 @@ const Auction = require("../domain/auction.js");
 
 // mysql2 async-await用的
 const dbMysql2 = require("../db/database");
+const { query } = require("express");
 
 // 執行sql用的async-await的函式
 // sql 執行用的sql
@@ -203,6 +204,65 @@ const getListData = async (req) => {
 
 };
 
+const getaucMemeberInfoSQL = async (query)=> {
+  console.log(query.id)
+  let sql_n=`SELECT DISTINCT aucId,aucName
+  FROM auctionitems
+  LEFT JOIN aucbuyerinfo
+  ON auctionitems.aucId = aucbuyerinfo.auction_id
+  WHERE (Member_Id = ${query.id})`
+  const [rows_n, fields] = await dbMysql2.promisePool.query(sql_n);
+  const newrow_n = JSON.parse(JSON.stringify(rows_n))
+  // console.log(newrow_n)
+
+  let rows_all = []
+  for(let i =0; i<(newrow_n.length);i++){
+    let sql_q = `SELECT aucName,Sid,MAX(Price) AS MaxPrice,aucPriceNow,aucDeadline,aucImg,aucId
+    FROM auctionitems
+    LEFT JOIN aucbuyerinfo
+    ON auctionitems.aucId = aucbuyerinfo.auction_id
+    WHERE (Member_Id = ${query.id}) AND (aucId = ${newrow_n[i].aucId}) `
+    const [rows_q, fields] = await dbMysql2.promisePool.query(sql_q);
+    rows_all.push(rows_q[0])
+  }
+
+  //為了計算頁數轉換成json
+  let rowscount = JSON.parse(JSON.stringify(rows_all))
+
+  //建立一個物件 錯誤先行 
+  let output = {
+    error: '',
+    totalRows: 0,
+    totalPages: 0,
+    page: 0,
+    rows: [],
+  };
+
+  let page = query.pages || 1;
+  output.page = parseInt(page);
+
+  const perPage = 3
+  output.totalRows= rowscount.length
+  output.totalPages = Math.ceil(rowscount.length / perPage)
+  console.log('totalrows', output.totalRows,'totalPages', output.totalPages)
+
+  output.rows = output.rows.concat(rowscount)
+
+  if (output.totalRows > 0) {
+    if (page < 1) {
+      output.error = 'page 值太小';
+    } else if (page > output.totalPages) {
+      output.error = 'page 值太大';
+    } else {
+      // sql = ` LIMIT ${(page - 1) * perPage}, ${perPage}`;
+      output.rows = output.rows.slice((page - 1) * perPage,(page - 1) * perPage+3)
+    }
+  }
+  console.log(output)
+  return output
+}
+
+
 // router.get('/', function (req, res, next) {
 //   console.log(req.query)
 //   console.log('555')
@@ -226,6 +286,12 @@ router.get('/api/list/:pages?', async (req, res) => {
   // let a = String(await getListData(req));
   // executeSQL(await getListData(req), res);
   // executeSQL(Auction.getAucByQuerySQL(req.query, a), res)
+});
+
+router.get("/auc_member/:id?/:pages?", async (req, res, next) => {
+  console.log(req.query)
+  let auc_memberD = await getaucMemeberInfoSQL(req.query)
+  res.status(200).json(auc_memberD);
 });
 
 router.get("/trysess",(req,res)=>{
