@@ -63,7 +63,6 @@ class Event {
 
   // static是與實例化無關
   static getEventByQuerySQL(query) {
-
     const where = [];
 
     if (query.city) where.push(`cityName = '${query.city}'`);
@@ -81,7 +80,7 @@ class Event {
           break;
       }
     }
-    
+
     //  當前頁數預設 1
     let pageNow = query.page || 1;
     let pageSQL = ` LIMIT ${(pageNow - 1) * 9},9`;
@@ -133,7 +132,6 @@ class Event {
         order;
     } else {
       sql2 = `SELECT COUNT(1) num FROM event LEFT JOIN city ON event.eventCity = city.cityId LEFT JOIN location ON location.city = event.eventCity ORDER BY eventDateStart ASC`;
-
     }
 
     return sql2;
@@ -154,6 +152,15 @@ class Event {
     let sql = `SELECT * FROM event LEFT JOIN share ON event.id = share.eventNum WHERE id = ${id}`;
     return sql;
   }
+
+
+  // TODO:會員新增最愛活動區塊
+  addFavSQL() {
+    let sql = `INSERT INTO user_favorite(userId, eventId) VALUES ('${this.userId}', '${this.eventId}')`;
+    return sql;
+  }
+
+
 }
 
 

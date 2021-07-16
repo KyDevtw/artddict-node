@@ -357,14 +357,10 @@ router.put("/shareUpdate", (req, res, next) => {
 
 // !!!post 新增一筆會員最愛資料
 router.post("/eventFav", (req, res, next) => {
-  // 測試response，會自動解析為物件
-  // console.log(typeof req.body)
-  // console.log(req.body)
-  //從request json 資料建立新的物件
-  let shareImg = JSON.stringify(req.body.sharePhoto);
+  
   let event = new Event(
     "eventClass",
-    "eventId",
+    req.body.eventId,
     "eventName",
     "eventDescription",
     "eventDateStart",
@@ -374,13 +370,13 @@ router.post("/eventFav", (req, res, next) => {
     "eventCity",
     "useumId",
     "cityName",
-    req.body.shareComment,
-    shareImg,
-    req.body.id,
-    "userId"
+    "shareComment",
+    "shareImg",
+    "eventNum",
+    req.body.userId
   );
 
-  executeSQL(event.addShareSQL(), res, "post", false, event);
+  executeSQL(event.addFavSQL(), res, "post", false, event);
 });
 
 
