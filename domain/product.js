@@ -33,7 +33,7 @@ class product {
   }
 
   addCommentsSQL() {
-    let sql = `INSERT INTO PROCOMMENTS(proNum, userId, comments, starValue) VALUES ('${this.proNum}', '${this.userId}', '${this.comments}', '${this.starValue}')`;
+    let sql = `INSERT INTO PROCOMMENTS(proNum,  userId, comments, starValue, created_at) VALUES ('${this.proNum}', '${this.userId}', '${this.comments}', '${this.starValue}', NOW())`;
     return sql;
   }
 

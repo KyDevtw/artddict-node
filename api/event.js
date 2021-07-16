@@ -170,8 +170,13 @@ async function userLogin(sql, req, res, instance) {
 //   else executeSQL(Event.getEventByQuerySQL(req.query), res);
 // });
 
+// TODO: get all event for Gary
+router.get("/allevent", (req, res, next) => {
+  executeSQL(Event.getAllEventSQL(req.params), res, "get", true);
+});
 
-// !!!分頁測試
+
+// 多個資料
 router.get("/", (req, res, next) => {
 
   const eventData = executeSQLForPage(Event.getEventByQuerySQL(req.query),Event.getEventCountSQL(req.query), res);
@@ -347,6 +352,31 @@ router.put("/shareUpdate", (req, res, next) => {
   );
 
   executeSQL(event.updateShareSQL(), res, "put", false, event);
+});
+
+
+// !!!post 新增一筆會員最愛資料
+router.post("/eventFav", (req, res, next) => {
+  
+  let event = new Event(
+    "eventClass",
+    req.body.eventId,
+    "eventName",
+    "eventDescription",
+    "eventDateStart",
+    "eventDateEnd",
+    "eventPrice",
+    "eventImg",
+    "eventCity",
+    "useumId",
+    "cityName",
+    "shareComment",
+    "shareImg",
+    "eventNum",
+    req.body.userId
+  );
+
+  executeSQL(event.addFavSQL(), res, "post", false, event);
 });
 
 
