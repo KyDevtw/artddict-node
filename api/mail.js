@@ -10,15 +10,16 @@ const year = date.getFullYear();
 //判斷一下是否是個位數，是的話就在前面加個0
 const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
 //判斷一下是否是個位數，是的話就在前面加個0 因為想呈現20200506
-const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+const day = date.getDate() <10 ? `0${date.getDate()}` : date.getDate();
 const timeStr = `${year}${month}${day}`;
 console.log(timeStr)
 
 //htmlMail，這個變數將會是整個信件內容
-let htmlMail = `<h1>真開心您對我們下個月的藝術活動有興趣</h1>
+let htmlMail = `<h3>真開心您對我們下個月的藝術活動有興趣</h3>
 <h4>詳細的活動日期與時間會再藉由Mail通知您</h4>
-<p style="color:gary">【個人資料聲明】
-    1) 本活動由 NIKE HONG KONG LIMITED (香港)有限公司主辦。<br>
+<h4 >並賦予你專屬折扣碼！請不要錯過ARTDDICT的任何訊息！</h4>
+<small>【個人資料聲明】
+    1) 本活動由 ARTDDICT (台灣) 有限公司主辦。<br>
     2) 參加是次活動時，本公司將收集 閣下的個人資料（包括姓名、電話及地址等資料），並作為是次活動之活動聯繫、活動公告、隨後安排、聯絡及紀錄等行銷目的使用之用途。主辦單位為
     達成前文所述目的取得你的個人資料傳遞給主辦單位之聯營公司、附屬公司、及/或其他商業機構，以及為本公司進行資料維護、處理及寄發之服務供應商，而不論傳輸地點是否在香港。
     3) 如閣下不欲提供相關個人資料，則將影響閣下參加是次活動或取得主辦單位活動參與之權益。<br>
@@ -28,8 +29,8 @@ let htmlMail = `<h1>真開心您對我們下個月的藝術活動有興趣</h1>
     敗、中斷、攔截、暫停、斯詐或違反保安事項；或本公司控制範圍內的任可原因，對所產生的任何損失、損害
     賠償或索償，向參加者或任何第三方負責或承擔任何責任。參加者同意並承諾，不會為參加此活動而招致的任
     何損失、損害或開支，包括但不限於參加者的資料、軟件、電腦、電話、電子產品、電訊設備或其他設備的任
-    何損失或損害，要求本公司負責或承擔任何責任。</p>
-<h4 >我們非常期待在藝術TALK TO TALK見到您！</h4>`
+    何損失或損害，要求本公司負責或承擔任何責任。</small>
+`
 
 
 
@@ -57,7 +58,7 @@ router.post('/', (req, res, next) => {
         from: 'artddict.now@gmail.com',
         to: req.body.email,
         subject: "非常感謝的你來信",
-        text: htmlMail,
+        html:htmlMail,
       };
      
       transporter.sendMail(mailOptions, function (err, data) {
