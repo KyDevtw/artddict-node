@@ -1,3 +1,7 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken')
+TOKEN_SECRET='djlldl9879043fd54634ldke645645sdlfjgd'
+
 const express = require('express')
 const router = express.Router()
 
@@ -126,6 +130,75 @@ async function userLogin(sql, req, res, instance) {
   }
 }
 
+//登入頁面的login 驗證
+router.post('/login', async(req, res)=>{
+
+  //傳給客戶端訊息
+const output={
+  // 登入成功
+  success:false,
+  //帳密都錯
+  code:0,
+  error:'沒有 account 或沒有 password 欄位',
+  //除錯的檢查
+  // body: req.body,
+  body: req.body,
+  id:""
+
+}
+
+if(!req.body.username || !req.body.password){
+  return res.json(output);
+}
+// console.log(req.body.username)
+const [ members ] = await dbMysql2.promisePool.query("SELECT * FROM users WHERE `username`=?", [req.body.username]);
+console.log("是你嗎",[members])
+if(! members.length) {
+  output.code = 401;
+  output.error = "帳號或密碼錯誤(沒有此帳號)";
+  return res.json(output);
+}
+
+const member = members[0];
+console.log(member)
+// 驗證密碼 bcrypt.compare
+const result = await bcrypt.compare(req.body.password, member.password);
+if(! result) {
+  output.code = 405;
+  output.error = "帳號或密碼錯誤(密碼錯誤)";
+  return res.json(output);
+}
+
+const {id, email, name} = member;
+// req.session.member = {id, email, nickname};  // 使用 session
+console.log('id',id)
+// output.token = jwt.sign({id, email, name}, process.env.TOKEN_SECRET,{ expiresIn: '180000'}); // 三分鐘過期
+output.token = jwt.sign({id, email, name}, TOKEN_SECRET);
+output.success = true;
+output.error = '';
+output.code = 200;
+output.body = member;
+output.id = id; //如果不要把id傳到前面 就把這行刪掉
+
+res.json(output);
+});
+
+
+//在各個頁面用來驗證的checklogin
+
+router.post('/checklogin', function (req, res, next) {
+  let payload;
+    try {
+        payload = jwt.verify(req.body.token, TOKEN_SECRET);
+        return res.json(payload);
+    } catch(ex) {
+        return res.json({
+            error: ex.toString()
+        });
+    }
+  })
+
+
 // 以下為路由
 
 // 處理會員登入
@@ -157,25 +230,25 @@ router.get('/logout', function (req, res, next) {
 })
 
 // 檢查是否登入
-router.get('/checklogin', function (req, res, next) {
-  const sess = req.session
-  console.log(sess)
-  const id = sess.loginId
-  const username = sess.loginUsername
-  const name = sess.loginName
-  const createDate = sess.loginCreatedDate
+// router.get('/checklogin', function (req, res, next) {
+//   const sess = req.session
+//   console.log(sess)
+//   const id = sess.loginId
+//   const username = sess.loginUsername
+//   const name = sess.loginName
+//   const createDate = sess.loginCreatedDate
 
-  console.log("request sid=" + sess.loginId);
-  console.log("requset request cookie=" + req.headers.cookie);
-  const isLogined = !!name
+//   console.log("request sid=" + sess.loginId);
+//   console.log("requset request cookie=" + req.headers.cookie);
+//   const isLogined = !!name
 
-  if (isLogined) {
-    res.status(200).json({ id, name, username,  createDate })
-  } else {
-    // 登出狀態時回傳`{id:0}`
-    res.status(200).json({ id: 0 })
-  }
-})
+//   if (isLogined) {
+//     res.status(200).json({ id, name, username,  createDate })
+//   } else {
+//     // 登出狀態時回傳`{id:0}`
+//     res.status(200).json({ id: 0 })
+//   }
+// })
 
 // get 處理獲取全部的資料列表
 // AND查詢加入`?name=eddy&email=XXX&username=XXXX
@@ -213,14 +286,20 @@ router.get('/getTicket/:userId', (req, res, next) => {
 })
 
 
+// get 獲取票券細節，使用eventId
+router.get('/getTicketDetail/:id?', (req, res, next) => {
+  executeSQL(User.getUserTicketDetailByEventIdSQL(req.params.id), res, 'get', true)
+})
+
+
 // get 獲取我的收藏，使用會員id
 router.get('/userFav/:userId', (req, res, next) => {
   executeSQL(User.getUserFavByIdSQL(req.params.userId), res, 'get', true)
 })
 
-//delete 刪除一筆會員收藏
-router.delete('userFav/:userId', (req, res, next) => {
-  executeSQL(User.deleteUserFavByIdSQL(req.params.userId), res, 'delete', false)
+//delete 刪除一筆會員收藏，使用eventId
+router.delete('/userFavDelete/:id?', (req, res, next) => {
+  executeSQL(User.deleteUserFavByIdSQL(req.params.id), res, 'delete', false)
 })
 
 

@@ -55,7 +55,7 @@ class NewsComm {
   // }
 
   static getAllNewsSQL() {
-    let sql = `SELECT * FROM news_comment `;
+    let sql = `SELECT * FROM news_comment order by creates_at DESC`;
     return sql;
   }
 }
