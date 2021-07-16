@@ -197,9 +197,14 @@ router.get('/getOrder/:userId', (req, res, next) => {
   executeSQL(User.getUserOrderByIdSQL(req.params.userId), res, 'get', true)
 })
 
-// get 獲取訂單細節，使用orderid
-router.get('/getOrderdetail/:id?', (req, res, next) => {
-  executeSQL(User.getUserOrderDetailByOrderIdSQL(req.params.id), res, 'get', true)
+// get 獲取商品訂單細節，使用orderid
+router.get('/getOrderProDetail/:id?', (req, res, next) => {
+  executeSQL(User.getUserOrderProDetailByOrderIdSQL(req.params.id), res, 'get', true)
+})
+
+// get 獲取票券訂單細節，使用orderid
+router.get('/getOrderTicDetail/:id?', (req, res, next) => {
+  executeSQL(User.getUserOrderTicDetailByOrderIdSQL(req.params.id), res, 'get', true)
 })
 
 // get 獲取票券，使用會員id
