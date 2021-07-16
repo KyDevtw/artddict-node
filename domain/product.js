@@ -285,6 +285,236 @@ class product {
     }
   }
 
+  static getproductCountSQL(query) {
+    let sql2 = "";
+
+    switch (query.category) {
+      case "allproduct":
+        sql2 = `SELECT COUNT(1) num FROM product`;
+        break;
+      case "newarrival":
+        sql2 = `SELECT COUNT(1) num FROM product WHERE proHotNew  = "1"`;
+        break;
+      case "hotproduct":
+        sql2 = `SELECT COUNT(1) num FROM  product WHERE proHotNew  = "2"`;
+        break;
+      case "books":
+        sql2 = `SELECT COUNT(1) num FROM product WHERE proClass = "C01"`;
+        break;
+      case "furniture":
+        sql2 = `SELECT COUNT(1) num FROM product WHERE proClass = "C02"`;
+        break;
+      case "clothes":
+        sql2 = `SELECT COUNT(1) num FROM product WHERE proClass = "C03"`;
+        break;
+      case "accessories":
+        sql2 = `SELECT COUNT(1) num FROM product WHERE proClass = "C04"`;
+        break;
+      case "stationery":
+        sql2 = `SELECT COUNT(1) num FROM product WHERE proClass = "C05"`;
+        break;
+      case "casual":
+        sql2 = `SELECT COUNT(1) num FROM product WHERE proClass = "C06"`;
+        break;
+      default:
+        sql2 = "";
+        // sql = `SELECT * FROM product`;
+        break;
+    }
+
+    const where = [];
+
+    if (query.search) where.push(`proName LIKE '%${query.search}%'`);
+
+    if (sql2 == "SELECT COUNT(1) num FROM product") {
+      if (where.length) {
+        sql2 += ` WHERE ` + where;
+        console.log("All");
+      }
+    }
+
+    if (sql2 !== "") {
+      if (where.length) {
+        sql2 += ` AND ` + where;
+        console.log("456");
+      }
+    }
+
+    if (sql2 === "") {
+      if (where.length) {
+        sql2 += `SELECT COUNT(1) num FROM product WHERE ` + where;
+        console.log("123");
+      }
+    }
+
+    if (sql2 == "SELECT COUNT(1) num FROM product") {
+      if (query.priceRange === "[0,0]") {
+        sql2 += " WHERE `proPrice` BETWEEN 0 AND 0 ";
+      }
+      if (query.priceRange === "[0,2000]") {
+        sql2 += " WHERE `proPrice` BETWEEN 0 AND 2000 ";
+      }
+      if (query.priceRange === "[0,4000]") {
+        sql2 += " WHERE `proPrice` BETWEEN 0 AND 4000 ";
+      }
+      if (query.priceRange === "[0,6000]") {
+        sql2 += " WHERE `proPrice` BETWEEN 0 AND 6000 ";
+      }
+      if (query.priceRange === "[0,8000]") {
+        sql2 += " WHERE `proPrice` BETWEEN 0 AND 8000 ";
+      }
+      if (query.priceRange === "[2000,2000]") {
+        sql2 += " WHERE `proPrice` BETWEEN 2000 AND 2000 ";
+      }
+      if (query.priceRange === "[2000,4000]") {
+        sql2 += " WHERE `proPrice` BETWEEN 2000 AND 4000 ";
+      }
+      if (query.priceRange === "[2000,6000]") {
+        sql2 += " WHERE `proPrice` BETWEEN 2000 AND 6000 ";
+      }
+      if (query.priceRange === "[2000,8000]") {
+        sql2 += " WHERE `proPrice` BETWEEN 2000 AND 8000 ";
+      }
+      if (query.priceRange === "[4000,4000]") {
+        sql2 += " WHERE `proPrice` BETWEEN 4000 AND 4000 ";
+      }
+      if (query.priceRange === "[4000,6000]") {
+        sql2 += " WHERE `proPrice` BETWEEN 4000 AND 6000 ";
+      }
+      if (query.priceRange === "[4000,8000]") {
+        sql2 += " WHERE `proPrice` BETWEEN 4000 AND 8000 ";
+      }
+      if (query.priceRange === "[6000,8000]") {
+        sql2 += " WHERE `proPrice` BETWEEN 6000 AND 8000 ";
+      }
+      if (query.priceRange === "[8000,8000]") {
+        sql2 += " WHERE `proPrice` BETWEEN 8000 AND 8000 ";
+      }
+    }
+
+    if (sql2 !== "") {
+      if (query.priceRange === "[0,0]") {
+        sql2 += " AND `proPrice` BETWEEN 0 AND 0 ";
+      }
+      if (query.priceRange === "[0,2000]") {
+        sql2 += " AND `proPrice` BETWEEN 0 AND 2000 ";
+      }
+      if (query.priceRange === "[0,4000]") {
+        sql2 += " AND `proPrice` BETWEEN 0 AND 4000 ";
+      }
+      if (query.priceRange === "[0,6000]") {
+        sql2 += " AND `proPrice` BETWEEN 0 AND 6000 ";
+      }
+      if (query.priceRange === "[0,8000]") {
+        sql2 += " AND `proPrice` BETWEEN 0 AND 8000 ";
+      }
+      if (query.priceRange === "[2000,2000]") {
+        sql2 += " AND `proPrice` BETWEEN 2000 AND 2000 ";
+      }
+      if (query.priceRange === "[2000,4000]") {
+        sql2 += " AND `proPrice` BETWEEN 2000 AND 4000 ";
+      }
+      if (query.priceRange === "[2000,6000]") {
+        sql2 += " AND `proPrice` BETWEEN 2000 AND 6000 ";
+      }
+      if (query.priceRange === "[2000,8000]") {
+        sql2 += " AND `proPrice` BETWEEN 2000 AND 8000 ";
+      }
+      if (query.priceRange === "[4000,4000]") {
+        sql2 += " AND `proPrice` BETWEEN 4000 AND 4000 ";
+      }
+      if (query.priceRange === "[4000,6000]") {
+        sql2 += " AND `proPrice` BETWEEN 4000 AND 6000 ";
+      }
+      if (query.priceRange === "[4000,8000]") {
+        sql2 += " AND `proPrice` BETWEEN 4000 AND 8000 ";
+      }
+      if (query.priceRange === "[6000,8000]") {
+        sql2 += " AND `proPrice` BETWEEN 6000 AND 8000 ";
+      }
+      if (query.priceRange === "[8000,8000]") {
+        sql2 += " AND `proPrice` BETWEEN 8000 AND 8000 ";
+      }
+    }
+
+    if (sql2 === "") {
+      if (query.priceRange === "[0,0]") {
+        sql2 +=
+          "SELECT COUNT(1) num FROM product WHERE `proPrice` BETWEEN 0 AND 0 ";
+      }
+      if (query.priceRange === "[0,2000]") {
+        sql2 +=
+          "SELECT COUNT(1) num FROM product WHERE `proPrice` BETWEEN 0 AND 2000 ";
+      }
+      if (query.priceRange === "[0,4000]") {
+        sql2 +=
+          "SELECT COUNT(1) num FROM product WHERE `proPrice` BETWEEN 0 AND 4000 ";
+      }
+      if (query.priceRange === "[0,6000]") {
+        sql2 +=
+          "SELECT COUNT(1) num FROM product WHERE `proPrice` BETWEEN 0 AND 6000 ";
+      }
+      if (query.priceRange === "[0,8000]") {
+        sql2 +=
+          "SELECT COUNT(1) num FROM product WHERE `proPrice` BETWEEN 0 AND 8000 ";
+      }
+      if (query.priceRange === "[2000,2000]") {
+        sql2 +=
+          "SELECT COUNT(1) num FROM product WHERE `proPrice` BEWEEN 2000 AND 2000 ";
+      }
+      if (query.priceRange === "[2000,4000]") {
+        sql2 +=
+          "SELECT COUNT(1) num FROM product WHERE `proPrice` BETWEEN 2000 AND 4000 ";
+      }
+      if (query.priceRange === "[2000,6000]") {
+        sql2 +=
+          "SELECT COUNT(1) num FROM product WHERE `proPrice` BETWEEN 2000 AND 6000 ";
+      }
+      if (query.priceRange === "[2000,8000]") {
+        sql2 +=
+          "SELECT COUNT(1) num FROM product WHERE `proPrice` BETWEEN 2000 AND 8000 ";
+      }
+      if (query.priceRange === "[4000,4000]") {
+        sql2 +=
+          "SELECT COUNT(1) num FROM product WHERE `proPrice` BETWEEN 4000 AND 4000 ";
+      }
+      if (query.priceRange === "[4000,6000]") {
+        sql2 +=
+          "SELECT COUNT(1) num FROM product WHERE `proPrice` BETWEEN 4000 AND 6000 ";
+      }
+      if (query.priceRange === "[4000,8000]") {
+        sql2 +=
+          "SELECT COUNT(1) num FROM product WHERE `proPrice` BETWEEN 4000 AND 8000 ";
+      }
+      if (query.priceRange === "[6000,8000]") {
+        sql2 +=
+          "SELECT COUNT(1) num FROM product WHERE `proPrice` BETWEEN 6000 AND 8000 ";
+      }
+      if (query.priceRange === "[8000,8000]") {
+        sql2 +=
+          "SELECT COUNT(1) num FROM product WHERE `proPrice` BETWEEN 8000 AND 8000 ";
+      }
+    }
+
+    if (sql2 !== "") {
+      if (query.arrangement === "highToLow") sql2 += ` ORDER BY proPrice DESC`;
+      if (query.arrangement === "lowToHigh") sql2 += ` ORDER BY proPrice ASC`;
+      console.log("995");
+    }
+
+    if (sql2 === "") {
+      if (query.arrangement === "highToLow") {
+        sql2 = `SELECT COUNT(1) num FROM product ORDER BY proPrice DESC`;
+      }
+      if (query.arrangement === "lowToHigh") {
+        sql2 = `SELECT COUNT(1) num FROM product ORDER BY proPrice ASC`;
+      }
+      console.log("789");
+    }
+
+    return sql2;
+  }
+
   static getPriceSearchByQuerySQL(query) {
     console.log("heool");
     const where = [];

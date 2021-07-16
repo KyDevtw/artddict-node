@@ -8,6 +8,7 @@ const router = express.Router();
 // mysql2 async-await用的
 const dbMysql2 = require("../db/database");
 const product = require("../domain/product.js");
+const { result } = require("lodash");
 
 // 執行sql用的async-await的函式
 // sql 執行用的sql
@@ -66,6 +67,38 @@ async function executeSQL(
         }
         break;
     }
+  } catch (error) {
+    // 錯誤處理
+    console.log(error);
+
+    // 顯示錯誤於json字串
+    res.status(200).json({
+      message: error,
+    });
+  }
+}
+
+// !! For 分頁頁碼
+
+async function executeSQLForPage(sql, sql2, res) {
+  try {
+    const [rows, fields] = await dbMysql2.promisePool.query(sql);
+    const [rows2, fields2] = await dbMysql2.promisePool.query(sql2);
+
+    let result = {};
+    if (rows2.length) result = rows2[0];
+
+    //  每頁9筆資料
+    const perPage = 9;
+
+    // 總頁數,ceil()為無條件進位
+    const totalPages = Math.ceil(result.num / perPage);
+
+    res.status(200).json({
+      productData: rows,
+      totalCount: result,
+      totalPages: totalPages,
+    });
   } catch (error) {
     // 錯誤處理
     console.log(error);
@@ -168,13 +201,16 @@ router.get("/", (req, res, next) => {
   //   else executeSQL(User.getUserByQuerySQL(req.query), res);
 });
 router.get(
-  "/productArr/:category?/:search?/:priceRange?/:arrangement?",
+  "/productArr/:category?/:search?/:priceRange?/:arrangement?/:page?",
   (req, res, next) => {
-    console.log("HELLO");
-    console.log(req.query);
-    if (!Object.keys(req.query).length)
-      executeSQL(product.getAllProductSQL(), res);
-    else executeSQL(product.getClassesByQuerySQL(req.query), res);
+    // if (!Object.keys(req.query).length)
+    //   executeSQL(product.getAllProductSQL(), res);
+    // else executeSQL(product.getClassesByQuerySQL(req.query), res);
+    const productData = executeSQLForPage(
+      product.getClassesByQuerySQL(req.query),
+      product.getproductCountSQL(req.query),
+      res
+    );
   }
 );
 router.get("/product-list/:id?", (req, res, next) => {
