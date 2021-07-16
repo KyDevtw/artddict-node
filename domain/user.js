@@ -117,8 +117,8 @@ class User {
 
 
   // delete 會員收藏
-  static deleteUserFavByIdSQL(eventId) {
-      let sql = `DELETE FROM user_favorite WHERE eventId = ${eventId}`
+  static deleteUserFavByIdSQL(id) {
+      let sql = `DELETE FROM user_favorite WHERE eventId = ${id}`
       return sql
     }
   
