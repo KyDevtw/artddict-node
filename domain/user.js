@@ -55,10 +55,18 @@ class User {
     return sql
   }
 
-  updatePwdByIdSQL(id) {
-    console.log(`pwd received = ${this.password}`)
+  // updatePwdByIdSQL(id) {
+  //   console.log(`pwd received = ${this.password}`)
+  //   let sql = `UPDATE USERS \
+  //              SET password = '${this.password}', login = ${this.login} \
+  //              WHERE id =  ${id}`
+  //   return sql
+  // }
+
+  updatePwdByIdSQL(id,passwordhash) {
+    console.log(`pwd received = ${passwordhash}`)
     let sql = `UPDATE USERS \
-               SET password = '${this.password}', login = ${this.login} \
+               SET password = '${passwordhash}', login = ${this.login} \
                WHERE id =  ${id}`
     return sql
   }
