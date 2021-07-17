@@ -14,9 +14,10 @@ class User {
     this.login = 0;
   }
 
-  addUserSQL() {
+  addUserSQL(username,name,passwordhash) {
     let sql = `INSERT INTO USERS(username, name, password, login, createdDate) \
-                   VALUES('${this.username}', '${this.name}', '${this.password}',  0, NOW())`
+                   VALUES('${username}', '${name}', '${passwordhash}',  0, NOW())`
+    console.log("sql",sql)
     return sql
   }
 
