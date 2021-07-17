@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
-TOKEN_SECRET='djlldl9879043fd54634ldke645645sdlfjgd'
+TOKEN_SECRET = 'djlldl9879043fd54634ldke645645sdlfjgd'
 
 const express = require('express')
 const router = express.Router()
@@ -103,14 +103,14 @@ async function userLogin(sql, req, res, instance) {
 
         // 如果要用全訊息可以用以下的回傳
         // res.json({ status: 0, message: '登入成功' })
-        
+
         // ~~cookie test~~
         // res.cookie('loginId', result.id, { signed: true, maxAge: 600000 });  //set cookie
         // res.cookie('loginName', result.name, { signed: true, maxAge: 600000 });  //set cookie
         // res.cookie('loginUsername', result.username, { signed: true, maxAge: 600000 });  //set cookie
         // res.cookie('loginCreatedDate', result.createDate, { signed: true, maxAge:600000});  //set cookie
         // ~~cookie test~~
-        console.log("created sid="+req.session.id);
+        console.log("created sid=" + req.session.id);
         // res.status(200).json(result)
         res.status(200).json(result)
       })
@@ -131,56 +131,56 @@ async function userLogin(sql, req, res, instance) {
 }
 
 //登入頁面的login 驗證
-router.post('/login', async(req, res)=>{
+router.post('/login', async (req, res) => {
 
   //傳給客戶端訊息
-const output={
-  // 登入成功
-  success:false,
-  //帳密都錯
-  code:0,
-  error:'沒有 account 或沒有 password 欄位',
-  //除錯的檢查
-  // body: req.body,
-  body: req.body,
-  id:""
+  const output = {
+    // 登入成功
+    success: false,
+    //帳密都錯
+    code: 0,
+    error: '沒有 account 或沒有 password 欄位',
+    //除錯的檢查
+    // body: req.body,
+    body: req.body,
+    id: ""
 
-}
+  }
 
-if(!req.body.username || !req.body.password){
-  return res.json(output);
-}
-// console.log(req.body.username)
-const [ members ] = await dbMysql2.promisePool.query("SELECT * FROM users WHERE `username`=?", [req.body.username]);
-console.log("是你嗎",[members])
-if(! members.length) {
-  output.code = 401;
-  output.error = "帳號或密碼錯誤(沒有此帳號)";
-  return res.json(output);
-}
+  if (!req.body.username || !req.body.password) {
+    return res.json(output);
+  }
+  // console.log(req.body.username)
+  const [members] = await dbMysql2.promisePool.query("SELECT * FROM users WHERE `username`=?", [req.body.username]);
+  console.log("是你嗎", [members])
+  if (!members.length) {
+    output.code = 401;
+    output.error = "帳號或密碼錯誤(沒有此帳號)";
+    return res.json(output);
+  }
 
-const member = members[0];
-console.log(member)
-// 驗證密碼 bcrypt.compare
-const result = await bcrypt.compare(req.body.password, member.password);
-if(! result) {
-  output.code = 405;
-  output.error = "帳號或密碼錯誤(密碼錯誤)";
-  return res.json(output);
-}
+  const member = members[0];
+  console.log(member)
+  // 驗證密碼 bcrypt.compare
+  const result = await bcrypt.compare(req.body.password, member.password);
+  if (!result) {
+    output.code = 405;
+    output.error = "帳號或密碼錯誤(密碼錯誤)";
+    return res.json(output);
+  }
 
-const {id, email, name} = member;
-// req.session.member = {id, email, nickname};  // 使用 session
-console.log('id',id)
-// output.token = jwt.sign({id, email, name}, process.env.TOKEN_SECRET,{ expiresIn: '180000'}); // 三分鐘過期
-output.token = jwt.sign({id, email, name}, TOKEN_SECRET);
-output.success = true;
-output.error = '';
-output.code = 200;
-output.body = member;
-output.id = id; //如果不要把id傳到前面 就把這行刪掉
+  const { id, email, name } = member;
+  // req.session.member = {id, email, nickname};  // 使用 session
+  console.log('id', id)
+  // output.token = jwt.sign({id, email, name}, process.env.TOKEN_SECRET,{ expiresIn: '180000'}); // 三分鐘過期
+  output.token = jwt.sign({ id, email, name }, TOKEN_SECRET);
+  output.success = true;
+  output.error = '';
+  output.code = 200;
+  output.body = member;
+  output.id = id; //如果不要把id傳到前面 就把這行刪掉
 
-res.json(output);
+  res.json(output);
 });
 
 
@@ -188,15 +188,15 @@ res.json(output);
 
 router.post('/checklogin', function (req, res, next) {
   let payload;
-    try {
-        payload = jwt.verify(req.body.token, TOKEN_SECRET);
-        return res.json(payload);
-    } catch(ex) {
-        return res.json({
-            error: ex.toString()
-        });
-    }
-  })
+  try {
+    payload = jwt.verify(req.body.token, TOKEN_SECRET);
+    return res.json(payload);
+  } catch (ex) {
+    return res.json({
+      error: ex.toString()
+    });
+  }
+})
 
 
 // 以下為路由
@@ -305,19 +305,23 @@ router.delete('/userFavDelete/:id?', (req, res, next) => {
 
 
 // post 新增一筆會員資料
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
   // 測試response，會自動解析為物件
   // console.log(typeof req.body)
   // console.log(req.body)
-
+  let passwordhash = ''
+  await bcrypt.hash(req.body.password, 11)
+    .then(hash => {
+      passwordhash = hash
+    });
   //從request json 資料建立新的物件
   let user = new User(
     req.body.username,
     req.body.name,
-    req.body.password,
+    passwordhash,
   )
 
-  executeSQL(user.addUserSQL(), res, 'post', false, user)
+  executeSQL(user.addUserSQL(req.body.username,req.body.name,passwordhash), res, 'post', false, user)
 })
 
 //delete 刪除一筆資料
@@ -330,7 +334,7 @@ router.put('/:userId', (req, res) => {
   let user = new User(
     req.body.username,
     req.body.name,
-   'password',
+    'password',
     req.body.gender,
     req.body.mobile,
     req.body.birthday,
@@ -346,7 +350,7 @@ router.put('/:userId', (req, res) => {
   catch {
     console.log(`failed to execute!!`)
     console.log(`${sql_cmd}`)
-    
+
   }
 })
 
