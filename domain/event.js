@@ -153,14 +153,17 @@ class Event {
     return sql;
   }
 
-
   // TODO:會員新增最愛活動區塊
+
+  static getUserFavSQL(userId) {
+    let sql = `SELECT * FROM user_favorite  WHERE userId = ${userId}`;
+    return sql;
+  }
+
   addFavSQL() {
     let sql = `INSERT INTO user_favorite(userId, eventId) VALUES ('${this.userId}', '${this.eventId}')`;
     return sql;
   }
-
-
 }
 
 

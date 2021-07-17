@@ -293,6 +293,10 @@ router.post('/uploadPic', async (req, res) => {
 
 
 
+// TODO:確認是否新增至Fav
+router.get("/isEventFav/:userId?", (req, res, next) => {
+  executeSQL(Event.getUserFavSQL(req.params.userId), res, "get", true);
+});
 
 // delete 刪除一筆資料
 router.delete("/delete/:id?", (req, res, next) => {
@@ -378,9 +382,6 @@ router.post("/eventFav", (req, res, next) => {
 
   executeSQL(event.addFavSQL(), res, "post", false, event);
 });
-
-
-
 
 
 //export default router
