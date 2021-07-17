@@ -1,14 +1,15 @@
 class OrderDetails {
-  constructor(orderId, orderQty, proId) {
+  constructor(orderId, orderQty, proId, orderSpec) {
     this.id = 0
     this.orderId = orderId
     this.orderQty = orderQty
     this.proId = proId
+    this.orderSpec = orderSpec
   }
 
   addOrderDetailsSQL() {
-    let sql = `INSERT INTO ORDER_DETAILS(orderId, orderQty, proId) \
-                     VALUES('${this.orderId}', '${this.orderQty}', '${this.proId}')`
+    let sql = `INSERT INTO ORDER_DETAILS(orderId, orderQty, proId, orderSpec) \
+                     VALUES('${this.orderId}', '${this.orderQty}', '${this.proId}', '${this.orderSpec}')`
     console.log(sql)
     return sql
   }
