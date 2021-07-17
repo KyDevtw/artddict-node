@@ -357,7 +357,25 @@ router.put('/:userId', (req, res) => {
 
 
 // put 更新密碼
-router.put('/pwd/:userId', (req, res) => {
+// router.put('/pwd/:userId', (req, res) => {
+
+//   let user = new User(
+//     'username',
+//     'name',
+//     req.body.password,
+//     'gender',
+//     'mobile',
+//     'birthday',
+//     'address',
+//   )
+
+//   // id值為數字
+//   user.id = +req.params.userId
+
+//   executeSQL(user.updatePwdByIdSQL(req.params.userId), res, 'put', false, user)
+// })
+
+router.put('/pwd/:userId', async (req, res) => {
 
   let user = new User(
     'username',
@@ -369,10 +387,16 @@ router.put('/pwd/:userId', (req, res) => {
     'address',
   )
 
+  let passwordhash = ''
+  await bcrypt.hash(req.body.password, 11)
+    .then(hash => {
+      passwordhash = hash
+    });
+
   // id值為數字
   user.id = +req.params.userId
 
-  executeSQL(user.updatePwdByIdSQL(req.params.userId), res, 'put', false, user)
+  executeSQL(user.updatePwdByIdSQL(req.params.userId,passwordhash), res, 'put', false, user)
 })
 
 //export default router
