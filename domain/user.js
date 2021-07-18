@@ -96,25 +96,25 @@ class User {
 
   // get 會員-商品訂單細節 by userId
   static getUserOrderProDetailByOrderIdSQL(orderid) {
-    let sql = `SELECT orders.orderPay, orders.cardNumber, orders.cardExpdate, orders.orderPrice, orders.username, orders.userPhone, orders.userAddress, orders.orderShip,  product.proImg, product.proName, product.proId, product.id, order_details.orderSpec, order_details.orderQty FROM orders LEFT JOIN order_details ON orders.orderId = order_details.orderId LEFT JOIN product ON order_details.proId = product.proId LEFT JOIN users ON orders.userId = users.id WHERE orders.orderId = ${orderid}`
+    let sql = `SELECT orders.orderPay, orders.cardNumber, orders.cardExpdate, orders.orderPrice, users.name, orders.userPhone, orders.userAddress, orders.orderShip,  product.proImg, product.proName, product.proId, product.id, order_details.orderSpec, order_details.orderQty FROM orders LEFT JOIN order_details ON orders.orderId = order_details.orderId LEFT JOIN product ON order_details.proId = product.proId LEFT JOIN users ON orders.userId = users.id WHERE orders.orderId = ${orderid}`
     return sql
   }
 
   // get 會員-票卷訂單細節 by orderId
   static getUserOrderTicDetailByOrderIdSQL(orderid) {
-    let sql = `SELECT orders.orderPay, orders.cardNumber, orders.cardExpdate, orders.orderPrice, orders.username, orders.userPhone, orders.userAddress, orders.orderShip, event.eventImg, event.eventName, event.eventId, order_details.orderSpec, order_details.orderQty FROM orders LEFT JOIN order_details ON orders.orderId = order_details.orderId LEFT JOIN event ON order_details.eventId = event.eventId LEFT JOIN users ON orders.userId = users.id WHERE orders.orderId = ${orderid}`
+    let sql = `SELECT orders.orderPay, orders.cardNumber, orders.cardExpdate, orders.orderPrice, users.name, orders.userPhone, orders.userAddress, orders.orderShip, event.eventImg, event.eventName, event.eventId, order_details.orderSpec, order_details.orderQty FROM orders LEFT JOIN order_details ON orders.orderId = order_details.orderId LEFT JOIN event ON order_details.eventId = event.eventId LEFT JOIN users ON orders.userId = users.id WHERE orders.orderId = ${orderid}`
     return sql
   }
 
   // get 會員票券
   static getUserTicketByIdSQL(id) {
-    let sql = `SELECT event.eventImg, event.eventId, event.eventName,order_details.orderQty, event.eventDateStart, event.eventDateEnd ,event.id FROM event LEFT JOIN order_details ON event.eventId = order_details.eventId LEFT JOIN orders ON order_details.orderId = orders.orderId LEFT JOIN users ON orders.userId = users.id WHERE users.id = ${id}`
+    let sql = `SELECT event.eventId, event.eventImg, event.eventName,order_details.orderQty, event.eventDateStart, event.eventDateEnd ,event.id FROM event LEFT JOIN order_details ON event.eventId = order_details.eventId LEFT JOIN orders ON order_details.orderId = orders.orderId LEFT JOIN users ON orders.userId = users.id WHERE users.id = ${id}`
     return sql
   }
 
   // get 票券細節
-  static getUserTicketDetailByEventIdSQL(eventId) {
-    let sql = `SELECT event.eventName, order_details.orderSpec FROM event LEFT JOIN order_details ON event.eventId = order_details.eventId LEFT JOIN orders ON order_details.orderId = orders.orderId LEFT JOIN users ON orders.userId = users.id WHERE event.eventId = ${eventId}`
+  static getUserTicketDetailByEventIdSQL(id) {
+    let sql = `SELECT event.eventName, order_details.orderSpec FROM event LEFT JOIN order_details ON event.eventId = order_details.eventId LEFT JOIN orders ON order_details.orderId = orders.orderId LEFT JOIN users ON orders.userId = users.id WHERE order_details.eventId = ${id}`
     return sql
   }
 
