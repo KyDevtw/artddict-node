@@ -85,7 +85,8 @@ router.post('/order_details', (req, res, next) => {
     req.body.orderid,
     req.body.orderqty,
     req.body.proid,
-    req.body.orderspec
+    req.body.orderspec,
+    req.body.eventid
   )
   console.log(orderdetails)
   executeSQL(orderdetails.addOrderDetailsSQL(), res, 'post', false)
