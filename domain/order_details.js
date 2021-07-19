@@ -1,16 +1,17 @@
 class OrderDetails {
-  constructor(orderId, orderQty, proId, orderSpec, eventId) {
+  constructor(orderId, orderSpec, orderQty, eventId, proId, aucId) {
     this.id = 0
     this.orderId = orderId
-    this.orderQty = orderQty
-    this.proId = proId
     this.orderSpec = orderSpec
+    this.orderQty = orderQty
     this.eventId = eventId
+    this.proId = proId
+    this.aucId = aucId
   }
 
   addOrderDetailsSQL() {
-    let sql = `INSERT INTO ORDER_DETAILS(orderId, orderQty, proId, orderSpec, eventId) \
-                     VALUES('${this.orderId}', '${this.orderQty}', '${this.proId}', '${this.orderSpec}', '${this.eventId}')`
+    let sql = `INSERT INTO ORDER_DETAILS(orderId, orderSpec, orderQty, eventId, proId, aucId) \
+                     VALUES('${this.orderId}', '${this.orderSpec}', '${this.orderQty}', '${this.eventId}', '${this.proId}', '${this.aucId}')`
     console.log(sql)
     return sql
   }
