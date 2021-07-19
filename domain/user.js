@@ -87,22 +87,27 @@ class User {
   }
 
   
-  // get 會員訂單
-  static getUserOrderByIdSQL(id) {
-    let sql = `SELECT orders.orderId, orders.created_at, orders.orderPrice, orders.orderStatus FROM orders JOIN users ON orders.userId = users.id WHERE users.id = ${id}`
+  // get 會員商品訂單
+  static getUserProOrderByIdSQL(id) {
+    let sql = `SELECT orders.orderId , orders.created_at, orders.orderPrice, orders.orderStatus FROM orders  LEFT JOIN users ON orders.userId = users.id WHERE users.id = ${id} AND orders.orderType = 'a'`
+    return sql
+  }
+
+   // get 會員票卷訂單
+   static getUserTicOrderByIdSQL(id) {
+    let sql = `SELECT orders.orderId, orders.created_at, orders.orderPrice, orders.orderStatus FROM orders JOIN users ON orders.userId = users.id  WHERE users.id = ${id} AND orders.orderType = 'b'`
     return sql
   }
 
 
-  // get 會員-商品訂單細節 by userId
   static getUserOrderProDetailByOrderIdSQL(orderid) {
-    let sql = `SELECT orders.orderPay, orders.cardNumber, orders.cardExpdate, orders.orderPrice, users.name, orders.userPhone, orders.userAddress, orders.orderShip,  product.proImg, product.proName, product.proId, product.id, order_details.orderSpec, order_details.orderQty FROM orders LEFT JOIN order_details ON orders.orderId = order_details.orderId LEFT JOIN product ON order_details.proId = product.proId LEFT JOIN users ON orders.userId = users.id WHERE orders.orderId = ${orderid}`
+    let sql = `SELECT orders.orderPay,orders.cardNumber,orders.cardExpdate, orders.orderPrice, users.name, orders.userPhone, orders.userAddress, orders.orderShip, product.proId, product.proName, product.proImg, product.id, order_details.orderSpec, order_details.orderQty FROM product LEFT JOIN order_details ON product.proId = order_details.proId LEFT	JOIN orders ON order_details.orderId = orders.orderId LEFT JOIN users ON orders.userId = users.id WHERE order_details.orderId = ${orderid}`
     return sql
   }
 
   // get 會員-票卷訂單細節 by orderId
   static getUserOrderTicDetailByOrderIdSQL(orderid) {
-    let sql = `SELECT orders.orderPay, orders.cardNumber, orders.cardExpdate, orders.orderPrice, users.name, orders.userPhone, orders.userAddress, orders.orderShip, event.eventImg, event.eventName, event.eventId, order_details.orderSpec, order_details.orderQty FROM orders LEFT JOIN order_details ON orders.orderId = order_details.orderId LEFT JOIN event ON order_details.eventId = event.eventId LEFT JOIN users ON orders.userId = users.id WHERE orders.orderId = ${orderid}`
+    let sql = `SELECT orders.orderPay, orders.cardNumber, orders.cardExpdate, orders.orderPrice, users.name, orders.userPhone, orders.userAddress, orders.orderShip, event.eventId, event.eventName, event.eventImg, event.id, order_details.orderSpec, order_details.orderQty FROM event LEFT JOIN order_details ON event.eventId = order_details.eventId LEFT JOIN orders ON order_details.orderId = orders.orderId LEFT JOIN users ON orders.userId = users.id WHERE order_details.orderId = ${orderid}`
     return sql
   }
 

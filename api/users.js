@@ -265,9 +265,14 @@ router.get('/:userId', (req, res, next) => {
 })
 
 
-// get 獲取訂單，使用會員id
-router.get('/getOrder/:userId', (req, res, next) => {
-  executeSQL(User.getUserOrderByIdSQL(req.params.userId), res, 'get', true)
+// get 獲取商品訂單，使用會員id
+router.get('/getProOrder/:userId', (req, res, next) => {
+  executeSQL(User.getUserProOrderByIdSQL(req.params.userId), res, 'get', true)
+})
+
+// get 獲取票券訂單，使用會員id
+router.get('/getTicOrder/:userId', (req, res, next) => {
+  executeSQL(User.getUserTicOrderByIdSQL(req.params.userId), res, 'get', true)
 })
 
 // get 獲取商品訂單細節，使用orderid
