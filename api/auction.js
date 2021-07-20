@@ -267,7 +267,7 @@ const getaucMemeberInfoSQL = async (query)=> {
 //會員競標頁 API
 const getaucOrderInfoSQL = async (query)=> {
   console.log(query)
-  let sql_a = `SELECT orders.username,orders.orderId,userPhone,userAddress,orderShip,orderStatus,orderPrice,auctionitems.aucId,aucName,auctionitems.aucDeadline
+  let sql_a = `SELECT orders.username,orders.orderId,userPhone,userAddress,orderShip,orderStatus,orderPrice,auctionitems.aucId,aucName,auctionitems.aucDeadline,aucImg
   FROM orders
   LEFT JOIN order_details
   ON orders.orderId = order_details.orderId
