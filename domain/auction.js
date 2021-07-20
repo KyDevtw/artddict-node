@@ -14,7 +14,7 @@ class Auction {
     this.aucImg = aucImg;
   }
 
-  static getAllAucSQL(){
+  static getAllAucSQL() {
     let sql = `SELECT * FROM auctionitems`
 
     return sql;
@@ -51,7 +51,7 @@ class Auction {
   // }
 
   // // static是與實例化無關
-  static getAucByQuerySQL(query,a) {
+  static getAucByQuerySQL(query, a) {
     const where = [];
 
     if (query.search) where.push(`aucName LIKE '%${query.search}%'`);
@@ -63,12 +63,12 @@ class Auction {
     if (query.category === 'books') where.push(`aucClass = 'C01'`);
     if (query.category === 'accessories') where.push(`aucClass = 'C04'`);
 
-    let bbb = parseInt(query.priceRange)
-    console.log(bbb)
-    const priceRangeArr = query.priceRange.split(',')
-    console.log("新",priceRangeArr[0],priceRangeArr[1])
-    if (query.priceRange){
-        where.push(`aucPriceNow BETWEEN ${priceRangeArr[0]} AND ${priceRangeArr[1]}`)
+    if (query.priceRange) {
+      let bbb = parseInt(query.priceRange)
+      console.log(bbb)
+      const priceRangeArr = query.priceRange.split(',')
+      console.log("新", priceRangeArr[0], priceRangeArr[1])
+      where.push(`aucPriceNow BETWEEN ${priceRangeArr[0]} AND ${priceRangeArr[1]}`)
     }
 
     let sql = "";
@@ -97,8 +97,8 @@ class Auction {
 
   }
 
-  static getbidInfoByQuerySQL (id){
-    let sql =`SELECT aucName,aucId,aucPriceStart,aucPriceNow,aucDeadline,Sid,Price,aucCreated_at,name,aucImg
+  static getbidInfoByQuerySQL(id) {
+    let sql = `SELECT aucName,aucId,aucPriceStart,aucPriceNow,aucDeadline,Sid,Price,aucCreated_at,name,aucImg
     FROM auctionitems
     LEFT JOIN aucbuyerinfo
     ON auctionitems.aucId = aucbuyerinfo.auction_id
