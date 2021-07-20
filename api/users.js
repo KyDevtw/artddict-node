@@ -307,6 +307,10 @@ router.delete('/userFavDelete/:id?', (req, res, next) => {
   executeSQL(User.deleteUserFavByIdSQL(req.params.id), res, 'delete', false)
 })
 
+// 更改訂單狀態
+router.post('/orderStatus/:id?', (req, res, next)=>{
+  executeSQL(User.updateOrderStatuByOrderIdSQL(req.body.order_id, req.body.order_status), res, 'post', false)
+})
 
 
 // post 新增一筆會員資料

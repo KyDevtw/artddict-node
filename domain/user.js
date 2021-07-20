@@ -134,7 +134,16 @@ class User {
   static deleteUserFavByIdSQL(id) {
       let sql = `DELETE FROM user_favorite WHERE eventId = ${id}`
       return sql
-    }
+  }
+  
+  // update orderStatus 更改訂單狀態
+  static updateOrderStatuByOrderIdSQL(orderid, orderstatus) {
+    let sql = `UPDATE orders \
+               SET orderStatus = ${orderstatus} \
+               WHERE orderId =  ${orderid}`
+    
+    return sql
+  }
   
 
   // login用
