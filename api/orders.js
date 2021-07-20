@@ -81,7 +81,7 @@ async function executeSQL(
 router.post('/orders', (req, res, next) => {
   let order = new Orders(
     req.body.orderid,
-    'userid',
+    req.body.userid,
     req.body.orderpay,
     req.body.cardnumber,
     req.body.cardexpdate,
