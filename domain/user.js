@@ -89,17 +89,17 @@ class User {
   
   // get 會員商品訂單
   static getUserProOrderByIdSQL(id) {
-    let sql = `SELECT orders.orderId , orders.created_at, orders.orderPrice, orders.orderStatus FROM orders  LEFT JOIN users ON orders.userId = users.id WHERE users.id = ${id} AND orders.orderType = 'a'`
+    let sql = `SELECT orders.orderId , orders.created_at, orders.orderPrice, orders.orderStatus FROM orders  LEFT JOIN users ON orders.userId = users.id WHERE users.id = ${id} AND orders.orderType = 'a'  ORDER BY created_at DESC`
     return sql
   }
 
    // get 會員票卷訂單
    static getUserTicOrderByIdSQL(id) {
-    let sql = `SELECT orders.orderId, orders.created_at, orders.orderPrice, orders.orderStatus FROM orders JOIN users ON orders.userId = users.id  WHERE users.id = ${id} AND orders.orderType = 'b'`
+    let sql = `SELECT orders.orderId, orders.created_at, orders.orderPrice, orders.orderStatus FROM orders JOIN users ON orders.userId = users.id  WHERE users.id = ${id} AND orders.orderType = 'b' ORDER BY created_at DESC`
     return sql
   }
 
-
+  // get 會員-商品訂單細節 by orderId
   static getUserOrderProDetailByOrderIdSQL(orderid) {
     let sql = `SELECT orders.orderPay,orders.cardNumber,orders.cardExpdate, orders.orderPrice, users.name, orders.userPhone, orders.userAddress, orders.orderShip, product.proId, product.proName, product.proImg, product.id, order_details.orderSpec, order_details.orderQty FROM product LEFT JOIN order_details ON product.proId = order_details.proId LEFT	JOIN orders ON order_details.orderId = orders.orderId LEFT JOIN users ON orders.userId = users.id WHERE order_details.orderId = ${orderid}`
     return sql
@@ -113,7 +113,7 @@ class User {
 
   // get 會員票券
   static getUserTicketByIdSQL(id) {
-    let sql = `SELECT event.eventId, event.eventImg, event.eventName,order_details.orderQty, event.eventDateStart, event.eventDateEnd ,event.id FROM event LEFT JOIN order_details ON event.eventId = order_details.eventId LEFT JOIN orders ON order_details.orderId = orders.orderId LEFT JOIN users ON orders.userId = users.id WHERE users.id = ${id}`
+    let sql = `SELECT event.eventId, event.eventImg, event.eventName,order_details.orderQty, event.eventDateStart, event.eventDateEnd ,event.id FROM event LEFT JOIN order_details ON event.eventId = order_details.eventId LEFT JOIN orders ON order_details.orderId = orders.orderId LEFT JOIN users ON orders.userId = users.id WHERE users.id = ${id} ORDER BY eventId DESC`
     return sql
   }
 
@@ -125,7 +125,7 @@ class User {
 
   // get 會員收藏
   static getUserFavByIdSQL(id) {
-    let sql = `SELECT  event.eventId, event.eventImg, event.eventName, event.eventCity, event.eventDateStart FROM event LEFT JOIN user_favorite ON event.eventId = user_favorite.eventId LEFT JOIN users ON user_favorite.userId = users.id WHERE users.id = ${id}`
+    let sql = `SELECT  event.eventId, event.eventImg, event.eventName, event.eventCity, event.eventDateStart FROM event LEFT JOIN user_favorite ON event.eventId = user_favorite.eventId LEFT JOIN users ON user_favorite.userId = users.id WHERE users.id = ${id} ORDER BY eventId DESC`
     return sql
   }
 

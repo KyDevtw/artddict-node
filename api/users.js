@@ -408,5 +408,61 @@ router.put('/pwd/:userId', async (req, res) => {
   executeSQL(user.updatePwdByIdSQL(req.params.userId,passwordhash), res, 'put', false, user)
 })
 
+
+//htmlMail，這個變數將會是整個信件內容
+let htmlMail = `<h3>註冊成功！歡迎加入 ARTDDICT</h3>
+<h4>親愛的 孫小美 您好</h4>
+<h4 >感謝您加入 ARTDDICT ！ 以下是您帳戶訊息：</h4>
+<small>
+    1) 您的帳號：smile84122332@gmail.com<br>
+    2) 註冊日期：2021年07月27日<br>
+    
+    <hr>
+    本郵件是由系統自動發送，請勿直接回覆。如有任何問題，請聯絡我們：<br>
+    客服電話：(02)6631-6666<br>
+    Emaile：artddict.now@gmail.com<br>
+    客服時間：週一至週五 09：30 - 12：00 / 13：30 - 17：30</small>
+`
+
+
+
+// create transporter for sending email
+// const transporter = nodeMailer.createTransport({
+//     host: "smtp.gmail.com",
+//     service: 'gmail',
+//     port: 465,
+//     secure: false,
+//     auth: {
+//         user: 'artddict.now@gmail.com',
+//         pass: 'artddictmfee14',
+//     },
+//     tls: {
+//         rejectUnauthorized: false
+//     }
+// });
+
+
+
+router.post('/', (req, res, next) => {
+    console.log(req.body.email);
+    let mailOptions = {
+        from: 'artddict.now@gmail.com',
+        to: req.body.email,
+        subject: "非常感謝的你來信",
+        html:htmlMail,
+      };
+     
+      transporter.sendMail(mailOptions, function (err, data) {
+        if (err) {
+          console.log("Error " + err);
+        } else {
+          console.log("Email sent successfully");
+          res.json({ status: "Email sent"+`${req.body.email}` });
+        }
+      });
+    
+    
+});
+
 //export default router
 module.exports = router
